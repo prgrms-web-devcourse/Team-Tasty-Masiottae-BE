@@ -14,4 +14,4 @@ spring:
     import: db.yml
 logging:
   level:
-    root: debug
+    root: info
