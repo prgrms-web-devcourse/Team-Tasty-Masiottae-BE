@@ -6,19 +6,16 @@ import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.option.domain.Option;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -52,6 +49,10 @@ public class Menu {
     @Column(name = "likes_count")
     private Integer likesCount;
 
+    @Lob
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
@@ -69,10 +70,8 @@ public class Menu {
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Option> optionList = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "flavor_tag",
-            joinColumns = @JoinColumn(name = "menu_id", referencedColumnName = "id"))
-    private Set<Flavor> flavors = new HashSet<>();
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Taste> tastes = new ArrayList<>();
 
     @Builder
     private Menu(String realMenuName, String customMenuName, String pictureUrl,
@@ -101,7 +100,8 @@ public class Menu {
         comments.add(comment);
     }
 
-    public void addFlavor(Flavor flavor) {
-        flavors.add(flavor);
+    public void addTaste(Taste taste) {
+        tastes.add(taste);
     }
+
 }
