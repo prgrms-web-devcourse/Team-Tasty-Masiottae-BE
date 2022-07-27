@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 @Getter
 public class ErrorResponse {
 
     private String message;
     private int status;
-    private List<FieldError> errors;
+    private List<ValidationError> errors;
 
     private ErrorResponse(String message, int status) {
         this.message = message;
@@ -19,7 +20,7 @@ public class ErrorResponse {
         this.errors = new ArrayList<>();
     }
 
-    private ErrorResponse(String message, int status, List<FieldError> errors) {
+    private ErrorResponse(String message, int status, List<ValidationError> errors) {
         this.message = message;
         this.status = status;
         this.errors = errors;
@@ -30,27 +31,27 @@ public class ErrorResponse {
     }
 
     public static ErrorResponse of(String message, int status, final BindingResult bindingResult) {
-        return new ErrorResponse(message, status, FieldError.of(bindingResult));
+        return new ErrorResponse(message, status, ValidationError.of(bindingResult));
     }
 
     @Getter
-    public static class FieldError {
+    public static class ValidationError {
 
         private String field;
         private String value;
         private String reason;
 
-        private FieldError(String field, String value, String reason) {
+        private ValidationError(String field, String value, String reason) {
             this.field = field;
             this.value = value;
             this.reason = reason;
         }
 
-        public static List<FieldError> of(BindingResult bindingResult) {
-            List<org.springframework.validation.FieldError> fieldErrors =
+        public static List<ValidationError> of(BindingResult bindingResult) {
+            List<FieldError> fieldErrors =
                     bindingResult.getFieldErrors();
             return fieldErrors.stream().map(fieldError ->
-                    new FieldError(
+                    new ValidationError(
                             fieldError.getField(),
                             fieldError.getRejectedValue() == null ? ""
                                     : fieldError.getRejectedValue().toString(),
