@@ -35,6 +35,7 @@ public class ErrorResponse {
 
     @Getter
     public static class FieldError {
+
         private String field;
         private String value;
         private String reason;
@@ -46,11 +47,13 @@ public class ErrorResponse {
         }
 
         public static List<FieldError> of(BindingResult bindingResult) {
-            List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
+            List<org.springframework.validation.FieldError> fieldErrors =
+                    bindingResult.getFieldErrors();
             return fieldErrors.stream().map(fieldError ->
                     new FieldError(
                             fieldError.getField(),
-                            fieldError.getRejectedValue() == null ? "" : fieldError.getRejectedValue().toString(),
+                            fieldError.getRejectedValue() == null ? ""
+                                    : fieldError.getRejectedValue().toString(),
                             fieldError.getDefaultMessage()
                     )
             ).collect(Collectors.toList());
