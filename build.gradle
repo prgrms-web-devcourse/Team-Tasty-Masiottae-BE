@@ -51,6 +51,8 @@ dependencies {
     // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {
