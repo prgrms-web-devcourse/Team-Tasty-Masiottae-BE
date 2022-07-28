@@ -11,8 +11,6 @@ import com.tasty.masiottae.menu.MenuConverter;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.repository.MenuRepository;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,8 +30,7 @@ class MenuServiceTest {
     FranchiseRepository franchiseRepository;
     @Autowired
     MenuService menuService;
-    @PersistenceContext
-    EntityManager entityManager;
+
     private Account account;
     private Franchise franchise;
 
@@ -52,12 +49,9 @@ class MenuServiceTest {
     @DisplayName("메뉴 단건 조회")
     void testFindOneMenu() {
         // given
-        Menu menu = Menu.createMenu("실제이름", "고객이지은이름", "image", 5000,
-                account, franchise);
+        Menu menu = Menu.createMenu("실제이름", "고객이지은이름", "url", 5000, account, franchise, "설명");
         Menu savedMenu = menuRepository.save(menu);
 
-        entityManager.flush();
-        entityManager.clear();
         // when
         MenuFindResponse findMenu = menuService.findOneMenu(savedMenu.getId());
 
