@@ -1,7 +1,5 @@
 package com.tasty.masiottae.menu.service;
 
-import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU_ERR;
-
 import com.tasty.masiottae.menu.MenuConverter;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
@@ -19,7 +17,7 @@ public class MenuService {
 
     public MenuFindResponse findOneMenu(Long menuId) {
         Menu findMenu = menuRepository.findByIdFetch(menuId).orElseThrow(
-                () -> new EntityNotFoundException(NOT_FOUND_MENU_ERR.getMessage())
+                () -> new EntityNotFoundException()
         );
         return menuConverter.toMenuFindResponse(findMenu);
     }
