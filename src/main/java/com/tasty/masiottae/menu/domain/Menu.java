@@ -10,15 +10,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -60,6 +59,10 @@ public class Menu {
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
+    @Lob
+    @Column(name = "description")
+    private String description;
+
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
@@ -69,14 +72,12 @@ public class Menu {
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Option> optionList = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "flavor_tag",
-            joinColumns = @JoinColumn(name = "menu_id", referencedColumnName = "id"))
-    private Set<Flavor> flavors = new HashSet<>();
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MenuTaste> menuTastes = new HashSet<>();
 
     @Builder
     private Menu(String realMenuName, String customMenuName, String pictureUrl,
-            Integer expectedPrice, Account account, Franchise franchise) {
+            Integer expectedPrice, Account account, Franchise franchise, String description) {
         this.realMenuName = realMenuName;
         this.customMenuName = customMenuName;
         this.pictureUrl = pictureUrl;
@@ -84,24 +85,30 @@ public class Menu {
         this.likesCount = 0;
         this.account = account;
         this.franchise = franchise;
+        this.description = description;
     }
 
     public static Menu createMenu(String realMenuName, String customMenuName, String pictureUrl,
-            Integer expectedPrice, Account account, Franchise franchise) {
+            Integer expectedPrice, Account account, Franchise franchise, String description) {
         return Menu.builder()
                 .realMenuName(realMenuName)
                 .customMenuName(customMenuName)
                 .pictureUrl(pictureUrl)
                 .expectedPrice(expectedPrice)
                 .account(account)
-                .franchise(franchise).build();
+                .franchise(franchise)
+                .description(description).build();
     }
 
     public void addComment(Comment comment) {
         comments.add(comment);
     }
 
-    public void addFlavor(Flavor flavor) {
-        flavors.add(flavor);
+    public void addMenuTaste(MenuTaste menuTaste) {
+        menuTastes.add(menuTaste);
+    }
+
+    public void addOption(Option option) {
+        optionList.add(option);
     }
 }
