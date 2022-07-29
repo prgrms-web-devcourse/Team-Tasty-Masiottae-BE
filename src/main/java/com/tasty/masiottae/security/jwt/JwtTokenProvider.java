@@ -27,9 +27,7 @@ public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
 
-    private final AccountDetailService accountDetailService;
-
-    public JwtTokenResponse generatedAccountToken(UserDetails userDetails) {
+    public JwtToken generatedAccountToken(UserDetails userDetails) {
 
         Algorithm algorithm = Algorithm.HMAC256(
                 jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8));
@@ -42,7 +40,7 @@ public class JwtTokenProvider {
                         .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
 
-        return new JwtTokenResponse(token, expirationDate);
+        return new JwtToken(jwtProperties.getTokenPrefix() + token, expirationDate);
     }
 
     public DecodedJWT verifyJwtToken(String token) {

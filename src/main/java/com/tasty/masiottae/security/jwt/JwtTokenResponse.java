@@ -1,13 +1,9 @@
 package com.tasty.masiottae.security.jwt;
 
+import com.tasty.masiottae.account.dto.AccountFindResponse;
 import java.util.Date;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
-@NoArgsConstructor
-public record JwtTokenResponse(String token, Date expirationTime) {
-
+public record JwtTokenResponse(
+        JwtToken token,
+        AccountFindResponse accountFindResponse) {
 }
