@@ -1,5 +1,6 @@
 package com.tasty.masiottae.menu.controller;
 
+
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.service.MenuService;
@@ -25,5 +26,10 @@ public class MenuController {
             @RequestPart MultipartFile imageFile) {
         return new ResponseEntity<>(menuService.createMenu(data, imageFile), HttpStatus.CREATED);
     }
+    
+    @GetMapping("/{menuId}")
+    public ResponseEntity<MenuFindResponse> getOneMenu(@PathVariable Long menuId) {
+        MenuFindResponse menu = menuService.findOneMenu(menuId);
+        return ResponseEntity.ok().body(menu);
+    }
 }
-

@@ -5,8 +5,10 @@ import com.tasty.masiottae.menu.converter.MenuConverter;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
+import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import java.util.Objects;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,5 +36,12 @@ public class MenuService {
 
         return menuConverter
                 .toMenuSaveResponse(menuRepository.save(menu));
+    }
+
+    public MenuFindResponse findOneMenu(Long menuId) {
+        Menu findMenu = menuRepository.findByIdFetch(menuId).orElseThrow(
+                () -> new EntityNotFoundException()
+        );
+        return menuConverter.toMenuFindResponse(findMenu);
     }
 }
