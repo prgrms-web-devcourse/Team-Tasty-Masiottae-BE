@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
-
 @Configuration
 public class S3TestConfig {
 
@@ -34,8 +33,7 @@ public class S3TestConfig {
                 .standard()
                 .withPathStyleAccessEnabled(true)
                 .withEndpointConfiguration(endpoint)
-                .withCredentials(
-                        new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
+                .withCredentials(new AWSStaticCredentialsProvider(new AnonymousAWSCredentials()))
                 .build();
         client.createBucket(bucketName);
         return client;
