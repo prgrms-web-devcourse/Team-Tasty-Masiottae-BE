@@ -1,6 +1,6 @@
 package com.tasty.masiottae.common.util;
 
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -17,10 +17,18 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class AwsS3Service {
 
-    private final AmazonS3Client s3Client;
+    private final AmazonS3 s3Client;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
+
+    private static String getExtension(String originalFileName) {
+        int extensionIndex = originalFileName.lastIndexOf(".");
+        if (extensionIndex == -1) {
+            return "";
+        }
+        return originalFileName.substring(extensionIndex);
+    }
 
     public String uploadMenuImage(MultipartFile multipartFile) {
         return upload(multipartFile, ImageDirectory.MENU);
@@ -55,13 +63,5 @@ public class AwsS3Service {
     private String buildFileName(String originalFileName, ImageDirectory imageDirectory) {
         String extension = getExtension(originalFileName);
         return imageDirectory.getS3Directory() + UUID.randomUUID() + extension;
-    }
-
-    private static String getExtension(String originalFileName) {
-        int extensionIndex = originalFileName.lastIndexOf(".");
-        if (extensionIndex == -1) {
-            return "";
-        }
-        return originalFileName.substring(extensionIndex);
     }
 }

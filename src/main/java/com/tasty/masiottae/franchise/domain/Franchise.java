@@ -49,4 +49,7 @@ public class Franchise {
                 .build();
     }
 
+    public void updateLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
 }
