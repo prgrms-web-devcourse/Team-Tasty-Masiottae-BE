@@ -1,9 +1,9 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: "jdbc:h2:mem:testdb;MODE=MYSQL"
-    username: sa
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/masiottae
+    username: root
+    password: root1234
     hikari:
       minimum-idle: 1
       maximum-pool-size: 5
@@ -17,5 +17,3 @@ spring:
       hibernate.dialect: org.hibernate.dialect.H2Dialect
   config:
     import: aws.yml
-
-
