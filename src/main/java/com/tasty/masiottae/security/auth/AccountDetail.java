@@ -23,15 +23,21 @@ public class AccountDetail implements UserDetails {
         return authorities;
     }
 
-    public Long getId() {return account.getId();}
+    public Long getId() {
+        return account.getId();
+    }
 
     public String getNickname() {
         return account.getNickname();
     }
 
-    public String getImageUrl() {return account.getImageUrl();}
+    public String getImageUrl() {
+        return account.getImageUrl();
+    }
 
-    public LocalDateTime getCreatedAt(){return account.getCreatedAt();}
+    public LocalDateTime getCreatedAt() {
+        return account.getCreatedAt();
+    }
 
     @Override
     public String getPassword() {

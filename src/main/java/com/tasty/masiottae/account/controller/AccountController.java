@@ -79,7 +79,7 @@ public class AccountController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping(value = "/password/{id}", consumes = APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/{id}/password", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateAccountPassword(
             @PathVariable final Long id, @RequestBody final AccountPasswordUpdateRequest request) {
         return ResponseEntity.noContent().build();

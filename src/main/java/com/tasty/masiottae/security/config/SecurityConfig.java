@@ -1,6 +1,5 @@
 package com.tasty.masiottae.security.config;
 
-
 //import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
@@ -35,26 +34,28 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
 
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtTokenProvider, authenticationManager);
-        JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter(jwtTokenProvider);
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(
+                jwtTokenProvider, authenticationManager);
+        JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter(
+                jwtTokenProvider);
         jwtAuthenticationFilter.setFilterProcessesUrl("/accounts/login");
 
-        http.
-                csrf().disable()
+        http
+                .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-//                .authorizeRequests().antMatchers("/**").hasAnyAuthority("ROLE_ACCOUNT")
                 .authorizeRequests().anyRequest().permitAll()
                 .and()
                 .addFilter(corsFilter)
                 .addFilter(jwtAuthenticationFilter)
-                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthorizationFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

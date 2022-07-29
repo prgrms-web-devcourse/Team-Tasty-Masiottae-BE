@@ -50,8 +50,8 @@ public class JwtTokenProvider {
         token = token.replaceAll(jwtProperties.getTokenPrefix(), "");
         Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret().getBytes());
         JWTVerifier jwtVerifier = JWT.require(algorithm).build();
-        DecodedJWT decodedJWT = jwtVerifier.verify(token);
-        return decodedJWT;
+        DecodedJWT decodedJwt = jwtVerifier.verify(token);
+        return decodedJwt;
     }
 
     public String getToken(HttpServletRequest request) {

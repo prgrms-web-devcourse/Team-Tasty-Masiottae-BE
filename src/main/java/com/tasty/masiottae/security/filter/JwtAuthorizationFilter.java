@@ -47,6 +47,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             Authentication authentication = getAuthentication(decodedJWT);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (JWTVerificationException e) {
+            log.info("권한 없는 유저 접근");
         }
         filterChain.doFilter(request, response);
     }
