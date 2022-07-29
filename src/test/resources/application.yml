@@ -9,6 +9,7 @@ spring:
       maximum-pool-size: 5
       pool-name: MYSQL_DB
   jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true
     open-in-view: false
     hibernate:

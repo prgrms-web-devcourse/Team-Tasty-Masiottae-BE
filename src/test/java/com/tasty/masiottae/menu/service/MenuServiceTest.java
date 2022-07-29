@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-@Import(S3TestConfig.class)
 class MenuServiceTest {
 
     @Autowired
