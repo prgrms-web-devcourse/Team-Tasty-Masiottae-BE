@@ -9,6 +9,10 @@ import com.tasty.masiottae.account.dto.AccountLoginRequest;
 import com.tasty.masiottae.account.dto.AccountPasswordUpdateRequest;
 import com.tasty.masiottae.account.dto.AccountUpdateRequest;
 import com.tasty.masiottae.account.service.AccountService;
+import com.tasty.masiottae.security.auth.AccountDetail;
+import com.tasty.masiottae.security.jwt.JwtToken;
+import com.tasty.masiottae.security.jwt.JwtTokenProvider;
+import com.tasty.masiottae.security.jwt.JwtTokenResponse;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,6 +38,8 @@ public class AccountController {
 
     private final AccountService accountService;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountFindResponse> findAccountById(@PathVariable final Long id) {
         AccountFindResponse accountFindResponse = new AccountFindResponse(1L, "nickname", "imgUrl",
@@ -58,9 +64,10 @@ public class AccountController {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createAccount(
+    public ResponseEntity<JwtTokenResponse> createAccount(
             @RequestBody final AccountCreateRequest request) {
-        return ResponseEntity.created(URI.create("/accounts/1")).build();
+        JwtTokenResponse jwtTokenResponse = accountService.save(request);
+        return ResponseEntity.ok(jwtTokenResponse);
     }
 
     @PatchMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE)
@@ -81,8 +88,9 @@ public class AccountController {
     @PostMapping(value = "/login", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> loginAccount(
             @RequestBody final AccountLoginRequest request) {
-        AccountFindResponse loggedInAccounbt = new AccountFindResponse(1L, "nickname", "imgUrl",
+        AccountFindResponse loggedInAccount = new AccountFindResponse(1L, "nickname", "imgUrl",
                 "example@naver.com", LocalDateTime.now(), 0);
+
         return ResponseEntity.noContent().build();
     }
 
