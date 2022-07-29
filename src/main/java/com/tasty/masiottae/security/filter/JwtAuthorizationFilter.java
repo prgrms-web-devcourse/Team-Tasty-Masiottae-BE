@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -46,14 +47,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             Authentication authentication = getAuthentication(decodedJWT);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (JWTVerificationException e) {
-            logger.info("유효하지 않은 토큰 접근입니다." + token);
         }
         filterChain.doFilter(request, response);
     }
 
     private Authentication getAuthentication(DecodedJWT decodedJWT) {
         String email = decodedJWT.getSubject();
-        String[] rolesString = decodedJWT.getClaim("role").asArray(String.class);
+        String[] rolesString = decodedJWT.getClaim("roles").asArray(String.class);
         Collection<GrantedAuthority> roles = new ArrayList<>();
         for (String roleString : rolesString) {
             roles.add(new SimpleGrantedAuthority(roleString));

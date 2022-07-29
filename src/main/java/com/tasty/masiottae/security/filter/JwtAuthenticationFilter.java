@@ -1,6 +1,10 @@
 package com.tasty.masiottae.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tasty.masiottae.account.dto.AccountFindResponse;
+import com.tasty.masiottae.account.dto.AccountLoginRequest;
+import com.tasty.masiottae.security.auth.AccountDetail;
+import com.tasty.masiottae.security.jwt.JwtToken;
 import com.tasty.masiottae.security.jwt.JwtTokenProvider;
 import com.tasty.masiottae.security.jwt.JwtTokenResponse;
 import java.io.IOException;
@@ -16,28 +20,30 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final ObjectMapper objectMapper; // bean 등록 필요
-    private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
             HttpServletResponse response)
             throws AuthenticationException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = null;
+        try {
+            AccountLoginRequest accountLoginRequest = new ObjectMapper().readValue(
+                    request.getInputStream(), AccountLoginRequest.class);
+            usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                    accountLoginRequest.loginId(), accountLoginRequest.loginPassword());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(username, password);
-
-        return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        return authenticate;
     }
 
     @Override
@@ -46,11 +52,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             FilterChain chain, Authentication authentication) throws IOException {
         UserDetails account = (UserDetails) authentication.getPrincipal();
 
-        JwtTokenResponse jwtTokenResponse =
-                jwtTokenProvider.generatedAccountToken(account);
+        JwtToken token = jwtTokenProvider.generatedAccountToken(account);
+        AccountDetail accountDetails = (AccountDetail) account;
+        AccountFindResponse accountFindResponse =
+                new AccountFindResponse(accountDetails.getId(), accountDetails.getNickname(),
+                        accountDetails.getImageUrl(), accountDetails.getUsername(), accountDetails.getCreatedAt(),
+                        0);
+        JwtTokenResponse jwtTokenResponse = new JwtTokenResponse(token, accountFindResponse);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        objectMapper.writeValue(response.getOutputStream(), jwtTokenResponse);
+        new ObjectMapper().writeValue(response.getOutputStream(), jwtTokenResponse);
     }
 
 }
