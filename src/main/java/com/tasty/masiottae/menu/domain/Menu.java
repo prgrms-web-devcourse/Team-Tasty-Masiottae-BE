@@ -42,7 +42,7 @@ public class Menu {
     @Column(name = "custom_menu_name", nullable = false)
     private String customMenuName;
 
-    @Column(name = "picture_url", nullable = false)
+    @Column(name = "picture_url")
     private String pictureUrl;
 
     @Column(name = "expected_price", nullable = false)
@@ -110,5 +110,6 @@ public class Menu {
 
     public void addOption(Option option) {
         optionList.add(option);
+        option.setMenu(this);
     }
 }
