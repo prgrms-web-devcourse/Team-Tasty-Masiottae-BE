@@ -39,4 +39,3 @@ public class S3TestConfig {
         return client;
     }
 }
-
