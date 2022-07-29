@@ -30,6 +30,10 @@ public class AwsS3Service {
         return upload(multipartFile, ImageDirectory.FRANCHISE);
     }
 
+    public String uploadAccountImage(MultipartFile multipartFile) {
+        return upload(multipartFile, ImageDirectory.ACCOUNT);
+    }
+
     public String upload(MultipartFile multipartFile, ImageDirectory imageDirectory) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(multipartFile.getContentType());
