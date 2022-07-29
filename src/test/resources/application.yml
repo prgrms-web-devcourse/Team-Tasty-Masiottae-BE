@@ -7,13 +7,13 @@ spring:
     hikari:
       minimum-idle: 1
       maximum-pool-size: 5
-      pool-name: H2_DB
+      pool-name: MYSQL_DB
   jpa:
     show-sql: true
     open-in-view: false
     hibernate:
       ddl-auto: create-drop
     properties:
-      hibernate.dialect: org.hibernate.dialect.H2Dialect
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   config:
     import: aws.yml
