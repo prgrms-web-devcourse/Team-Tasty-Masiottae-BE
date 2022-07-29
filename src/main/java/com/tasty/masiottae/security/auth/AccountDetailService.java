@@ -1,7 +1,7 @@
 package com.tasty.masiottae.security.auth;
 
-import com.tasty.masiottae.account.AccountService;
 import com.tasty.masiottae.account.domain.Account;
+import com.tasty.masiottae.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
