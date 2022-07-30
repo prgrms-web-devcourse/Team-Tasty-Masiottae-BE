@@ -42,7 +42,7 @@ jobs:
         shell: bash
 
       - name: build docker-compose
-          run: docker-compose up -d
+        run: docker-compose up -d
 
       - name: Build with Gradle
         run: ./gradlew clean build
