@@ -1,3 +1,6 @@
 spring:
   profiles:
     default: dev
+
+  config:
+    import: jwt.yml

@@ -1,7 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.7.2'
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
-    id 'org.asciidoctor.convert' version '1.5.8'
+    id 'org.asciidoctor.jvm.convert' version "3.3.2"
     id 'java'
     id 'checkstyle'
 }
@@ -20,6 +20,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExtensions
 }
 
 repositories {
@@ -31,6 +32,7 @@ ext {
 }
 
 dependencies {
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -53,9 +55,18 @@ dependencies {
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
 
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    // https://mvnrepository.com/artifact/com.auth0/java-jwt
+    implementation group: 'com.auth0', name: 'java-jwt', version: '3.19.1'
+}
 
-    testImplementation 'io.findify:s3mock_2.13:0.2.6'
+bootJar{
+    dependsOn asciidoctor
+
+    copy {
+        from "build/asciidoc/html5"
+        into "src/main/resources/static/docs"
+    }
 }
 
 tasks.named('test') {
@@ -64,6 +75,7 @@ tasks.named('test') {
 }
 
 tasks.named('asciidoctor') {
+    dependsOn test  
+    configurations 'asciidoctorExtensions'
     inputs.dir snippetsDir
-    dependsOn test
 }
