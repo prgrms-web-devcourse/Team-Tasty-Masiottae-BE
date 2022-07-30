@@ -49,7 +49,7 @@ class MenuServiceTest {
 
     @BeforeEach
     void init() {
-        account = Account.createAccount("test@gmail.com", "password", "nickname");
+        account = Account.createAccount("test@gmail.com", "password", "nickname", "imageUrl");
 
         franchise = Franchise.createFranchise("starbucks", "logo");
 
