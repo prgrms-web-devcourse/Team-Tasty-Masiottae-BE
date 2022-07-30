@@ -4,6 +4,6 @@ import com.tasty.masiottae.account.dto.AccountFindResponse;
 import java.util.Date;
 
 public record JwtTokenResponse(
-        JwtToken token,
+        JwtToken jwtToken,
         AccountFindResponse accountFindResponse) {
 }

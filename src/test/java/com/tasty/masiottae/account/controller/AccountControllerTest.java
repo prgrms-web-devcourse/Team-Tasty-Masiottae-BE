@@ -29,11 +29,13 @@ import com.tasty.masiottae.account.dto.AccountLoginRequest;
 import com.tasty.masiottae.account.dto.AccountPasswordUpdateRequest;
 import com.tasty.masiottae.account.dto.AccountUpdateRequest;
 import com.tasty.masiottae.account.service.AccountService;
+import com.tasty.masiottae.security.config.SecurityConfig;
+import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
+import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.apache.catalina.security.SecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +56,10 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @AutoConfigureRestDocs
 @Import(RestDocsConfiguration.class)
-@WebMvcTest(value = AccountController.class, excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
+@WebMvcTest(value = AccountController.class, excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthorizationFilter.class),
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class)})
 @WithMockUser
 class AccountControllerTest {
 
@@ -94,9 +99,7 @@ class AccountControllerTest {
                 list.size());
 
         mockMvc.perform(get("/accounts").param("page", String.valueOf(0))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print())
+                        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andDo(print())
                 .andDo(document("paging-account",
                         requestParameters(parameterWithName("page").description("요청 페이지")),
                         responseFields(fieldWithPath("content[].id").description("식별자"),
@@ -156,8 +159,7 @@ class AccountControllerTest {
         mockMvc.perform(
                         post("/accounts").contentType(MediaType.APPLICATION_JSON).with(csrf().asHeader())
                                 .content(objectMapper.writeValueAsString(accountCreateRequest)))
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/accounts/1")).andDo(print())
+                .andExpect(status().isOk())
                 .andDo(document("sign-account",
                         requestFields(fieldWithPath("nickname").description("닉네임"),
                                 fieldWithPath("email").description("이메일"),
@@ -196,7 +198,7 @@ class AccountControllerTest {
     void updatePassword() throws Exception {
         AccountPasswordUpdateRequest accountPasswordUpdateRequest = new AccountPasswordUpdateRequest(
                 "updatePassword");
-        mockMvc.perform(patch("/accounts/password/{id}", 1L).with(csrf().asHeader())
+        mockMvc.perform(patch("/accounts/{id}/password", 1L).with(csrf().asHeader())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(accountPasswordUpdateRequest)))
                 .andExpect(status().is2xxSuccessful()).andDo(print())

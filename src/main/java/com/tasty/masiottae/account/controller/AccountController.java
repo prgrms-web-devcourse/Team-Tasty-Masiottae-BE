@@ -38,8 +38,6 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    private final JwtTokenProvider jwtTokenProvider;
-
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<AccountFindResponse> findAccountById(@PathVariable final Long id) {
         AccountFindResponse accountFindResponse = new AccountFindResponse(1L, "nickname", "imgUrl",
