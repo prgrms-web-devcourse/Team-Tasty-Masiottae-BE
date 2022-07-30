@@ -37,19 +37,17 @@ public class Option {
     private Menu menu;
 
     @Builder
-    private Option(@NotNull String optionName, String description) {
+    private Option(@NotNull String optionName, String description, @NotNull Menu menu) {
         this.optionName = optionName;
         this.description = description;
+        this.menu = menu;
     }
 
-    public static Option createOption(String optionName, String description) {
+    public static Option createOption(String optionName, String description, Menu menu) {
         return Option.builder()
                 .optionName(optionName)
                 .description(description)
+                .menu(menu)
                 .build();
-    }
-
-    public void setMenu(Menu menu) {
-        this.menu = menu;
     }
 }
