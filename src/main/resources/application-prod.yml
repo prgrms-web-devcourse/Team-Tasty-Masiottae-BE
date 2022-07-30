@@ -1,17 +1,16 @@
 spring:
   config:
     activate:
-      on-profile: dev
-    import: aws.yml
+      on-profile: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/masiottae
-    username: root
-    password: root1234
+    url: jdbc:mysql://tasty-masiottae-rds.czvbgr7hie3i.ap-northeast-2.rds.amazonaws.com:3306/tasty_masiottae_db
+    username: admin
+    password: masiottae
     hikari:
       minimum-idle: 1
-      maximum-pool-size: 5
-      pool-name: MYSQL_DB
+      maximum-pool-size: 10
+      pool-name: MySQL_DB
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,5 +20,3 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
-        default_batch_fetch_size: 500
-
