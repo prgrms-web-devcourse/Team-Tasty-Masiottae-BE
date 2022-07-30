@@ -1,0 +1,44 @@
+== 계정
+
+=== 계정 생성
+
+계정을 생성할 수 있습니다.
+
+operation::sign-account[snippets='http-request,request-fields,http-response']
+
+=== 계정 조회(단건)
+
+하나의 계정 정보를 조회할 수 있습니다.
+
+operation::findById-account[snippets='http-request,http-response,response-fields']
+
+=== 계정 조회(다건)
+
+페이징된 모든 계정 정보를 조회할 수 있습니다.
+
+operation::paging-account[snippets='http-request,http-response,response-fields']
+
+=== 로그인 요청
+
+생성된 계정 정보를 통해 로그인할 수 있습니다.
+
+operation::login-account[snippets='http-request,request-fields,http-response']
+
+
+=== 계정 정보 수정
+
+생성된 계정의 전체 정보를 수정할 수 있습니다. (수정 가능한 정보: 닉네임, 프로필 사진 url)
+
+operation::update-account[snippets='http-request,request-fields,http-response']
+
+=== 계정 비밀번호 수정
+
+생성된 계정의 비밀번호를 수정할 수 있습니다.
+
+operation::update-password-account[snippets='http-request,request-fields,http-response']
+
+=== 중복 속성 여부 확인
+
+계정을 생성하기 전에 속성의 중복 여부를 확인할 수 있습니다. (확인 가능한 정보: 이메일, 닉네임)
+
+operation::check-account[snippets='http-request,request-parameters,http-response']
