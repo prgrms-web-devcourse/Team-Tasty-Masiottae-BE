@@ -15,7 +15,5 @@ spring:
       ddl-auto: create-drop
     properties:
       hibernate.dialect: org.hibernate.dialect.H2Dialect
-  config:
-    import: aws.yml
 
 
