@@ -41,6 +41,8 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
+      - name: build docker-compose
+        run: docker-compose up -d
       - name: Build with Gradle
         run: ./gradlew clean build
         shell: bash
