@@ -7,7 +7,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -39,9 +38,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = FranchiseController.class, excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthorizationFilter.class),
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class)})
+    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
+    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthorizationFilter.class),
+    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class)})
 @AutoConfigureRestDocs
 class FranchiseControllerTest {
 
@@ -58,7 +57,7 @@ class FranchiseControllerTest {
     void testSaveFranchise() throws Exception {
         // given
         MockMultipartFile multipartFile = new MockMultipartFile("file", "image.png", "img/png",
-                "Hello".getBytes());
+            "Hello".getBytes());
         FranchiseSaveRequest request = new FranchiseSaveRequest("starbucks", multipartFile);
 
         FranchiseSaveResponse response = franchiseService.createFranchise(request);
@@ -66,10 +65,10 @@ class FranchiseControllerTest {
 
         // expected
         mockMvc.perform(multipart("/franchises").file(multipartFile)
-                        .param("name", request.name())
-                        .with(csrf().asHeader()).contentType(MULTIPART_FORM_DATA_VALUE))
-                .andExpect(status().isCreated())
-                .andDo(print());
+                .param("name", request.name())
+                .with(csrf().asHeader()).contentType(MULTIPART_FORM_DATA_VALUE))
+            .andExpect(status().isCreated())
+            .andDo(print());
     }
 
     @Test
@@ -78,28 +77,28 @@ class FranchiseControllerTest {
     void testGetAllFranchise() throws Exception {
         // given
         List<Franchise> requestFranchise = IntStream.range(1, 10)
-                .mapToObj(i ->
-                        Franchise.createFranchise("franchise" + i, "logo" + i))
-                .toList();
+            .mapToObj(i ->
+                Franchise.createFranchise("franchise" + i, "logo" + i))
+            .toList();
 
         List<FranchiseFindResponse> response = requestFranchise.stream()
-                .map(franchise -> new FranchiseFindResponse(franchise.getId(),
-                        franchise.getLogoUrl(), franchise.getName()))
-                .collect(Collectors.toList());
+            .map(franchise -> new FranchiseFindResponse(franchise.getId(),
+                franchise.getLogoUrl(), franchise.getName()))
+            .collect(Collectors.toList());
         given(franchiseService.findAllFranchise()).willReturn(response);
 
         // expected
         mockMvc.perform(get("/franchises")
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(document("franchise-get-all",
-                        responseFields(
-                                fieldWithPath("[].id")
-                                        .description("프랜차이즈 ID"),
-                                fieldWithPath("[].logoUrl").type(JsonFieldType.STRING)
-                                        .description("프랜차이즈 로고"),
-                                fieldWithPath("[].name").type(JsonFieldType.STRING)
-                                        .description("프랜차이즈 이름")
-                        )));
+                .contentType(APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(document("franchise-get-all",
+                responseFields(
+                    fieldWithPath("[].id")
+                        .description("프랜차이즈 ID"),
+                    fieldWithPath("[].logoUrl").type(JsonFieldType.STRING)
+                        .description("프랜차이즈 로고"),
+                    fieldWithPath("[].name").type(JsonFieldType.STRING)
+                        .description("프랜차이즈 이름")
+                )));
     }
 }
