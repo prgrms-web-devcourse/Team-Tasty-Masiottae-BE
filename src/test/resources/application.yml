@@ -18,3 +18,5 @@ spring:
       hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   config:
     import: aws.yml
+    activate:
+      on-profile: test

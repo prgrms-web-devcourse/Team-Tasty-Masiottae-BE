@@ -1,5 +1,6 @@
 package com.tasty.masiottae.common.util;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -8,20 +9,18 @@ import com.tasty.masiottae.common.exception.ErrorMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class AwsS3Service {
 
-    private final AmazonS3Client s3Client;
+    private final AmazonS3 s3Client;
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
-
-    public AwsS3Service(AmazonS3Client s3Client) {
-        this.s3Client = s3Client;
-    }
 
     private static String getExtension(String originalFileName) {
         int extensionIndex = originalFileName.lastIndexOf(".");

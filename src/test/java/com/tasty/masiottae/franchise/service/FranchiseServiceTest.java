@@ -3,6 +3,7 @@ package com.tasty.masiottae.franchise.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.tasty.masiottae.config.S3TestConfig;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.dto.FranchiseFindResponse;
 import com.tasty.masiottae.franchise.dto.FranchiseSaveRequest;
@@ -14,11 +15,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
+@ActiveProfiles("test")
+@Import(S3TestConfig.class)
 class FranchiseServiceTest {
 
     @Autowired
@@ -33,21 +38,21 @@ class FranchiseServiceTest {
     void testCreateFranchise() {
         // given
         MockMultipartFile multipartFile = new MockMultipartFile("file", "image.png", "img/png",
-                "Hello".getBytes());
+            "Hello".getBytes());
         FranchiseSaveRequest franchiseSaveRequest = new FranchiseSaveRequest("스타벅스", multipartFile);
 
         // when
         FranchiseSaveResponse createdFranchise = franchiseService.createFranchise(
-                franchiseSaveRequest);
+            franchiseSaveRequest);
 
         // then
         Franchise findFranchise = franchiseRepository.findById(createdFranchise.franchiseId())
-                .get();
+            .get();
         assertAll(
-                () -> assertThat(findFranchise.getId()).isEqualTo(createdFranchise.franchiseId()),
-                () -> assertThat(findFranchise.getLogoUrl()).startsWith(
-                        "http://localhost:8001/masiottae-image-bucket/franchise/"),
-                () -> assertThat(findFranchise.getName()).isEqualTo("스타벅스")
+            () -> assertThat(findFranchise.getId()).isEqualTo(createdFranchise.franchiseId()),
+            () -> assertThat(findFranchise.getLogoUrl()).startsWith(
+                "http://localhost:8001/masiottae-image-bucket/franchise/"),
+            () -> assertThat(findFranchise.getName()).isEqualTo("스타벅스")
         );
     }
 
