@@ -24,7 +24,7 @@ public class MenuController {
 
     private final MenuService menuService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MenuSaveResponse> saveMenu(@RequestPart MenuSaveRequest data,
             @RequestPart MultipartFile image) {
         return new ResponseEntity<>(menuService.createMenu(data, image), HttpStatus.CREATED);
