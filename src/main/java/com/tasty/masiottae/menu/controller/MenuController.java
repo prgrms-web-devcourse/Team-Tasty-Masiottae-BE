@@ -26,10 +26,10 @@ public class MenuController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MenuSaveResponse> saveMenu(@RequestPart MenuSaveRequest data,
-            @RequestPart MultipartFile imageFile) {
-        return new ResponseEntity<>(menuService.createMenu(data, imageFile), HttpStatus.CREATED);
+            @RequestPart MultipartFile image) {
+        return new ResponseEntity<>(menuService.createMenu(data, image), HttpStatus.CREATED);
     }
-    
+
     @GetMapping("/{menuId}")
     public ResponseEntity<MenuFindResponse> getOneMenu(@PathVariable Long menuId) {
         MenuFindResponse menu = menuService.findOneMenu(menuId);
