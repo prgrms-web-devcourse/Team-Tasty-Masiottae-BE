@@ -34,12 +34,11 @@ class FranchiseServiceTest {
         // given
         MockMultipartFile multipartFile = new MockMultipartFile("file", "image.png", "img/png",
                 "Hello".getBytes());
-        FranchiseSaveRequest franchiseSaveRequest = new FranchiseSaveRequest("스타벅스");
+        FranchiseSaveRequest franchiseSaveRequest = new FranchiseSaveRequest("스타벅스", multipartFile);
 
         // when
         FranchiseSaveResponse createdFranchise = franchiseService.createFranchise(
-                franchiseSaveRequest,
-                multipartFile);
+                franchiseSaveRequest);
 
         // then
         Franchise findFranchise = franchiseRepository.findById(createdFranchise.franchiseId())

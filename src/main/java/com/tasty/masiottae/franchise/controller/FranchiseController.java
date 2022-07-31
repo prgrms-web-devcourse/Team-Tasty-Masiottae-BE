@@ -8,10 +8,11 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,15 +26,14 @@ public class FranchiseController {
     private final FranchiseService franchiseService;
 
     @GetMapping
-    public List<FranchiseFindResponse> getAllFranchise() {
-        return franchiseService.findAllFranchise();
+    public ResponseEntity<List<FranchiseFindResponse>> getAllFranchise() {
+        return ResponseEntity.ok().body(franchiseService.findAllFranchise());
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping
     public ResponseEntity<FranchiseSaveResponse> saveFranchise(
-            @Valid @RequestPart FranchiseSaveRequest franchiseSaveRequest,
-            @RequestPart MultipartFile logoImg) {
+            @Valid @ModelAttribute FranchiseSaveRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(franchiseService.createFranchise(franchiseSaveRequest, logoImg));
+                .body(franchiseService.createFranchise(request));
     }
 }
