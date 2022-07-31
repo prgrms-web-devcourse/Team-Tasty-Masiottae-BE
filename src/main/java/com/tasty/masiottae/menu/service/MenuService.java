@@ -24,11 +24,11 @@ public class MenuService {
     private final MenuConverter menuConverter;
 
     @Transactional
-    public MenuSaveResponse createMenu(MenuSaveRequest request, MultipartFile imageFile) {
+    public MenuSaveResponse createMenu(MenuSaveRequest request, MultipartFile image) {
         String menuImageUrl = null;
 
-        if (Objects.nonNull(imageFile)) {
-            menuImageUrl = s3Service.uploadMenuImage(imageFile);
+        if (Objects.nonNull(image)) {
+            menuImageUrl = s3Service.uploadMenuImage(image);
         }
 
         Menu menu = menuConverter.toMenu(request, menuImageUrl);

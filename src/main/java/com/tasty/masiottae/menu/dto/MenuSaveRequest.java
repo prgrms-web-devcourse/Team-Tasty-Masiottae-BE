@@ -10,8 +10,8 @@ import javax.validation.constraints.Size;
 public record MenuSaveRequest(@NotNull Long userId, @NotNull Long franchiseId,
                               @NotBlank String title, @NotNull String content,
                               @NotBlank String originalTitle, @PositiveOrZero Integer expectedPrice,
-                              @NotNull @Size(min = 1, max = 20) List<OptionSaveRequest> options,
-                              @NotNull @Size(min = 1, max = 4) List<Long> tastes) {
+                              @NotNull @Size(min = 1, max = 20) List<OptionSaveRequest> optionList,
+                              @NotNull @Size(min = 1, max = 4) List<Long> tasteIdList) {
 
 
 }

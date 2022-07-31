@@ -105,10 +105,10 @@ class MenuServiceTest {
                 () -> assertThat(findMenu.getExpectedPrice()).isEqualTo(request.expectedPrice()),
                 () -> assertThat(
                         findMenu.getOptionList().stream().map(Option::getId)).containsAll(
-                        request.tastes()),
+                        request.tasteIdList()),
                 () -> assertThat(
                         findMenu.getMenuTastes().stream().map(taste -> taste.getTaste().getId())
-                                .toList().containsAll(request.tastes()))
+                                .toList().containsAll(request.tasteIdList()))
         );
     }
 
