@@ -42,9 +42,9 @@ public class MenuConverter {
                 request.content()
         );
 
-        request.options().stream().map(optionConverter::toOption).forEach(menu::addOption);
+        request.optionList().stream().map(optionConverter::toOption).forEach(menu::addOption);
 
-        request.tastes().stream()
+        request.tasteIdList().stream()
                 .map(this::findOneTaste)
                 .map(taste -> MenuTaste.createMenuTaste(menu, taste))
                 .forEach(menu::addMenuTaste);
