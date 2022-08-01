@@ -7,7 +7,7 @@ cd $REPOSITORY
 JAR_NAME=$(ls $REPOSITORY/ | grep '.jar' | tail -n 1)
 JAR_PATH=$REPOSITORY/$JAR_NAME
 
-CURRENT_PID=$(pgrep -f *.jar)
+CURRENT_PID=$(pgrep -f jar)
 
 if [ -z $CURRENT_PID ]
 then
@@ -19,4 +19,4 @@ else
 fi
 
 echo "> $JAR_PATH deploy"
-nohup java -jar $JAR_PATH > /dev/null 2> /dev/null < /dev/null &
+nohup java -jar -Dspring.profiles.active=prod $JAR_PATH > /dev/null 2> /dev/null < /dev/null &
