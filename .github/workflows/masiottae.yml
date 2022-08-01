@@ -7,17 +7,17 @@
 
 name: Java CI with Gradle
 
-env:
-  S3_BUCKET_NAME: masiottae-bucket
-  RESOURCE_PATH: ./src/main/resources/application.yaml
-  CODE_DEPLOY_APPLICATION_NAME: masiottae-application
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: masiottae-deploy-group
-
 on:
   push:
     branches: [ "main", "develop" ]
   pull_request:
     branches: [ "main", "develop" ]
+
+env:
+  S3_BUCKET_NAME: masiottae-bucket
+  RESOURCE_PATH: src/main/resources/application.yml
+  CODE_DEPLOY_APPLICATION_NAME: masiottae-application
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: masiottae-deploy-group
 
 permissions:
   contents: read
