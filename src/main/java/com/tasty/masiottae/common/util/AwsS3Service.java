@@ -1,6 +1,7 @@
 package com.tasty.masiottae.common.util;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -18,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class AwsS3Service {
 
     private final AmazonS3 s3Client;
-
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
@@ -50,8 +50,8 @@ public class AwsS3Service {
         String fileName = buildFileName(multipartFile.getOriginalFilename(), imageDirectory);
 
         s3Client.putObject(new PutObjectRequest(bucketName, fileName, inputStream,
-                objectMetadata).withCannedAcl(
-                CannedAccessControlList.PublicRead));
+            objectMetadata).withCannedAcl(
+            CannedAccessControlList.PublicRead));
 
         return s3Client.getUrl(bucketName, fileName).toString();
     }
