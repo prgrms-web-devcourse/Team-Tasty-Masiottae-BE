@@ -1,6 +1,7 @@
 package com.tasty.masiottae.account.domain;
 
 import com.tasty.masiottae.comment.domain.Comment;
+import com.tasty.masiottae.common.base.BaseTimeEntity;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.menu.domain.Menu;
 import java.time.LocalDateTime;
@@ -26,7 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Table(name = "account")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Account {
+public class Account extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,7 +64,8 @@ public class Account {
     private List<Comment> commentList = new ArrayList<>();
 
     @Builder
-    private Account(String email, String password, String nickname, String imageUrl, String snsAccount) {
+    private Account(String email, String password, String nickname, String imageUrl,
+        String snsAccount) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -73,24 +75,26 @@ public class Account {
         this.createdAt = LocalDateTime.now();
     }
 
-    public static Account createAccount(String email, String password, String nickname, String imageUrl) {
+    public static Account createAccount(String email, String password, String nickname,
+        String imageUrl) {
         return Account.builder()
-                .email(email)
-                .password(password)
-                .nickname(nickname)
-                .imageUrl(imageUrl)
-                .build();
+            .email(email)
+            .password(password)
+            .nickname(nickname)
+            .imageUrl(imageUrl)
+            .build();
     }
 
-    public static Account createSnsAccount(String email, String password, String nickname, String imageUrl,
-            String snsAccount) {
+    public static Account createSnsAccount(String email, String password, String nickname,
+        String imageUrl,
+        String snsAccount) {
         return Account.builder()
-                .email(email)
-                .password(password)
-                .nickname(nickname)
-                .imageUrl(imageUrl)
-                .snsAccount(snsAccount)
-                .build();
+            .email(email)
+            .password(password)
+            .nickname(nickname)
+            .imageUrl(imageUrl)
+            .snsAccount(snsAccount)
+            .build();
     }
 
     public void encryptPassword(String password, PasswordEncoder passwordEncoder) {
