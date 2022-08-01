@@ -5,9 +5,9 @@ spring:
     import: aws.yml, jwt.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/masiottae
-    username: root
-    password: root1234
+    url:
+    username:
+    password: 
     hikari:
       minimum-idle: 1
       maximum-pool-size: 5
