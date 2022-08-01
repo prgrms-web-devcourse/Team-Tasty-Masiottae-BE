@@ -2,9 +2,11 @@ package com.tasty.masiottae.menu.domain;
 
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.comment.domain.Comment;
+import com.tasty.masiottae.common.base.BaseTimeEntity;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.option.domain.Option;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +32,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "menu")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Menu {
+public class Menu extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,7 +79,7 @@ public class Menu {
 
     @Builder
     private Menu(String realMenuName, String customMenuName, String pictureUrl,
-            Integer expectedPrice, Account account, Franchise franchise, String description) {
+        Integer expectedPrice, Account account, Franchise franchise, String description) {
         this.realMenuName = realMenuName;
         this.customMenuName = customMenuName;
         this.pictureUrl = pictureUrl;
@@ -89,15 +91,16 @@ public class Menu {
     }
 
     public static Menu createMenu(String realMenuName, String customMenuName, String pictureUrl,
-            Integer expectedPrice, Account account, Franchise franchise, String description) {
+        Integer expectedPrice, Account account, Franchise franchise, String description) {
         return Menu.builder()
-                .realMenuName(realMenuName)
-                .customMenuName(customMenuName)
-                .pictureUrl(pictureUrl)
-                .expectedPrice(expectedPrice)
-                .account(account)
-                .franchise(franchise)
-                .description(description).build();
+            .realMenuName(realMenuName)
+            .customMenuName(customMenuName)
+            .pictureUrl(pictureUrl)
+            .expectedPrice(expectedPrice)
+            .account(account)
+            .franchise(franchise)
+            .description(description)
+            .build();
     }
 
     public void addComment(Comment comment) {
