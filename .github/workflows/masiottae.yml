@@ -11,13 +11,13 @@ env:
   S3_BUCKET_NAME: masiottae-bucket
   CODE_DEPLOY_APPLICATION_NAME: masiottae-application
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: masiottae-deploy-group
-  JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  JWT_EXPIRATION_TIME: ${{ secrets.JWT_EXPIRATION_TIME }}
-  JWT_TOKEN_PREFIX: ${{ secrets.JWT_TOKEN_PREFIX }}
-  JWT_HEADER_STRING: ${{ secrets.JWT_HEADER_STRING }}
-  DATA_SOURCE_URL: ${{ secrets.DATA_SOURCE_URL }}
-  DATA_SOURCE_USERNAME: ${{ secrets.DATA_SOURCE_USERNAME }}
-  DATA_SOURCE_PASSWORD: ${{ secrets.DATA_SOURCE_PASSWORD }}
+  jwt.secret: ${{ secrets.JWT_SECRET }}
+  jwt.expirationTime: ${{ secrets.JWT_EXPIRATION_TIME }}
+  jwt.tokenPrefix: ${{ secrets.JWT_TOKEN_PREFIX }}
+  jwt.headerString: ${{ secrets.JWT_HEADER_STRING }}
+  spring.datasource.url: ${{ secrets.DATA_SOURCE_URL }}
+  spring.datasource.username: ${{ secrets.DATA_SOURCE_USERNAME }}
+  spring.datasource.password: ${{ secrets.DATA_SOURCE_PASSWORD }}
 
 
 on:
