@@ -1,5 +1,6 @@
 package com.tasty.masiottae.menu.domain;
 
+import com.tasty.masiottae.common.base.BaseTimeEntity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "taste")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Taste {
+public class Taste extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
