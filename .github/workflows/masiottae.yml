@@ -7,21 +7,17 @@
 
 name: Java CI with Gradle
 
-env:
-  S3_BUCKET_NAME: masiottae-bucket
-  CODE_DEPLOY_APPLICATION_NAME: masiottae-application
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: masiottae-deploy-group
-  JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  JWT_EXPIRATION_TIME : ${{ secrets.JWT_EXPIRATION_TIME }}
-  JWT_TOKEN_PREFIX : ${{ secrets.JWT_TOKEN_PREFIX }}
-  JWT_HEADER_STRING : ${{ secrets.JWT_HEADER_STRING }}
-
-
 on:
   push:
     branches: [ "main", "develop" ]
   pull_request:
     branches: [ "main", "develop" ]
+
+env:
+  S3_BUCKET_NAME: masiottae-bucket
+  RESOURCE_PATH: ./src/main/resources/application-prod.yml
+  CODE_DEPLOY_APPLICATION_NAME: masiottae-application
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: masiottae-deploy-group
 
 permissions:
   contents: read
@@ -41,12 +37,24 @@ jobs:
         with:
           java-version: 17
 
+      - name: Set yaml file
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }}
+
+        env:
+          jwt.secret: ${{ secrets.JWT_SECRET }}
+          jwt.expirationTime: ${{ secrets.JWT_EXPIRATION_TIME }}
+          jwt.tokenPrefix: ${{ secrets.JWT_TOKEN_PREFIX }}
+          jwt.headerString: ${{ secrets.JWT_HEADER_STRING }}
+          spring.datasource.url: ${{ secrets.DATA_SOURCE_URL }}
+          spring.datasource.username: ${{ secrets.DATA_SOURCE_USERNAME }}
+          spring.datasource.password: ${{ secrets.DATA_SOURCE_PASSWORD }}
+
+
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
-
-      - name: print export
-        run : export
 
       - name: build docker-compose
         run: docker-compose up -d
