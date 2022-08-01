@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ubuntu
+REPOSITORY=/home/ubuntu/build/lib
 
 cd $REPOSITORY
 
