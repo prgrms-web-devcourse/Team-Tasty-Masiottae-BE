@@ -6,20 +6,6 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
 name: Java CI with Gradle
-with:
-  files: ${{ env.RESOURCE_PATH }}
-env:
-  S3_BUCKET_NAME: masiottae-bucket
-  CODE_DEPLOY_APPLICATION_NAME: masiottae-application
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: masiottae-deploy-group
-  jwt.secret: ${{ secrets.JWT_SECRET }}
-  jwt.expirationTime: ${{ secrets.JWT_EXPIRATION_TIME }}
-  jwt.tokenPrefix: ${{ secrets.JWT_TOKEN_PREFIX }}
-  jwt.headerString: ${{ secrets.JWT_HEADER_STRING }}
-  spring.datasource.url: ${{ secrets.DATA_SOURCE_URL }}
-  spring.datasource.username: ${{ secrets.DATA_SOURCE_USERNAME }}
-  spring.datasource.password: ${{ secrets.DATA_SOURCE_PASSWORD }}
-
 
 on:
   push:
@@ -37,6 +23,21 @@ jobs:
 
     steps:
       # 액션이 실행되는 저장소의 코드를 클론하고 체크아웃한다.
+      - name: Set Yaml
+        with:
+          files: ${{ env.RESOURCE_PATH }}
+        env:
+          S3_BUCKET_NAME: masiottae-bucket
+          CODE_DEPLOY_APPLICATION_NAME: masiottae-application
+          CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: masiottae-deploy-group
+          jwt.secret: ${{ secrets.JWT_SECRET }}
+          jwt.expirationTime: ${{ secrets.JWT_EXPIRATION_TIME }}
+          jwt.tokenPrefix: ${{ secrets.JWT_TOKEN_PREFIX }}
+          jwt.headerString: ${{ secrets.JWT_HEADER_STRING }}
+          spring.datasource.url: ${{ secrets.DATA_SOURCE_URL }}
+          spring.datasource.username: ${{ secrets.DATA_SOURCE_USERNAME }}
+          spring.datasource.password: ${{ secrets.DATA_SOURCE_PASSWORD }}
+          
       - name: Checkout
         uses: actions/checkout@v3
 

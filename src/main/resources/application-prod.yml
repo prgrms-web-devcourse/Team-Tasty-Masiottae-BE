@@ -6,8 +6,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://tasty-masiottae-rds.czvbgr7hie3i.ap-northeast-2.rds.amazonaws.com:3306/tasty_masiottae_db
-    username: ${DATA_SOURCE_USERNAME}
-    password: ${DATA_SOURCE_PASSWORD}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
     hikari:
       minimum-idle: 1
       maximum-pool-size: 10
