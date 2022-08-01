@@ -1,5 +1,5 @@
 jwt:
-  secret: ${JWT_SECRECT}
+  secret: ${JWT_SECRET}
   expirationTime: ${JWT_EXPIRATION_TIME}
   tokenPrefix: ${JWT_TOKEN_PREFIX}
   headerString: ${JWT_HEADER_STRING}
