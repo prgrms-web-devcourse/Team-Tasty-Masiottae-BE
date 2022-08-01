@@ -11,6 +11,10 @@ env:
   S3_BUCKET_NAME: masiottae-bucket
   CODE_DEPLOY_APPLICATION_NAME: masiottae-application
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: masiottae-deploy-group
+  JWT_SECRET: ${{secrets.JWT_}}
+  JWT_EXPIRATION_TIME : ${{secrets.JWT_EXPIRATION_TIME}}
+  JWT_TOKEN_PREFIX : ${{secrets.JWT_TOKEN_PREFIX}}
+  JWT_HEADER_STRING : ${{secrets.JWT_HEADER_STRING}}
 
 
 on:
@@ -52,7 +56,7 @@ jobs:
       - name: Make zip file
         run: zip -r ./$GITHUB_SHA.zip .
         shell: bash
-
+R
       # AWS 접근에 필요한 권한을 얻어온다.
       - name: Configure AWS credentials
         uses: aws-action/configure-aws-credentials@v1
