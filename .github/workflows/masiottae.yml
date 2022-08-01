@@ -11,6 +11,10 @@ env:
   S3_BUCKET_NAME: masiottae-bucket
   CODE_DEPLOY_APPLICATION_NAME: masiottae-application
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: masiottae-deploy-group
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  JWT_EXPIRATION_TIME : ${{ secrets.JWT_EXPIRATION_TIME }}
+  JWT_TOKEN_PREFIX : ${{ secrets.JWT_TOKEN_PREFIX }}
+  JWT_HEADER_STRING : ${{ secrets.JWT_HEADER_STRING }}
 
 
 on:
@@ -40,6 +44,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
+
+      - name: print export
+        run : export
 
       - name: build docker-compose
         run: docker-compose up -d
