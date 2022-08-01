@@ -5,7 +5,7 @@ spring:
     import: aws.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://tasty-masiottae-rds.czvbgr7hie3i.ap-northeast-2.rds.amazonaws.com:3306/tasty_masiottae_db
+    url: ${spring.datasource.url}
     username: ${spring.datasource.username}
     password: ${spring.datasource.password}
     hikari:
