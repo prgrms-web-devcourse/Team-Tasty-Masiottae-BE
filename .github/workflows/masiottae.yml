@@ -15,7 +15,7 @@ on:
 
 env:
   S3_BUCKET_NAME: masiottae-bucket
-  RESOURCE_PATH: src/main/resources/application.yml
+  RESOURCE_PATH: ./src/main/resources/application-prod.yml
   CODE_DEPLOY_APPLICATION_NAME: masiottae-application
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: masiottae-deploy-group
 
