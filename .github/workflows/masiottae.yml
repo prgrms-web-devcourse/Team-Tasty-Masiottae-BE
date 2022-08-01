@@ -45,8 +45,8 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
-      - name: env test
-        run : echo ${{ secrets.JWT_SECRET }}
+      - name: print export
+        run : export
 
       - name: build docker-compose
         run: docker-compose up -d
