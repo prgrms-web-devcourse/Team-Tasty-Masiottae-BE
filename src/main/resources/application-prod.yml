@@ -5,9 +5,9 @@ spring:
     import: aws.yml, jwt.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://tasty-masiottae-rds.czvbgr7hie3i.ap-northeast-2.rds.amazonaws.com:3306/tasty_masiottae_db
-    username: admin
-    password: masiottae
+    url: ${DATA_SOURCE_URL}
+    username: ${DATA_SOURCE_USERNAME}
+    password: ${DATA_SOURCE_PASSWORD}
     hikari:
       minimum-idle: 1
       maximum-pool-size: 10

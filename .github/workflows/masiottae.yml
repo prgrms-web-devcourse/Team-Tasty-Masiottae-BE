@@ -12,9 +12,12 @@ env:
   CODE_DEPLOY_APPLICATION_NAME: masiottae-application
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: masiottae-deploy-group
   JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  JWT_EXPIRATION_TIME : ${{ secrets.JWT_EXPIRATION_TIME }}
-  JWT_TOKEN_PREFIX : ${{ secrets.JWT_TOKEN_PREFIX }}
-  JWT_HEADER_STRING : ${{ secrets.JWT_HEADER_STRING }}
+  JWT_EXPIRATION_TIME: ${{ secrets.JWT_EXPIRATION_TIME }}
+  JWT_TOKEN_PREFIX: ${{ secrets.JWT_TOKEN_PREFIX }}
+  JWT_HEADER_STRING: ${{ secrets.JWT_HEADER_STRING }}
+  DATA_SOURCE_URL: ${{ secrets.DATA_SOURCE_URL }}
+  DATA_SOURCE_USERNAME: ${{ secrets.DATA_SOURCE_USERNAME }}
+  DATA_SOURCE_PASSWORD: ${{ secrets.DATA_SOURCE_PASSWORD }}
 
 
 on:
@@ -44,9 +47,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
-
-      - name: print export
-        run : export
 
       - name: build docker-compose
         run: docker-compose up -d
