@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class TasteConverter {
 
     public TasteFindResponse toTasteFindResponse(Taste taste) {
-        return new TasteFindResponse(taste.getId(), taste.getTasteName());
+        return new TasteFindResponse(taste.getId(), taste.getTasteName(), taste.getTasteColor());
     }
 
 }
