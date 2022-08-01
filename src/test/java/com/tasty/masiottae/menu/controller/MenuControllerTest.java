@@ -80,8 +80,7 @@ class MenuControllerTest {
             5000,
             List.of(new OptionFindResponse("옵션명1", "설명1"), new OptionFindResponse("옵션명", "설명")),
             List.of(new TasteFindResponse(1L, "빨간맛", "빨간색"),
-                new TasteFindResponse(2L, "파란맛", "파란색"))
-            , LocalDateTime.now(), LocalDateTime.now());
+                new TasteFindResponse(2L, "파란맛", "파란색")), LocalDateTime.now(), LocalDateTime.now());
 
         given(menuService.findOneMenu(1L)).willReturn(menuFindResponse);
 
