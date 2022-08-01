@@ -56,7 +56,7 @@ jobs:
       - name: Make zip file
         run: zip -r ./$GITHUB_SHA.zip .
         shell: bash
-R
+
       # AWS 접근에 필요한 권한을 얻어온다.
       - name: Configure AWS credentials
         uses: aws-action/configure-aws-credentials@v1
