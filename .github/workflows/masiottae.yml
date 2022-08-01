@@ -24,6 +24,7 @@ jobs:
     steps:
       # 액션이 실행되는 저장소의 코드를 클론하고 체크아웃한다.
       - name: Set Yaml
+        uses: microsoft/variable-substitution@v1
         with:
           files: ${{ env.RESOURCE_PATH }}
         env:
@@ -37,7 +38,7 @@ jobs:
           spring.datasource.url: ${{ secrets.DATA_SOURCE_URL }}
           spring.datasource.username: ${{ secrets.DATA_SOURCE_USERNAME }}
           spring.datasource.password: ${{ secrets.DATA_SOURCE_PASSWORD }}
-          
+
       - name: Checkout
         uses: actions/checkout@v3
 
