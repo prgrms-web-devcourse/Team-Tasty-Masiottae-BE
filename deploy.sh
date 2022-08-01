@@ -19,4 +19,4 @@ else
 fi
 
 echo "> $JAR_PATH deploy"
-nohup java -jar -Dspring.profiles.active=prod $JAR_PATH & >> /home/ubuntu/result.log
+nohup java -jar -Dspring.profiles.active=prod $JAR_PATH &
