@@ -1,5 +1,5 @@
 jwt:
-  secret: "taste"
-  expirationTime: 600000
-  tokenPrefix: "Bearer "
-  headerString: "Authorization"
+  secret:
+  expirationTime: 
+  tokenPrefix:
+  headerString:
