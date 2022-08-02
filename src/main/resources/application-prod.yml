@@ -2,7 +2,6 @@ spring:
   config:
     activate:
       on-profile: prod
-    import: aws.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${spring.datasource.url}
@@ -28,3 +27,14 @@ jwt:
   tokenPrefix: ${JWT_TOKEN_PREFIX}
   headerString: ${JWT_HEADER_STRING}
 
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+    s3:
+      bucket: masiottae-image-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
