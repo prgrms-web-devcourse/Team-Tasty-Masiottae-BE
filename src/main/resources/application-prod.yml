@@ -33,4 +33,9 @@ cloud:
     credentials:
       access-key:
       secret-key:
-
+    s3:
+      bucket: masiottae-image-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
