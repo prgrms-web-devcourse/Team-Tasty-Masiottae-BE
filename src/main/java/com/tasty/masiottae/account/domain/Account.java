@@ -38,11 +38,11 @@ public class Account {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "nickname", unique = true, nullable = false)
-    private String nickname;
+    @Column(name = "nick_name", unique = true, nullable = false)
+    private String nickName;
 
-    @Column(name = "image_url", unique = true)
-    private String imageUrl;
+    @Column(name = "image", unique = true)
+    private String image;
 
     @Column(name = "sns_account")
     private String snsAccount;
@@ -63,32 +63,31 @@ public class Account {
     private List<Comment> commentList = new ArrayList<>();
 
     @Builder
-    private Account(String email, String password, String nickname, String imageUrl, String snsAccount) {
+    private Account(String email, String password, String nickName, String image, String snsAccount) {
         this.email = email;
         this.password = password;
-        this.nickname = nickname;
-        this.imageUrl = imageUrl;
+        this.nickName = nickName;
+        this.image = image;
         this.snsAccount = snsAccount;
         this.role = Role.ACCOUNT;
         this.createdAt = LocalDateTime.now();
     }
 
-    public static Account createAccount(String email, String password, String nickname, String imageUrl) {
+    public static Account createAccount(String email, String password, String nickName, String image) {
         return Account.builder()
                 .email(email)
                 .password(password)
-                .nickname(nickname)
-                .imageUrl(imageUrl)
+                .nickName(nickName)
+                .image(image)
                 .build();
     }
 
-    public static Account createSnsAccount(String email, String password, String nickname, String imageUrl,
-            String snsAccount) {
+    public static Account createAccount(String email, String password, String nickName, String image, String snsAccount) {
         return Account.builder()
                 .email(email)
                 .password(password)
-                .nickname(nickname)
-                .imageUrl(imageUrl)
+                .nickName(nickName)
+                .image(image)
                 .snsAccount(snsAccount)
                 .build();
     }
@@ -97,7 +96,20 @@ public class Account {
         this.password = passwordEncoder.encode(password);
     }
 
+    public void updateNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public void updateSnsAccount(String snsAccount) {
+        this.snsAccount = snsAccount;
+    }
+
+    public void updateImage(String image) {
+        this.image = image;
+    }
+
     public void addComment(Comment comment) {
         commentList.add(comment);
     }
+
 }
