@@ -53,6 +53,7 @@ public class MenuConverter {
 
         return menu;
     }
+
     private Account findOneAccount(Long accountId) {
         return accountRepository.findById(accountId)
             .orElseThrow(() -> new NotFoundException(
