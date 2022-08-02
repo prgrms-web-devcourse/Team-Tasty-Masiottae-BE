@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <property name="LOG_PATH" value="logs"/>
+  <property name="LOG_PREFIX" value="error"/>
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/${LOG_PREFIX}.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>%d{yyyy-MM-dd HH:mm:ss}- %-5level - %msg%n</Pattern>
+    </encoder>
+
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>ERROR</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- 하루 동안의 log를 남김 -->
+      <fileNamePattern>${LOG_PATH}/${LOG_PREFIX}-.%d{yyyy-MM-dd_HH-mm}.%i.log</fileNamePattern>
+      <!-- 각각의 파일은 100MB로 저장되고, 30일동안, 최대 3GB의 log를 저장함-->
+      <maxFileSize>100MB</maxFileSize>
+      <maxHistory>30</maxHistory>
+      <totalSizeCap>3GB</totalSizeCap>
+    </rollingPolicy>
+  </appender>
+
+  <conversionRule conversionWord="clr"
+    converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%clr(%d{yyyyMMdd HH:mm:ss.SSS}){magenta} %clr([%thread]){blue} %clr(%-5level){} %clr([%logger{0}:%line]){cyan} : %msg %n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="info">
+    <appender-ref ref="FILE"/>
+    <appender-ref ref="STDOUT"/>
+  </root>
+</configuration>
