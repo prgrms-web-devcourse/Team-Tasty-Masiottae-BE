@@ -5,6 +5,7 @@ import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.service.MenuService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,5 +35,10 @@ public class MenuController {
     public ResponseEntity<MenuFindResponse> getOneMenu(@PathVariable Long menuId) {
         MenuFindResponse menu = menuService.findOneMenu(menuId);
         return ResponseEntity.ok().body(menu);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MenuFindResponse>> findAllMenu() {
+        return ResponseEntity.ok(menuService.findAllMenu());
     }
 }

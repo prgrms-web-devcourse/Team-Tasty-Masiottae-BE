@@ -7,6 +7,7 @@ import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.repository.MenuRepository;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,10 @@ public class MenuService {
                 () -> new EntityNotFoundException()
         );
         return menuConverter.toMenuFindResponse(findMenu);
+    }
+
+    public List<MenuFindResponse> findAllMenu() {
+        return menuRepository.findAllFetch().stream().map(menuConverter::toMenuFindResponse)
+                .toList();
     }
 }
