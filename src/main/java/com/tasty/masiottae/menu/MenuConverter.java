@@ -12,7 +12,7 @@ import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.MenuTaste;
 import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveRequest;
+import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.TasteFindResponse;
 import com.tasty.masiottae.menu.repository.TasteRepository;
@@ -30,7 +30,7 @@ public class MenuConverter {
     private final TasteRepository tasteRepository;
     private final OptionConverter optionConverter;
 
-    public Menu toMenu(MenuSaveRequest request, String menuImageUrl) {
+    public Menu toMenu(MenuSaveUpdateRequest request, String menuImageUrl) {
         Account account = findOneAccount(request.userId());
         Franchise franchise = findOneFranchise(request.franchiseId());
 
@@ -53,7 +53,6 @@ public class MenuConverter {
 
         return menu;
     }
-
     private Account findOneAccount(Long accountId) {
         return accountRepository.findById(accountId)
             .orElseThrow(() -> new NotFoundException(
@@ -90,7 +89,7 @@ public class MenuConverter {
             menu.getOptionList().stream()
                 .map(option -> new OptionConverter().toOptionFindResponse(option)).collect(
                     Collectors.toList()),
-            menu.getMenuTastes().stream()
+            menu.getMenuTasteSet().stream()
                 .map(menuTaste -> new TasteFindResponse(menuTaste.getTaste().getId(),
                     menuTaste.getTaste().getTasteName(), menuTaste.getTaste().getTasteColor()))
                 .collect(
