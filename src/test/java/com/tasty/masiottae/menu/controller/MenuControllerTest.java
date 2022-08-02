@@ -75,7 +75,7 @@ class MenuControllerTest {
         Long menuId = 1L;
         MenuFindResponse menuFindResponse = new MenuFindResponse(
             1L, new FranchiseFindResponse(1L, "logo", "스타벅스"), "img.png", "커스텀제목",
-            "원래제목", new AccountFindResponse(1L, "유저이름", "이미지 url", "이메일", LocalDateTime.now(),
+            "원래제목", new AccountFindResponse(1L, "이미지 url", "닉네임", "유저이름", "이메일", LocalDateTime.now(),
             10), "내용", 100,
             5000,
             List.of(new OptionFindResponse("옵션명1", "설명1"), new OptionFindResponse("옵션명", "설명")),
