@@ -78,7 +78,7 @@ public class MenuConverter {
         return new MenuFindResponse(
                 menu.getId(), menu.getFranchise().getName(),
                 menu.getPictureUrl(), menu.getCustomMenuName(), menu.getRealMenuName(),
-                menu.getAccount().getNickname(),
+                menu.getAccount().getNickName(),
                 menu.getDescription(), menu.getLikesCount(),
                 menu.getExpectedPrice(),
                 menu.getOptionList().stream()
