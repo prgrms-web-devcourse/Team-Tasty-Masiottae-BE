@@ -82,7 +82,7 @@ class FranchiseControllerTest {
             .toList();
 
         List<FranchiseFindResponse> response = requestFranchise.stream()
-            .map(franchise -> new FranchiseFindResponse(franchise.getId(),
+            .map(franchise -> new FranchiseFindResponse((long) ((Math.random() * 10) + 1),
                 franchise.getLogoUrl(), franchise.getName()))
             .collect(Collectors.toList());
         given(franchiseService.findAllFranchise()).willReturn(response);
@@ -93,7 +93,7 @@ class FranchiseControllerTest {
             .andExpect(status().isOk())
             .andDo(document("franchise-get-all",
                 responseFields(
-                    fieldWithPath("[].id")
+                    fieldWithPath("[].id").type(JsonFieldType.NUMBER)
                         .description("프랜차이즈 ID"),
                     fieldWithPath("[].logoUrl").type(JsonFieldType.STRING)
                         .description("프랜차이즈 로고"),
