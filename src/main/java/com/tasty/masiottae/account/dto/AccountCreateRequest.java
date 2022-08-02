@@ -1,11 +1,12 @@
 package com.tasty.masiottae.account.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public record AccountCreateRequest(
         String email,
-        String nickname,
         String password,
-        String imgUrl,
-        String snsAccount
-) {
+        String nickName,
+//        MultipartFile image,
+        String snsAccount) {
 
 }
