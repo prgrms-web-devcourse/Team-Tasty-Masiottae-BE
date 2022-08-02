@@ -69,8 +69,8 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @AutoConfigureRestDocs
 @Import(RestDocsConfiguration.class)
-@WebMvcTest(value = AccountController.class,
-        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
+@WebMvcTest(value = AccountController.class, excludeFilters = {
+    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
 @WithMockUser
 class AccountControllerTest {
 
@@ -100,7 +100,8 @@ class AccountControllerTest {
 
         JwtToken token = new JwtToken(
                 "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
-                        + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
+                        + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
+                        + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
                         + "-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
                 new Date());
 
