@@ -28,3 +28,9 @@ jwt:
   tokenPrefix: ${JWT_TOKEN_PREFIX}
   headerString: ${JWT_HEADER_STRING}
 
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+
