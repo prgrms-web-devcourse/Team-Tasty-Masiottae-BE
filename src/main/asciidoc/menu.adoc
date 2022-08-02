@@ -6,3 +6,9 @@ operation::create-menu[snippets='http-request,request-headers,request-parts,requ
 
 == 메뉴 단건 조회
 operation::menu-findOne[snippets='http-request,path-parameters,http-response,response-fields']
+
+== 메뉴 수정
+operation::update-menu[snippets='http-request,request-headers,request-parts,request-part-data-fields,http-response']
+
+== 메뉴 삭제
+operation::delete-menu[snippets='http-request,path-parameters,http-response']

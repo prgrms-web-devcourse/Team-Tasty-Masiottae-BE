@@ -6,7 +6,7 @@ import com.tasty.masiottae.common.base.BaseTimeEntity;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.option.domain.Option;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -68,18 +68,19 @@ public class Menu extends BaseTimeEntity {
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "menu")
     private List<LikeMenu> likeMenuList = new ArrayList<>();
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Option> optionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MenuTaste> menuTastes = new HashSet<>();
+    private Set<MenuTaste> menuTasteSet = new HashSet<>();
 
     @Builder
-    private Menu(String realMenuName, String customMenuName, String pictureUrl,
+    private Menu(Long id, String realMenuName, String customMenuName, String pictureUrl,
         Integer expectedPrice, Account account, Franchise franchise, String description) {
+        this.id = id;
         this.realMenuName = realMenuName;
         this.customMenuName = customMenuName;
         this.pictureUrl = pictureUrl;
@@ -103,16 +104,46 @@ public class Menu extends BaseTimeEntity {
             .build();
     }
 
+    public static Menu createMenu(Long menuId, String realMenuName, String customMenuName, String pictureUrl,
+            Integer expectedPrice, Account account, Franchise franchise, String description) {
+        return Menu.builder()
+                .id(menuId)
+                .realMenuName(realMenuName)
+                .customMenuName(customMenuName)
+                .pictureUrl(pictureUrl)
+                .expectedPrice(expectedPrice)
+                .account(account)
+                .franchise(franchise)
+                .description(description)
+                .build();
+    }
+
     public void addComment(Comment comment) {
         comments.add(comment);
     }
 
     public void addMenuTaste(MenuTaste menuTaste) {
-        menuTastes.add(menuTaste);
+        menuTasteSet.add(menuTaste);
     }
 
     public void addOption(Option option) {
         optionList.add(option);
         option.setMenu(this);
+    }
+
+    public void update(Menu menu) {
+        this.optionList.clear();
+        this.menuTasteSet.clear();
+        this.realMenuName = menu.realMenuName;
+        this.customMenuName = menu.customMenuName;
+        this.description = menu.description;
+        this.pictureUrl = menu.pictureUrl;
+        this.expectedPrice = menu.expectedPrice;
+        menu.optionList.forEach(option -> this.optionList.add(Option.createOption(option.getOptionName(), option.getDescription())));
+        menu.menuTasteSet.forEach(menuTaste -> this.menuTasteSet.add(MenuTaste.createMenuTaste(menuTaste.getMenu(), menuTaste.getTaste())));
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
