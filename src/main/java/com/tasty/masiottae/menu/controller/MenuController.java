@@ -5,6 +5,7 @@ import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
 import com.tasty.masiottae.menu.service.MenuService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,5 +48,10 @@ public class MenuController {
     public ResponseEntity<Void> deleteMenu(@PathVariable Long menuId) {
         menuService.delete(menuId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MenuFindResponse>> findAllMenu() {
+        return ResponseEntity.ok(menuService.findAllMenu());
     }
 }

@@ -8,6 +8,7 @@ import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.EntityNotFoundException;
 
@@ -75,4 +76,8 @@ public class MenuService {
         menuRepository.deleteById(id);
     }
 
+    public List<MenuFindResponse> findAllMenu() {
+        return menuRepository.findAllFetch().stream().map(menuConverter::toMenuFindResponse)
+                .toList();
+    }
 }
