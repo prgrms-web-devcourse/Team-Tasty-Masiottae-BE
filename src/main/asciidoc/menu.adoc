@@ -1,0 +1,8 @@
+== 메뉴
+
+=== 메뉴 생성
+
+operation::create-menu[snippets='http-request,request-headers,request-parts,request-part-data-fields,http-response,response-headers,response-fields']
+
+== 메뉴 단건 조회
+operation::menu-findOne[snippets='http-request,path-parameters,http-response,response-fields']

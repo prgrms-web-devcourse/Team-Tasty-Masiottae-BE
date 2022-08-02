@@ -1,6 +1,7 @@
 package com.tasty.masiottae.account.domain;
 
 import com.tasty.masiottae.comment.domain.Comment;
+import com.tasty.masiottae.common.base.BaseTimeEntity;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.menu.domain.Menu;
 import java.time.LocalDateTime;
@@ -26,7 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Table(name = "account")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Account {
+public class Account extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

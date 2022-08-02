@@ -27,12 +27,11 @@ public class FranchiseService {
     private final AwsS3Service awsS3Service;
 
     @Transactional
-    public FranchiseSaveResponse createFranchise(FranchiseSaveRequest request,
-            MultipartFile logoImg) {
+    public FranchiseSaveResponse createFranchise(FranchiseSaveRequest request) {
         String franchiseImageUrl = null;
 
-        if (Objects.nonNull(logoImg)) {
-            franchiseImageUrl = awsS3Service.uploadFranchiseImage(logoImg);
+        if (Objects.nonNull(request.multipartFile())) {
+            franchiseImageUrl = awsS3Service.uploadFranchiseImage(request.multipartFile());
         }
         Franchise franchise = franchiseConverter.toFranchise(request, franchiseImageUrl);
         Franchise savedFranchise = franchiseRepository.save(franchise);

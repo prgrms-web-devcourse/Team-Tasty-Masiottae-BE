@@ -1,5 +1,6 @@
 package com.tasty.masiottae.franchise.domain;
 
+import com.tasty.masiottae.common.base.BaseTimeEntity;
 import com.tasty.masiottae.menu.domain.Menu;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "franchise")
 @Entity
-public class Franchise {
+public class Franchise extends BaseTimeEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -44,9 +45,9 @@ public class Franchise {
 
     public static Franchise createFranchise(String name, String logoUrl) {
         return Franchise.builder()
-                .name(name)
-                .logoUrl(logoUrl)
-                .build();
+            .name(name)
+            .logoUrl(logoUrl)
+            .build();
     }
 
     public void updateLogoUrl(String logoUrl) {
