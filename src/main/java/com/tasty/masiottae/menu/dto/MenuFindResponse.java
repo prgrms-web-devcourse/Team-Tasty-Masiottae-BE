@@ -1,13 +1,16 @@
 package com.tasty.masiottae.menu.dto;
 
+import com.tasty.masiottae.account.dto.AccountFindResponse;
+import com.tasty.masiottae.franchise.dto.FranchiseFindResponse;
 import com.tasty.masiottae.option.dto.OptionFindResponse;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
-public record MenuFindResponse(Long id, String franchise, String image, String title,
-                               String originalTitle, String author,
+public record MenuFindResponse(Long id, FranchiseFindResponse franchise, String image, String title,
+                               String originalTitle, AccountFindResponse author,
                                String content, Integer likes,
-                               Integer expectedPrice, List<OptionFindResponse> options,
-                               Set<MenuTasteFindResponse> menuTaste) {
+                               Integer expectedPrice, List<OptionFindResponse> optionList,
+                               List<TasteFindResponse> tasteList, LocalDateTime createdAt,
+                               LocalDateTime updatedAt) {
 
 }

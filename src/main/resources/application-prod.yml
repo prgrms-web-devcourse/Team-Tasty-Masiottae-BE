@@ -2,12 +2,12 @@ spring:
   config:
     activate:
       on-profile: prod
-    import: aws.yml, jwt.yml
+    import: aws.yml
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://tasty-masiottae-rds.czvbgr7hie3i.ap-northeast-2.rds.amazonaws.com:3306/tasty_masiottae_db
-    username: admin
-    password: masiottae
+    url: ${spring.datasource.url}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
     hikari:
       minimum-idle: 1
       maximum-pool-size: 10
@@ -21,3 +21,21 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
+
+jwt:
+  secret: ${JWT_SECRET}
+  expirationTime: ${JWT_EXPIRATION_TIME}
+  tokenPrefix: ${JWT_TOKEN_PREFIX}
+  headerString: ${JWT_HEADER_STRING}
+
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+    s3:
+      bucket: masiottae-image-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

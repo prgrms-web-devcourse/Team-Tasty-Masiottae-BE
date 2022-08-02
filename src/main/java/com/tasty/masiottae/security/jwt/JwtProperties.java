@@ -16,9 +16,13 @@ public class JwtProperties {
 
     private String secret;
 
-    private int expirationTime;
+    private String expirationTime;
 
     private String tokenPrefix;
 
     private String headerString;
+
+    public int getExpirationTime() {
+        return Integer.parseInt(expirationTime);
+    }
 }
