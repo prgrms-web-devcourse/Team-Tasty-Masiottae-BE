@@ -1,7 +1,7 @@
 package com.tasty.masiottae.security.auth;
 
 import com.tasty.masiottae.account.domain.Account;
-import com.tasty.masiottae.account.service.AccountService;
+import com.tasty.masiottae.account.service.AcccountEntityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AccountDetailService implements UserDetailsService {
 
-    private final AccountService accountService;
+    private final AcccountEntityService accountService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
