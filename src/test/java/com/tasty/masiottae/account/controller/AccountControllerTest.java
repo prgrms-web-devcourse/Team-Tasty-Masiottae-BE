@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -35,14 +34,18 @@ import com.tasty.masiottae.account.dto.AccountDuplicatedResponse;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.account.dto.AccountImageUpdateResponse;
 import com.tasty.masiottae.account.dto.AccountNickNameUpdateRequest;
+import com.tasty.masiottae.account.dto.AccountNickNameUpdateResponse;
 import com.tasty.masiottae.account.dto.AccountPasswordUpdateRequest;
 import com.tasty.masiottae.account.dto.AccountSnsUpdateRequest;
+import com.tasty.masiottae.account.dto.AccountSnsUpdateResponse;
 import com.tasty.masiottae.account.service.AccountService;
 import com.tasty.masiottae.common.util.AwsS3Service;
 import com.tasty.masiottae.config.RestDocsConfiguration;
 import com.tasty.masiottae.security.config.SecurityConfig;
+import com.tasty.masiottae.security.jwt.JwtToken;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -66,8 +69,8 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @AutoConfigureRestDocs
 @Import(RestDocsConfiguration.class)
-@WebMvcTest(value = AccountController.class, excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
+@WebMvcTest(value = AccountController.class,
+        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)})
 @WithMockUser
 class AccountControllerTest {
 
@@ -95,6 +98,14 @@ class AccountControllerTest {
         MockMultipartFile imageFile = new MockMultipartFile("image", "image.png",
                 "image/png", "sample image".getBytes());
 
+        JwtToken token = new JwtToken(
+                "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+                        + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
+                        + "-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
+                new Date());
+
+        when(accountService.saveAccount(any(), any())).thenReturn(token);
+
         mockMvc.perform(multipart("/signup")
                         .file(request)
                         .file(imageFile)
@@ -102,7 +113,7 @@ class AccountControllerTest {
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .with(csrf().asHeader()))
                 .andDo(print())
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andDo(document("sign-up",
                         requestHeaders(
                                 headerWithName(CONTENT_TYPE).description(
@@ -126,10 +137,13 @@ class AccountControllerTest {
                                         .description("SNS 계정")
                         ),
                         responseHeaders(
-                                headerWithName(LOCATION).description(
-                                        "생성된 계정의 정보를 요청할 수 있는 path")
-                        )
-                ));
+                                headerWithName(CONTENT_TYPE).description(APPLICATION_JSON_VALUE)
+                        ),
+                        responseFields(
+                                fieldWithPath("accessToken").type(JsonFieldType.STRING)
+                                        .description("토큰 값"),
+                                fieldWithPath("expirationTime").type(JsonFieldType.STRING)
+                                        .description("토큰 만료 기간"))));
     }
 
     @Test
@@ -179,8 +193,7 @@ class AccountControllerTest {
                                 fieldWithPath("content[].createdAt").type(JsonFieldType.STRING)
                                         .description("가입 일자"),
                                 fieldWithPath("content[].menuCount").type(JsonFieldType.NUMBER)
-                                        .description(
-                                                "이 계정에 속한 메뉴 개수(직접 작성한 메뉴 + 좋아요한 메뉴)"),
+                                        .description("보유 메뉴 개수"),
                                 fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER)
                                         .description("페이지 번호"),
                                 fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER)
@@ -261,7 +274,7 @@ class AccountControllerTest {
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING)
                                         .description("가입 일자"),
                                 fieldWithPath("menuCount").type(JsonFieldType.NUMBER)
-                                        .description("작성한 메뉴 개수"))))
+                                        .description("보유 메뉴 개수"))))
                 .andReturn();
     }
 
@@ -295,13 +308,18 @@ class AccountControllerTest {
     @DisplayName("계정의 닉네임을 변경한다.")
     void testUpdateNickName() throws Exception {
         AccountNickNameUpdateRequest request
-                = new AccountNickNameUpdateRequest("변경된 닉네임");
+                = new AccountNickNameUpdateRequest("변경할 닉네임");
+        AccountNickNameUpdateResponse response
+                = new AccountNickNameUpdateResponse("변경된 닉네임");
+
+        when(accountService.updateNickName(any(), any())).thenReturn(response);
 
         MvcResult mvcResult = mockMvc.perform(patch("/accounts/{id}/nick-name", 1L)
                         .with(csrf().asHeader())
+                        .accept(APPLICATION_JSON)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("update-nickName",
                         requestHeaders(
@@ -312,21 +330,33 @@ class AccountControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("nickName").type(JsonFieldType.STRING)
-                                        .description("새로운 닉네임")
-                        ))).andReturn();
+                                        .description("변경할 닉네임")),
+                        responseHeaders(
+                                headerWithName(CONTENT_TYPE).description(APPLICATION_JSON_VALUE)
+                        ),
+                        responseFields(
+                                fieldWithPath("updatedNickName").type(JsonFieldType.STRING)
+                                        .description("성공적으로 변경된 닉네임")
+                        )
+                )).andReturn();
     }
 
     @Test
     @DisplayName("계정의 sns 계정을 변경한다.")
     void testUpdateSnsAccount() throws Exception {
         AccountSnsUpdateRequest request
-                = new AccountSnsUpdateRequest("snsTest");
+                = new AccountSnsUpdateRequest("변경할 SNS 계정");
+        AccountSnsUpdateResponse response
+                = new AccountSnsUpdateResponse("변경된 SNS 닉네임");
+
+        when(accountService.updateSnsAccount(any(), any())).thenReturn(response);
 
         MvcResult mvcResult = mockMvc.perform(patch("/accounts/{id}/sns", 1L)
                         .with(csrf().asHeader())
+                        .accept(APPLICATION_JSON)
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("update-sns",
                         requestHeaders(
@@ -337,8 +367,15 @@ class AccountControllerTest {
                         ),
                         requestFields(
                                 fieldWithPath("snsAccount").type(JsonFieldType.STRING)
-                                        .description("새로운 SNS 계정")
-                        ))).andReturn();
+                                        .description("새로운 SNS 계정")),
+                        responseHeaders(
+                                headerWithName(CONTENT_TYPE).description(APPLICATION_JSON_VALUE)
+                        ),
+                        responseFields(
+                                fieldWithPath("updatedSnsAccount").type(JsonFieldType.STRING)
+                                        .description("성공적으로 변경된 SNS 계정")
+                        )
+                )).andReturn();
     }
 
     @Test
@@ -390,7 +427,7 @@ class AccountControllerTest {
                 .andDo(print())
                 .andDo(document("delete-one-account",
                         pathParameters(
-                                parameterWithName("id").description("조회하려는 계정의 식별자")
+                                parameterWithName("id").description("삭제하려는 계정의 식별자")
                         )))
                 .andReturn();
     }
@@ -418,7 +455,7 @@ class AccountControllerTest {
                         ),
                         requestParameters(
                                 parameterWithName("property").description(
-                                        "중복 여부를 확인할 속성: 이메일(email) 또는 닉네임(nickname)"),
+                                        "중복 여부를 확인할 속성: 이메일(email) 또는 닉네임(nickName)"),
                                 parameterWithName("value").description("구체적인 속성 값")),
                         responseHeaders(
                                 headerWithName(CONTENT_TYPE).description(APPLICATION_JSON_VALUE)

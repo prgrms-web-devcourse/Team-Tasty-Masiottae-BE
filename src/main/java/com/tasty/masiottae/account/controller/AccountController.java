@@ -11,8 +11,10 @@ import com.tasty.masiottae.account.dto.AccountDuplicatedResponse;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.account.dto.AccountImageUpdateResponse;
 import com.tasty.masiottae.account.dto.AccountNickNameUpdateRequest;
+import com.tasty.masiottae.account.dto.AccountNickNameUpdateResponse;
 import com.tasty.masiottae.account.dto.AccountPasswordUpdateRequest;
 import com.tasty.masiottae.account.dto.AccountSnsUpdateRequest;
+import com.tasty.masiottae.account.dto.AccountSnsUpdateResponse;
 import com.tasty.masiottae.account.service.AccountService;
 import com.tasty.masiottae.security.jwt.JwtToken;
 import com.tasty.masiottae.security.jwt.JwtTokenResponse;
@@ -20,6 +22,7 @@ import java.net.URI;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -42,11 +45,11 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping(value = "/signup", consumes = {MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE})
-    public ResponseEntity<Void> saveAccount(
+    public ResponseEntity<JwtToken> saveAccount(
             @RequestPart(required = false) final MultipartFile image,
             @RequestPart final AccountCreateRequest request) {
-        Long id = accountService.saveAccount(request, image);
-        return ResponseEntity.created(URI.create("/users/" + id)).build();
+        JwtToken jwtToken = accountService.saveAccount(request, image);
+        return ResponseEntity.ok(jwtToken);
     }
 
     @GetMapping(value = "/accounts", produces = APPLICATION_JSON_VALUE)
@@ -69,17 +72,17 @@ public class AccountController {
     }
 
     @PatchMapping(value = "/accounts/{id}/nick-name", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateNickName(@PathVariable final Long id,
+    public ResponseEntity<AccountNickNameUpdateResponse> updateNickName(@PathVariable final Long id,
             @RequestBody final AccountNickNameUpdateRequest request) {
-        accountService.updateNickName(id, request);
-        return ResponseEntity.noContent().build();
+        AccountNickNameUpdateResponse response = accountService.updateNickName(id, request);
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping(value = "/accounts/{id}/sns", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateSnsAccount(@PathVariable final Long id,
+    public ResponseEntity<AccountSnsUpdateResponse> updateSnsAccount(@PathVariable final Long id,
             @RequestBody final AccountSnsUpdateRequest request) {
-        accountService.updateSnsAccount(id, request);
-        return ResponseEntity.noContent().build();
+        AccountSnsUpdateResponse response = accountService.updateSnsAccount(id, request);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(value = "/accounts/{id}/image", consumes = MULTIPART_FORM_DATA_VALUE)

@@ -2,6 +2,7 @@ package com.tasty.masiottae.account.service;
 
 import static com.tasty.masiottae.account.domain.CheckProperty.EMAIL;
 import static com.tasty.masiottae.account.domain.CheckProperty.NICK_NAME;
+import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_ACCOUNT;
 
 import com.tasty.masiottae.account.converter.AccountConverter;
 import com.tasty.masiottae.account.domain.Account;
@@ -10,10 +11,15 @@ import com.tasty.masiottae.account.dto.AccountDuplicatedResponse;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.account.dto.AccountImageUpdateResponse;
 import com.tasty.masiottae.account.dto.AccountNickNameUpdateRequest;
+import com.tasty.masiottae.account.dto.AccountNickNameUpdateResponse;
 import com.tasty.masiottae.account.dto.AccountPasswordUpdateRequest;
 import com.tasty.masiottae.account.dto.AccountSnsUpdateRequest;
+import com.tasty.masiottae.account.dto.AccountSnsUpdateResponse;
 import com.tasty.masiottae.account.repository.AccountRepository;
+import com.tasty.masiottae.common.exception.custom.NotFoundException;
 import com.tasty.masiottae.common.util.AwsS3Service;
+import com.tasty.masiottae.security.auth.AccountDetail;
+import com.tasty.masiottae.security.jwt.JwtToken;
 import com.tasty.masiottae.security.jwt.JwtTokenProvider;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,7 +47,7 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Long saveAccount(AccountCreateRequest accountCreateRequest,
+    public JwtToken saveAccount(AccountCreateRequest accountCreateRequest,
             MultipartFile image) {
         String imageUrl = null;
         if (Objects.nonNull(image)) {
@@ -55,8 +61,8 @@ public class AccountService {
                 accountCreateRequest.snsAccount());
         object.encryptPassword(object.getPassword(), passwordEncoder);
 
-        Account entity = accountRepository.save(object);
-        return entity.getId();
+        AccountDetail detail = new AccountDetail(accountRepository.save(object));
+        return jwtTokenProvider.generatedAccountToken(detail);
     }
 
     public Page<AccountFindResponse> findAllAccounts(Pageable pageable) {
@@ -75,15 +81,19 @@ public class AccountService {
     }
 
     @Transactional
-    public void updateNickName(Long id, AccountNickNameUpdateRequest accountUpdateRequest) {
+    public AccountNickNameUpdateResponse updateNickName(Long id,
+            AccountNickNameUpdateRequest accountUpdateRequest) {
         Account entity = acccountEntityService.findById(id);
         entity.updateNickName(accountUpdateRequest.nickName());
+        return new AccountNickNameUpdateResponse(accountUpdateRequest.nickName());
     }
 
     @Transactional
-    public void updateSnsAccount(Long id, AccountSnsUpdateRequest accountSnsUpdateRequest) {
+    public AccountSnsUpdateResponse updateSnsAccount(Long id,
+            AccountSnsUpdateRequest accountSnsUpdateRequest) {
         Account entity = acccountEntityService.findById(id);
         entity.updateSnsAccount(accountSnsUpdateRequest.snsAccount());
+        return new AccountSnsUpdateResponse(accountSnsUpdateRequest.snsAccount());
     }
 
     @Transactional
@@ -120,6 +130,12 @@ public class AccountService {
         }
 
         return new AccountDuplicatedResponse(isEmail, errorMessage);
+    }
+
+    public void validateExistsAccount(Long id) {
+        if (!accountRepository.existsById(id)) {
+            throw new NotFoundException(NOT_FOUND_ACCOUNT.getMessage());
+        }
     }
 
 }
