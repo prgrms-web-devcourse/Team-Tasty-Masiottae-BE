@@ -1,7 +1,7 @@
 package com.tasty.masiottae.account.service;
 
-import static com.tasty.masiottae.account.domain.CHECK_PROPERTY.EMAIL;
-import static com.tasty.masiottae.account.domain.CHECK_PROPERTY.NICK_NAME;
+import static com.tasty.masiottae.account.domain.CheckProperty.EMAIL;
+import static com.tasty.masiottae.account.domain.CheckProperty.NICK_NAME;
 
 import com.tasty.masiottae.account.converter.AccountConverter;
 import com.tasty.masiottae.account.domain.Account;
@@ -44,9 +44,9 @@ public class AccountService {
     public Long saveAccount(AccountCreateRequest accountCreateRequest,
             MultipartFile image) {
         String imageUrl = null;
-            if (Objects.nonNull(image)) {
-                imageUrl = awsS3Service.uploadAccountImage(image);
-            }
+        if (Objects.nonNull(image)) {
+            imageUrl = awsS3Service.uploadAccountImage(image);
+        }
 
         Account object = Account.createAccount(accountCreateRequest.email(),
                 accountCreateRequest.password(),

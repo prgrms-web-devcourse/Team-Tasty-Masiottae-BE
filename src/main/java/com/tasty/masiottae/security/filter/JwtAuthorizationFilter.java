@@ -36,8 +36,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
         if (request.getServletPath().equals("/login")) {
             filterChain.doFilter(request, response);
-        }
-        else {
+        } else {
             String token = jwtTokenProvider.getToken(request);
             if (Objects.nonNull(token) && token.startsWith(jwtTokenProvider.getPrefix())) {
                 try {
@@ -50,8 +49,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     log.info("권한 없는 유저 접근");
                     respondWithError(response, e.getMessage());
                 }
-            }
-            else {
+            } else {
                 filterChain.doFilter(request, response);
             }
         }

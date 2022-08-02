@@ -1,11 +1,11 @@
 package com.tasty.masiottae.account.controller;
 
-import static com.tasty.masiottae.account.domain.CHECK_PROPERTY.INVALID;
-import static com.tasty.masiottae.account.domain.CHECK_PROPERTY.findProperty;
+import static com.tasty.masiottae.account.domain.CheckProperty.INVALID;
+import static com.tasty.masiottae.account.domain.CheckProperty.findProperty;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
-import com.tasty.masiottae.account.domain.CHECK_PROPERTY;
+import com.tasty.masiottae.account.domain.CheckProperty;
 import com.tasty.masiottae.account.dto.AccountCreateRequest;
 import com.tasty.masiottae.account.dto.AccountDuplicatedResponse;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
@@ -99,7 +99,7 @@ public class AccountController {
     public ResponseEntity<AccountDuplicatedResponse> checkDuplicateProperty(
             @RequestParam final String property,
             @RequestParam final String value) {
-        CHECK_PROPERTY prop = findProperty(property);
+        CheckProperty prop = findProperty(property);
         AccountDuplicatedResponse accountDuplicatedResponse;
 
         switch (prop) {

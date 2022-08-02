@@ -4,7 +4,7 @@ import java.util.Arrays;
 import lombok.Getter;
 
 @Getter
-public enum CHECK_PROPERTY {
+public enum CheckProperty {
 
     NICK_NAME("nickName", "이미 존재하는 닉네임입니다."),
     EMAIL("email", "이미 존재하는 이메일입니다."),
@@ -13,13 +13,13 @@ public enum CHECK_PROPERTY {
     private final String fieldName;
     private final String errorMessage;
 
-    CHECK_PROPERTY(String fieldName, String errorMessage) {
+    CheckProperty(String fieldName, String errorMessage) {
         this.fieldName = fieldName;
         this.errorMessage = errorMessage;
     }
 
-    public static CHECK_PROPERTY findProperty(String fieldName) {
-        return Arrays.stream(CHECK_PROPERTY.values())
+    public static CheckProperty findProperty(String fieldName) {
+        return Arrays.stream(CheckProperty.values())
                 .filter(prop -> prop.fieldName.equals(fieldName))
                 .findFirst()
                 .orElse(INVALID);
