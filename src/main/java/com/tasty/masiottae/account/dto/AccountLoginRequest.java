@@ -1,5 +1,5 @@
 package com.tasty.masiottae.account.dto;
 
-public record AccountLoginRequest(String loginId, String loginPassword) {
+public record AccountLoginRequest(String email, String password) {
 
 }

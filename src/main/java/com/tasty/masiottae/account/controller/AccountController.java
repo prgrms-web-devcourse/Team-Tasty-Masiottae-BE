@@ -1,114 +1,127 @@
 package com.tasty.masiottae.account.controller;
 
+import static com.tasty.masiottae.account.domain.CheckProperty.INVALID;
+import static com.tasty.masiottae.account.domain.CheckProperty.findProperty;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
+import com.tasty.masiottae.account.domain.CheckProperty;
 import com.tasty.masiottae.account.dto.AccountCreateRequest;
 import com.tasty.masiottae.account.dto.AccountDuplicatedResponse;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
-import com.tasty.masiottae.account.dto.AccountLoginRequest;
+import com.tasty.masiottae.account.dto.AccountImageUpdateResponse;
+import com.tasty.masiottae.account.dto.AccountNickNameUpdateRequest;
+import com.tasty.masiottae.account.dto.AccountNickNameUpdateResponse;
 import com.tasty.masiottae.account.dto.AccountPasswordUpdateRequest;
-import com.tasty.masiottae.account.dto.AccountUpdateRequest;
+import com.tasty.masiottae.account.dto.AccountSnsUpdateRequest;
+import com.tasty.masiottae.account.dto.AccountSnsUpdateResponse;
 import com.tasty.masiottae.account.service.AccountService;
-import com.tasty.masiottae.security.auth.AccountDetail;
 import com.tasty.masiottae.security.jwt.JwtToken;
-import com.tasty.masiottae.security.jwt.JwtTokenProvider;
 import com.tasty.masiottae.security.jwt.JwtTokenResponse;
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-@RequestMapping("/accounts")
 @RequiredArgsConstructor
 @RestController
 public class AccountController {
 
     private final AccountService accountService;
 
-    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountFindResponse> findAccountById(@PathVariable final Long id) {
-        AccountFindResponse accountFindResponse = new AccountFindResponse(1L, "nickname", "imgUrl",
-                "example@naver.com", LocalDateTime.now(), 0);
+    @PostMapping(value = "/signup", consumes = {MULTIPART_FORM_DATA_VALUE, APPLICATION_JSON_VALUE})
+    public ResponseEntity<JwtToken> saveAccount(
+            @RequestPart(required = false) final MultipartFile image,
+            @RequestPart final AccountCreateRequest request) {
+        JwtToken jwtToken = accountService.saveAccount(request, image);
+        return ResponseEntity.ok(jwtToken);
+    }
+
+    @GetMapping(value = "/accounts", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<AccountFindResponse>> findAllAccounts(@PageableDefault final Pageable pageable) {
+        Page<AccountFindResponse> accountList = accountService.findAllAccounts(pageable);
+        return ResponseEntity.ok(accountList);
+    }
+
+    @GetMapping(value = "/accounts/{id}", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountFindResponse> findOneAccount(@PathVariable final Long id) {
+        AccountFindResponse accountFindResponse = accountService.findOneAccount(id);
         return ResponseEntity.ok(accountFindResponse);
     }
-
-    @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<AccountFindResponse>> findAccounts(@RequestParam final int page) {
-        List<AccountFindResponse> list = new ArrayList<>();
-        list.add(new AccountFindResponse(1L, "nickname", "imgUrl",
-                "example@naver.com", LocalDateTime.now(), 0));
-
-        PageRequest pageable = PageRequest.of(page, 10);
-
-        final int start = (int) pageable.getOffset();
-        final int end = Math.min((start + pageable.getPageSize()), list.size());
-        final Page<AccountFindResponse> pages = new PageImpl<>(list.subList(start, end), pageable,
-                list.size());
-
-        return ResponseEntity.ok(pages);
-    }
-
-    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<JwtTokenResponse> createAccount(
-            @RequestBody final AccountCreateRequest request) {
-        JwtTokenResponse jwtTokenResponse = accountService.save(request);
-        return ResponseEntity.ok(jwtTokenResponse);
-    }
-
-    @PatchMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateAccount(
-            @PathVariable final Long id, @RequestBody final AccountUpdateRequest request) {
-        AccountFindResponse updated = new AccountFindResponse(1L, request.nickname(),
-                request.imgUrl(),
-                "example@naver.com", LocalDateTime.now(), 0);
+    
+    @PatchMapping(value = "/accounts/{id}/password", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updatePassword(@PathVariable final Long id,
+            @RequestBody final AccountPasswordUpdateRequest request) {
+        accountService.updatePassword(id, request);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping(value = "/{id}/password", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateAccountPassword(
-            @PathVariable final Long id, @RequestBody final AccountPasswordUpdateRequest request) {
+    @PatchMapping(value = "/accounts/{id}/nick-name", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountNickNameUpdateResponse> updateNickName(@PathVariable final Long id,
+            @RequestBody final AccountNickNameUpdateRequest request) {
+        AccountNickNameUpdateResponse response = accountService.updateNickName(id, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping(value = "/accounts/{id}/sns", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountSnsUpdateResponse> updateSnsAccount(@PathVariable final Long id,
+            @RequestBody final AccountSnsUpdateRequest request) {
+        AccountSnsUpdateResponse response = accountService.updateSnsAccount(id, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(value = "/accounts/{id}/image", consumes = MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<AccountImageUpdateResponse> updateImage(@PathVariable final Long id,
+            @RequestPart final MultipartFile image) {
+        AccountImageUpdateResponse accountImageUpdateResponse = accountService.updateImage(id, image);
+        return ResponseEntity.ok(accountImageUpdateResponse);
+    }
+
+    @DeleteMapping(value = "/accounts/{id}")
+    public ResponseEntity<Void> deleteAccount(@PathVariable final Long id) {
+        accountService.deleteAccount(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "/login", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> loginAccount(
-            @RequestBody final AccountLoginRequest request) {
-        AccountFindResponse loggedInAccount = new AccountFindResponse(1L, "nickname", "imgUrl",
-                "example@naver.com", LocalDateTime.now(), 0);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping(value = "/check", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<AccountDuplicatedResponse> isDuplicatedParam(
+    @GetMapping(value = "/accounts/check", params = {"property", "value"}, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<AccountDuplicatedResponse> checkDuplicateProperty(
             @RequestParam final String property,
             @RequestParam final String value) {
-        AccountDuplicatedResponse accountDuplicatedResponse = null;
-        String email = "email";
-        String nickname = "nickname";
+        CheckProperty prop = findProperty(property);
+        AccountDuplicatedResponse accountDuplicatedResponse;
 
-        if (property.equals(email)) {
-            accountDuplicatedResponse = accountService.duplicateCheckEmail(value);
-        } else if (property.equals(nickname)) {
-            accountDuplicatedResponse = accountService.duplicateCheckNickname(value);
-        } else {
-            throw new IllegalArgumentException("중복 체크가 가능한 파라미터를 입력해 주세요.");
+        switch (prop) {
+            case EMAIL ->  accountDuplicatedResponse = accountService.checkDuplicateByEmail(value);
+            case NICK_NAME -> accountDuplicatedResponse = accountService.checkDuplicateByNickName(value);
+            default -> accountDuplicatedResponse =
+                    new AccountDuplicatedResponse(false, Optional.of(INVALID.getErrorMessage()));
         }
 
         return ResponseEntity.ok(accountDuplicatedResponse);
+    }
+
+    @GetMapping(value = "/login_success", produces = APPLICATION_JSON_VALUE)
+    private ResponseEntity<JwtTokenResponse> respondWithTokenAndAccount(final HttpServletRequest request) {
+        AccountFindResponse accountFindResponse = accountService.findOneAccount((Long)
+                request.getSession().getAttribute("id"));
+        JwtToken jwtToken = (JwtToken) request.getSession().getAttribute("token");
+        JwtTokenResponse response = new JwtTokenResponse(jwtToken, accountFindResponse);
+        return ResponseEntity.ok(response);
     }
 
 }
