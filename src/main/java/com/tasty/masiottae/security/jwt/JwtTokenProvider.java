@@ -51,5 +51,8 @@ public class JwtTokenProvider {
         return request.getHeader(jwtProperties.getHeaderString());
     }
 
+    public String getPrefix() {
+        return jwtProperties.getTokenPrefix();
+    }
 
 }

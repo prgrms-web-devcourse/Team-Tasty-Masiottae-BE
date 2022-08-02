@@ -1,8 +1,6 @@
 package com.tasty.masiottae.security.auth;
 
 import com.tasty.masiottae.account.domain.Account;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import lombok.Getter;
@@ -25,18 +23,6 @@ public class AccountDetail implements UserDetails {
 
     public Long getId() {
         return account.getId();
-    }
-
-    public String getNickname() {
-        return account.getNickname();
-    }
-
-    public String getImageUrl() {
-        return account.getImageUrl();
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return account.getCreatedAt();
     }
 
     @Override

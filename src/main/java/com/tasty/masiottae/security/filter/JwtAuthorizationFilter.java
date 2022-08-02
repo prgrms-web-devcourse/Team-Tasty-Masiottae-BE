@@ -1,38 +1,32 @@
 package com.tasty.masiottae.security.filter;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.tasty.masiottae.account.domain.Account;
-import com.tasty.masiottae.security.auth.AccountDetail;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tasty.masiottae.security.jwt.JwtTokenProvider;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-@Component
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -40,16 +34,25 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
-
-        String token = jwtTokenProvider.getToken(request);
-        try {
-            DecodedJWT decodedJWT = jwtTokenProvider.verifyJwtToken(token);
-            Authentication authentication = getAuthentication(decodedJWT);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (JWTVerificationException e) {
-            log.info("권한 없는 유저 접근");
+        if (request.getServletPath().equals("/login")) {
+            filterChain.doFilter(request, response);
+        } else {
+            String token = jwtTokenProvider.getToken(request);
+            if (Objects.nonNull(token) && token.startsWith(jwtTokenProvider.getPrefix())) {
+                try {
+                    DecodedJWT decodedJWT = jwtTokenProvider.verifyJwtToken(token);
+                    Authentication authentication = getAuthentication(decodedJWT);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    log.info("권한 확인");
+                    filterChain.doFilter(request, response);
+                } catch (JWTVerificationException e) {
+                    log.info("권한 없는 유저 접근");
+                    respondWithError(response, e.getMessage());
+                }
+            } else {
+                filterChain.doFilter(request, response);
+            }
         }
-        filterChain.doFilter(request, response);
     }
 
     private Authentication getAuthentication(DecodedJWT decodedJWT) {
@@ -63,4 +66,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         return new UsernamePasswordAuthenticationToken(
                 email, null, roles);
     }
+
+    private void respondWithError(HttpServletResponse response, String message) throws IOException {
+        response.setHeader("error", message);
+        response.setStatus(HttpStatus.FORBIDDEN.value());
+
+        Map<String, String> error = new HashMap<>();
+        error.put("error_message", message);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        new ObjectMapper().writeValue(response.getOutputStream(), error);
+    }
+
 }

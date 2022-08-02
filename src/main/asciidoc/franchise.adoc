@@ -1,0 +1,5 @@
+== 프랜차이즈
+
+=== 프랜차이즈 전체 조회
+
+operation::franchise-get-all[snippets='http-request,http-response,response-body,response-fields']

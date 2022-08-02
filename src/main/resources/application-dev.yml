@@ -3,6 +3,7 @@ spring:
     activate:
       on-profile: dev
     import: aws.yml, jwt.yml
+    
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/masiottae

@@ -77,24 +77,24 @@ public class MenuConverter {
 
     public MenuFindResponse toMenuFindResponse(Menu menu) {
         return new MenuFindResponse(
-            menu.getId(),
-            new FranchiseFindResponse(menu.getFranchise().getId(), menu.getFranchise().getLogoUrl(),
-                menu.getFranchise().getName()),
-            menu.getPictureUrl(), menu.getCustomMenuName(), menu.getRealMenuName(),
-            new AccountFindResponse(menu.getAccount().getId(), menu.getAccount().getNickname(),
-                menu.getAccount().getImageUrl(), menu.getAccount().getEmail(),
-                menu.getAccount().getCreatedAt(), menu.getAccount().getMenuList().size()),
-            menu.getDescription(), menu.getLikesCount(),
-            menu.getExpectedPrice(),
-            menu.getOptionList().stream()
-                .map(option -> new OptionConverter().toOptionFindResponse(option)).collect(
-                    Collectors.toList()),
-            menu.getMenuTasteSet().stream()
-                .map(menuTaste -> new TasteFindResponse(menuTaste.getTaste().getId(),
-                    menuTaste.getTaste().getTasteName(), menuTaste.getTaste().getTasteColor()))
-                .collect(
-                    Collectors.toList()),
-            menu.getCreatedAt(), menu.getUpdatedAt());
-
+                menu.getId(),
+                new FranchiseFindResponse(menu.getFranchise().getId(), menu.getFranchise().getLogoUrl(),
+                        menu.getFranchise().getName()),
+                menu.getPictureUrl(), menu.getCustomMenuName(), menu.getRealMenuName(),
+                new AccountFindResponse(menu.getAccount().getId(), menu.getAccount().getImage(),
+                        menu.getAccount().getNickName(), menu.getAccount().getEmail(),
+                        menu.getAccount().getSnsAccount(), menu.getAccount().getCreatedAt(),
+                        menu.getAccount().getMenuList().size()),
+                menu.getDescription(), menu.getLikesCount(),
+                menu.getExpectedPrice(),
+                menu.getOptionList().stream()
+                        .map(option -> new OptionConverter().toOptionFindResponse(option)).collect(
+                                Collectors.toList()),
+                menu.getMenuTasteSet().stream()
+                        .map(menuTaste -> new TasteFindResponse(menuTaste.getTaste().getId(),
+                                menuTaste.getTaste().getTasteName(), menuTaste.getTaste().getTasteColor()))
+                        .collect(
+                                Collectors.toList()),
+                menu.getCreatedAt(), menu.getUpdatedAt());
     }
 }
