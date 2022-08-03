@@ -29,12 +29,11 @@ public class CommentController {
     }
 
     // 하나의 메뉴에 댓글 작성하기
-    @PostMapping("/menu/{menuId}/comments")
+    @PostMapping("/comments")
     public ResponseEntity<CommentSaveResponse> saveComment(
-        @PathVariable("menuId") Long menuId,
         @Valid @RequestBody CommentSaveRequest commentSaveRequest) {
-        commentService.createComment(menuId, commentSaveRequest);
+        commentService.createComment(commentSaveRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(commentService.createComment(menuId, commentSaveRequest));
+            .body(commentService.createComment(commentSaveRequest));
     }
 }

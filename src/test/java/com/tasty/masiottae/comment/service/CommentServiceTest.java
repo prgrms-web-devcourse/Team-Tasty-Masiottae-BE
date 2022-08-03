@@ -64,11 +64,11 @@ class CommentServiceTest {
     @DisplayName("댓글 작성")
     void testCreateComment() {
         // given
-        Long menuId = 1L;
-        CommentSaveRequest request = new CommentSaveRequest(account.getId(), "이것은 댓글이다.");
+        CommentSaveRequest request = new CommentSaveRequest(account.getId(), menu.getId(),
+            "이것은 댓글이다.");
 
         // when
-        CommentSaveResponse comment = commentService.createComment(menuId, request);
+        CommentSaveResponse comment = commentService.createComment(request);
 
         entityManager.flush();
         entityManager.clear();
@@ -87,7 +87,6 @@ class CommentServiceTest {
     @DisplayName("하나의 메뉴에 있는 전체 댓글 조회")
     void testFindAllCommentOfOneMenu() {
         // given
-        Long menuId = 1L;
         List<Comment> comments = IntStream.range(1, 11).mapToObj(
             i -> Comment.createComment(account, menu, "댓글내용" + i)
         ).collect(Collectors.toList());
@@ -95,7 +94,7 @@ class CommentServiceTest {
 
         // when
         List<CommentFindResponse> allCommentOfOneMenu = commentService.findAllCommentOfOneMenu(
-            menuId);
+            menu.getId());
 
         // then
         assertThat(allCommentOfOneMenu).hasSize(10);

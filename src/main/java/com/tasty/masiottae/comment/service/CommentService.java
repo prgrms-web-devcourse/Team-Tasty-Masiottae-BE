@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +29,9 @@ public class CommentService {
     private final AccountRepository accountRepository;
     private final CommentConverter commentConverter;
 
-    public CommentSaveResponse createComment(Long menuId, CommentSaveRequest request) {
-        Menu menu = menuRepository.findById(menuId)
+    @Transactional
+    public CommentSaveResponse createComment(CommentSaveRequest request) {
+        Menu menu = menuRepository.findById(request.menuId())
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_MENU.getMessage()));
         Account account = accountRepository.findById(request.accountId())
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_ACCOUNT.getMessage()));
@@ -39,7 +41,7 @@ public class CommentService {
 
         menu.addComment(savedComment);
         account.addComment(savedComment);
-        return new CommentSaveResponse(menuId, savedComment.getId());
+        return new CommentSaveResponse(request.menuId(), savedComment.getId());
     }
 
     public List<CommentFindResponse> findAllCommentOfOneMenu(Long menuId) {
