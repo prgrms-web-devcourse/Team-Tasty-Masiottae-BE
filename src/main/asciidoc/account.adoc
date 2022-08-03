@@ -70,8 +70,8 @@ Content-Length: 260
     },
     "account": {
         "id": 23,
-        "image": "test19",
-        "nickName": "https://masiottae-image-bucket.s3.ap-northeast-2.amazonaws.com/account/502c53ae-774a-44b6-9494-a9645a12fb73.png",
+        "image": "https://masiottae-image-bucket.s3.ap-northeast-2.amazonaws.com/account/502c53ae-774a-44b6-9494-a9645a12fb73.png",
+        "nickName": "test19",
         "email": "test19@naver.com",
         "snsAccount": "test sns",
         "createdAt": "2022-08-02T16:18:37.871067",
