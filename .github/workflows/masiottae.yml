@@ -52,6 +52,7 @@ jobs:
           spring.datasource.password: ${{ secrets.DATA_SOURCE_PASSWORD }}
           cloud.aws.credentials.access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           cloud.aws.credentials.secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          logging.slack.webhook-uri: ${{ secrets.SLACK_URI }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
