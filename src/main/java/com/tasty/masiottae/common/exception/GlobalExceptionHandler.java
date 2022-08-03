@@ -28,9 +28,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<ErrorResponse> handleNotFoundException(
-            MethodArgumentNotValidException e) {
+            NotFoundException e) {
         final ErrorResponse response = ErrorResponse.of(e.getMessage(),
-                HttpServletResponse.SC_NOT_FOUND, e.getBindingResult());
+                HttpServletResponse.SC_NOT_FOUND);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }
