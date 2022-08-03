@@ -1,5 +1,8 @@
 package com.tasty.masiottae.comment.dto;
 
-public class CommentFindResponse {
+import com.tasty.masiottae.account.dto.AccountFindResponse;
+
+public record CommentFindResponse(Long commentId, Long menuId, AccountFindResponse author,
+                                  String comment) {
 
 }

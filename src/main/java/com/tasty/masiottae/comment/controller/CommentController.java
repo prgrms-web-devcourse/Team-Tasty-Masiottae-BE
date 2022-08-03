@@ -23,8 +23,9 @@ public class CommentController {
 
     // 한 상세 메뉴의 댓글 목록 가져오기
     @GetMapping("/menu/{menuId}/comments")
-    public ResponseEntity<List<CommentFindResponse>> getAllComment() {
-        return null;
+    public ResponseEntity<List<CommentFindResponse>> getAllComment(
+        @PathVariable("menuId") Long menuId) {
+        return ResponseEntity.ok().body(commentService.findAllCommentOfOneMenu(menuId));
     }
 
     // 하나의 메뉴에 댓글 작성하기
