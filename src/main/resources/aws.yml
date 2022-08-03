@@ -1,8 +1,8 @@
 cloud:
   aws:
     credentials:
-      access-key:
-      secret-key:
+      access-key: AKIASRDLDX3TA3OZUEHQ
+      secret-key: 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
     s3:
       bucket: masiottae-image-bucket
     region:

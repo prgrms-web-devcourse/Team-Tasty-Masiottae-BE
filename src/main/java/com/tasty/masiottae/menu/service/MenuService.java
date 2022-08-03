@@ -1,5 +1,7 @@
 package com.tasty.masiottae.menu.service;
 
+import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU;
+
 import com.tasty.masiottae.common.util.AwsS3Service;
 import com.tasty.masiottae.menu.MenuConverter;
 import com.tasty.masiottae.menu.domain.Menu;
@@ -36,7 +38,7 @@ public class MenuService {
         menuRepository.save(menu);
 
         return menuConverter
-                .toMenuSaveResponse(menuRepository.save(menu));
+            .toMenuSaveResponse(menuRepository.save(menu));
     }
 
     private String getImageUrl(String imageUrl, MultipartFile image) {
@@ -49,7 +51,13 @@ public class MenuService {
     }
 
     public MenuFindResponse findOneMenu(Long menuId) {
+<<<<<<< Updated upstream
         Menu findMenu = findByFetchEntity(menuId);
+=======
+        Menu findMenu = menuRepository.findByIdFetch(menuId).orElseThrow(
+            () -> new EntityNotFoundException(NOT_FOUND_MENU.getMessage())
+        );
+>>>>>>> Stashed changes
         return menuConverter.toMenuFindResponse(findMenu);
     }
 
