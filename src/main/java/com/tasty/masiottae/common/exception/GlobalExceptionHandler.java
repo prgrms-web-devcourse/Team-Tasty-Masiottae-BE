@@ -1,5 +1,6 @@
 package com.tasty.masiottae.common.exception;
 
+import com.tasty.masiottae.common.exception.custom.NotFoundException;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +26,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    protected ResponseEntity<ErrorResponse> handleNotFoundException(
+            MethodArgumentNotValidException e) {
+        final ErrorResponse response = ErrorResponse.of(e.getMessage(),
+                HttpServletResponse.SC_NOT_FOUND, e.getBindingResult());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 }
 
