@@ -8,8 +8,15 @@ import org.springframework.stereotype.Component;
 public class AccountConverter {
 
     public AccountFindResponse toAccountFindResponse(Account account) {
-        return new AccountFindResponse(account.getId(), account.getNickName(), account.getImage(),
-                account.getEmail(), account.getSnsAccount(), account.getCreatedAt(), account.getMenuList().size());
+        return new AccountFindResponse(
+            account.getId(),
+            account.getImage(),
+            account.getNickName(),
+            account.getEmail(),
+            account.getSnsAccount(),
+            account.getCreatedAt(),
+            account.getMenuList().size()
+        );
     }
 
 }
