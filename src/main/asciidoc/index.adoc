@@ -64,3 +64,4 @@
 
 include::menu.adoc[]
 include::taste.adoc[]
+include::account.adoc[]
