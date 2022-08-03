@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,9 +30,10 @@ public class CommentController {
     // 하나의 메뉴에 댓글 작성하기
     @PostMapping("/menu/{menuId}/comments")
     public ResponseEntity<CommentSaveResponse> saveComment(
+        @PathVariable("menuId") Long menuId,
         @Valid @RequestBody CommentSaveRequest commentSaveRequest) {
-        commentService.createComment(commentSaveRequest);
+        commentService.createComment(menuId, commentSaveRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(commentService.createComment(commentSaveRequest));
+            .body(commentService.createComment(menuId, commentSaveRequest));
     }
 }

@@ -46,12 +46,7 @@ class CommentServiceTest {
     @BeforeEach
     void setup() {
         franchise = Franchise.createFranchise("franchise", "franchiseLogo");
-        account = Account.builder()
-            .nickname("test")
-            .email("test@gmail.com")
-            .password("password")
-            .imageUrl("profile")
-            .build();
+        account = Account.createAccount("test@gmail.com", "password", "nickname", "profile.png");
         menu = Menu.createMenu("realName", "customMenuName", "picture",
             5000, account, franchise, "description");
         accountRepository.save(account);
@@ -63,11 +58,11 @@ class CommentServiceTest {
     @DisplayName("댓글 작성")
     void testCommentCreate() {
         // given
-        CommentSaveRequest request = new CommentSaveRequest(account.getId(),
-            menu.getId(), "이것은 댓글이다.");
+        Long menuId = 1L;
+        CommentSaveRequest request = new CommentSaveRequest(account.getId(), "이것은 댓글이다.");
 
         // when
-        CommentSaveResponse comment = commentService.createComment(request);
+        CommentSaveResponse comment = commentService.createComment(menuId, request);
 
         entityManager.flush();
         entityManager.clear();
