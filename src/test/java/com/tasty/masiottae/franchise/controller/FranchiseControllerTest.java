@@ -95,7 +95,7 @@ class FranchiseControllerTest {
                 responseFields(
                     fieldWithPath("[].id").type(JsonFieldType.NUMBER)
                         .description("프랜차이즈 ID"),
-                    fieldWithPath("[].logoUrl").type(JsonFieldType.STRING)
+                    fieldWithPath("[].image").type(JsonFieldType.STRING)
                         .description("프랜차이즈 로고"),
                     fieldWithPath("[].name").type(JsonFieldType.STRING)
                         .description("프랜차이즈 이름")

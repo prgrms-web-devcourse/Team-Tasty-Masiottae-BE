@@ -80,8 +80,8 @@ class TasteControllerTest {
                                         MediaType.APPLICATION_JSON_VALUE)
                         ),
                         requestFields(
-                               fieldWithPath("tasteName").type(JsonFieldType.STRING).description("맛 이름"),
-                               fieldWithPath("tasteColor").type(JsonFieldType.STRING).description("맛 색상 코드(16진수, 알파벳은 소문자), 예: #ff0000")
+                               fieldWithPath("name").type(JsonFieldType.STRING).description("맛 이름"),
+                               fieldWithPath("color").type(JsonFieldType.STRING).description("맛 색상 코드(16진수, 알파벳은 소문자), 예: #ff0000")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON_VALUE)
@@ -119,9 +119,9 @@ class TasteControllerTest {
                                         MediaType.APPLICATION_JSON_VALUE)
                         ),
                         responseFields(
-                                fieldWithPath("[].tasteId").type(JsonFieldType.NUMBER).description("맛 ID"),
-                                fieldWithPath("[].tasteName").type(JsonFieldType.STRING).description("맛 이름"),
-                                fieldWithPath("[].tasteColor").type(JsonFieldType.STRING).description("맛 색생 코드(16진수)")
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("맛 ID"),
+                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("맛 이름"),
+                                fieldWithPath("[].color").type(JsonFieldType.STRING).description("맛 색상 코드(16진수)")
                         )
                 ));
     }
