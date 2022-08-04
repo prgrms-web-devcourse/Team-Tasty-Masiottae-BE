@@ -123,11 +123,11 @@ class MenuControllerTest {
                                         .description("옵션명"),
                                 fieldWithPath("optionList[].optionDescription").type(JsonFieldType.STRING)
                                         .description("옵션 설명"),
-                                fieldWithPath("tasteList[].tasteId").type(JsonFieldType.NUMBER)
+                                fieldWithPath("tasteList[].id").type(JsonFieldType.NUMBER)
                                         .description("맛 ID"),
-                                fieldWithPath("tasteList[].tasteName").type(JsonFieldType.STRING)
+                                fieldWithPath("tasteList[].name").type(JsonFieldType.STRING)
                                         .description("맛 이름"),
-                                fieldWithPath("tasteList[].tasteColor").type(JsonFieldType.STRING)
+                                fieldWithPath("tasteList[].color").type(JsonFieldType.STRING)
                                         .description("맛 태그 컬러"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("갱신일"))));
