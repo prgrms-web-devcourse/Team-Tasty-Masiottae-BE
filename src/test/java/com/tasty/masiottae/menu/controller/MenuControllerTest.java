@@ -90,47 +90,47 @@ class MenuControllerTest {
         // expected
         mockMvc.perform(get("/menu/{menuId}", menuId).contentType(APPLICATION_JSON))
             .andExpect(status().isOk()).andDo(print()).andDo(document("menu-findOne",
-                pathParameters(parameterWithName("menuId").description("메뉴 Id")),
-                responseFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("메뉴 ID"),
-                    fieldWithPath("franchise.id").type(JsonFieldType.NUMBER)
-                        .description("프랜차이즈 id"),
-                    fieldWithPath("franchise.image").type(JsonFieldType.STRING)
-                        .description("프랜차이즈 로고"),
-                    fieldWithPath("franchise.name").type(JsonFieldType.STRING)
-                        .description("프랜차이즈명"),
-                    fieldWithPath("image").type(JsonFieldType.STRING).description("이미지경로"),
-                    fieldWithPath("title").type(JsonFieldType.STRING).description("메뉴명"),
-                    fieldWithPath("originalTitle").type(JsonFieldType.STRING)
-                        .description("실제 메뉴명"),
-                    fieldWithPath("author.id").type(JsonFieldType.NUMBER).description("유저 ID"),
-                    fieldWithPath("author.nickName").type(JsonFieldType.STRING)
-                        .description("닉네임"),
-                    fieldWithPath("author.image").type(JsonFieldType.STRING)
-                        .description("유저 프로필사진"),
-                    fieldWithPath("author.email").type(JsonFieldType.STRING)
-                        .description("유저 이메일"),
-                    fieldWithPath("author.createdAt").type(JsonFieldType.STRING)
-                        .description("생성일"),
-                    fieldWithPath("author.snsAccount").type(JsonFieldType.STRING)
-                        .description("유저 SNS 계정"),
-                    fieldWithPath("author.menuCount").type(JsonFieldType.NUMBER)
-                        .description("해당 유저의 생성메뉴 수"),
-                    fieldWithPath("content").type(JsonFieldType.STRING).description("설명"),
-                    fieldWithPath("likes").type(JsonFieldType.NUMBER).description("좋아요 수"),
-                    fieldWithPath("expectedPrice").type(JsonFieldType.NUMBER)
-                        .description("예상가격"),
-                    fieldWithPath("optionList[].optionName").type(JsonFieldType.STRING)
-                        .description("옵션명"),
-                    fieldWithPath("optionList[].optionDescription").type(JsonFieldType.STRING)
-                        .description("옵션 설명"),
-                    fieldWithPath("tasteList[].tasteId").type(JsonFieldType.NUMBER)
-                        .description("맛 ID"),
-                    fieldWithPath("tasteList[].tasteName").type(JsonFieldType.STRING)
-                        .description("맛 이름"),
-                    fieldWithPath("tasteList[].tasteColor").type(JsonFieldType.STRING)
-                        .description("맛 태그 컬러"),
-                    fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일"),
-                    fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("갱신일"))));
+                    pathParameters(parameterWithName("menuId").description("메뉴 Id")),
+                    responseFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("메뉴 ID"),
+                        fieldWithPath("franchise.id").type(JsonFieldType.NUMBER)
+                            .description("프랜차이즈 id"),
+                        fieldWithPath("franchise.logoUrl").type(JsonFieldType.STRING)
+                            .description("프랜차이즈 로고"),
+                        fieldWithPath("franchise.name").type(JsonFieldType.STRING)
+                            .description("프랜차이즈명"),
+                        fieldWithPath("image").type(JsonFieldType.STRING).description("이미지경로"),
+                        fieldWithPath("title").type(JsonFieldType.STRING).description("메뉴명"),
+                        fieldWithPath("originalTitle").type(JsonFieldType.STRING)
+                            .description("실제 메뉴명"),
+                        fieldWithPath("author.id").type(JsonFieldType.NUMBER).description("유저 ID"),
+                        fieldWithPath("author.nickName").type(JsonFieldType.STRING)
+                            .description("닉네임"),
+                        fieldWithPath("author.image").type(JsonFieldType.STRING)
+                            .description("유저 프로필사진"),
+                        fieldWithPath("author.email").type(JsonFieldType.STRING)
+                            .description("유저 이메일"),
+                        fieldWithPath("author.createdAt").type(JsonFieldType.STRING)
+                            .description("생성일"),
+                        fieldWithPath("author.snsAccount").type(JsonFieldType.STRING)
+                            .description("유저 SNS 계정"),
+                        fieldWithPath("author.menuCount").type(JsonFieldType.NUMBER)
+                            .description("해당 유저의 생성메뉴 수"),
+                        fieldWithPath("content").type(JsonFieldType.STRING).description("설명"),
+                        fieldWithPath("likes").type(JsonFieldType.NUMBER).description("좋아요 수"),
+                        fieldWithPath("expectedPrice").type(JsonFieldType.NUMBER)
+                            .description("예상가격"),
+                        fieldWithPath("optionList[].optionName").type(JsonFieldType.STRING)
+                            .description("옵션명"),
+                        fieldWithPath("optionList[].optionDescription").type(JsonFieldType.STRING)
+                            .description("옵션 설명"),
+                        fieldWithPath("tasteList[].id").type(JsonFieldType.NUMBER)
+                            .description("맛 ID"),
+                        fieldWithPath("tasteList[].name").type(JsonFieldType.STRING)
+                            .description("맛 이름"),
+                        fieldWithPath("tasteList[].color").type(JsonFieldType.STRING)
+                            .description("맛 태그 컬러"),
+                        fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일"),
+                        fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("갱신일"))));
     }
 
     @Test
