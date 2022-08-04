@@ -63,7 +63,7 @@ class TasteServiceTest {
 
         // Then
         assertThat(allTaste.size()).isEqualTo(3);
-        assertThat(allTaste).extracting("tasteId").containsExactly(tasteList.stream().map(
+        assertThat(allTaste).extracting("id").containsExactly(tasteList.stream().map(
                 Taste::getId).toArray());
     }
 }
