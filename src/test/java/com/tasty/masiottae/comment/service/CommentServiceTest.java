@@ -1,6 +1,7 @@
 package com.tasty.masiottae.comment.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.tasty.masiottae.account.converter.AccountConverter;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,7 +63,7 @@ class CommentServiceTest {
     }
 
     @Test
-    @DisplayName("댓글 작성")
+    @DisplayName("댓글 작성 성공")
     void testCreateComment() {
         // given
         CommentSaveRequest request = new CommentSaveRequest(account.getId(), menu.getId(),
@@ -70,8 +72,6 @@ class CommentServiceTest {
         // when
         CommentSaveResponse comment = commentService.createComment(request);
 
-        entityManager.flush();
-        entityManager.clear();
         // then
         Comment findComment = commentRepository.findByIdFetch(comment.commentId()).get();
         assertAll(
@@ -81,6 +81,35 @@ class CommentServiceTest {
             () -> assertThat(findComment.getAccount().getEmail()).isEqualTo("test@gmail.com"),
             () -> assertThat(findComment.getContent()).isEqualTo("이것은 댓글이다.")
         );
+    }
+
+    @Test
+    @DisplayName("댓글 작성 실패 : 메뉴 존재하지 않음")
+    void testCreateCommentFailedByWrongMenuId() {
+        // given
+        Long wrongMenuId = 2L;
+        CommentSaveRequest request = new CommentSaveRequest(account.getId(), wrongMenuId,
+            "이것은 댓글이다.");
+
+        // expected
+        assertThatThrownBy(
+            () -> commentService.createComment(request))
+            .isInstanceOf(EntityNotFoundException.class)
+            .hasMessageContaining("존재하지 않는 메뉴입니다.");
+    }
+
+    @Test
+    @DisplayName("댓글 작성 실패 : 댓글 내용을 적지 않음")
+    void testCreateCommentFailedByEmptyContent() {
+        // given
+        CommentSaveRequest request = new CommentSaveRequest(account.getId(), menu.getId(),
+            "");
+
+        // expected
+        assertThatThrownBy(
+            () -> commentService.createComment(request))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("댓글 내용을 입력해주세요.");
     }
 
     @Test
