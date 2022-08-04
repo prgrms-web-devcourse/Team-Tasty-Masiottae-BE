@@ -17,9 +17,7 @@ import com.tasty.masiottae.account.dto.AccountSnsUpdateRequest;
 import com.tasty.masiottae.account.dto.AccountSnsUpdateResponse;
 import com.tasty.masiottae.account.service.AccountService;
 import com.tasty.masiottae.security.jwt.JwtToken;
-import com.tasty.masiottae.security.jwt.JwtTokenResponse;
 import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -111,15 +109,6 @@ public class AccountController {
         }
 
         return ResponseEntity.ok(accountDuplicatedResponse);
-    }
-
-    @GetMapping(value = "/login_success", produces = APPLICATION_JSON_VALUE)
-    private ResponseEntity<JwtTokenResponse> respondWithTokenAndAccount(final HttpServletRequest request) {
-        AccountFindResponse accountFindResponse = accountService.findOneAccount((Long)
-                request.getSession().getAttribute("id"));
-        JwtToken jwtToken = (JwtToken) request.getSession().getAttribute("token");
-        JwtTokenResponse response = new JwtTokenResponse(jwtToken, accountFindResponse);
-        return ResponseEntity.ok(response);
     }
 
 }
