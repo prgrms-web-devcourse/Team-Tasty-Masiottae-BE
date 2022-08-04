@@ -1,5 +1,7 @@
 package com.tasty.masiottae.menu.service;
 
+import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU;
+
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.service.AcccountEntityService;
 import com.tasty.masiottae.common.util.AwsS3Service;
@@ -10,6 +12,7 @@ import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
+
 import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMyMenuResponse;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
@@ -45,7 +48,7 @@ public class MenuService {
         menuRepository.save(menu);
 
         return menuConverter
-                .toMenuSaveResponse(menuRepository.save(menu));
+            .toMenuSaveResponse(menuRepository.save(menu));
     }
 
     private String getImageUrl(String imageUrl, MultipartFile image) {
@@ -58,7 +61,11 @@ public class MenuService {
     }
 
     public MenuFindResponse findOneMenu(Long menuId) {
-        Menu findMenu = findByFetchEntity(menuId);
+
+        Menu findMenu = menuRepository.findByIdFetch(menuId).orElseThrow(
+            () -> new EntityNotFoundException(NOT_FOUND_MENU.getMessage())
+        );
+
         return menuConverter.toMenuFindResponse(findMenu);
     }
 
@@ -87,7 +94,7 @@ public class MenuService {
 
     public List<MenuFindResponse> findAllMenu() {
         return menuRepository.findAllFetch().stream().map(menuConverter::toMenuFindResponse)
-                .toList();
+            .toList();
     }
 
     public SearchMyMenuResponse searchMyMenu(Long accountId, SearchMyMenuRequest request) {
