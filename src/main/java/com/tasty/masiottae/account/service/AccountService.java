@@ -39,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-    private final AcccountEntityService acccountEntityService;
+    private final AccountEntityService accountEntityService;
     private final AwsS3Service awsS3Service;
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -71,19 +71,19 @@ public class AccountService {
 
     public AccountFindResponse findOneAccount(Long id) {
         return accountConverter.toAccountFindResponse(
-                acccountEntityService.findById(id));
+                accountEntityService.findById(id));
     }
 
     @Transactional
     public void updatePassword(Long id, AccountPasswordUpdateRequest accountPasswordUpdateRequest) {
-        Account entity = acccountEntityService.findById(id);
+        Account entity = accountEntityService.findById(id);
         entity.encryptPassword(accountPasswordUpdateRequest.password(), passwordEncoder);
     }
 
     @Transactional
     public AccountNickNameUpdateResponse updateNickName(Long id,
             AccountNickNameUpdateRequest accountUpdateRequest) {
-        Account entity = acccountEntityService.findById(id);
+        Account entity = accountEntityService.findById(id);
         entity.updateNickName(accountUpdateRequest.nickName());
         return new AccountNickNameUpdateResponse(accountUpdateRequest.nickName());
     }
@@ -91,14 +91,14 @@ public class AccountService {
     @Transactional
     public AccountSnsUpdateResponse updateSnsAccount(Long id,
             AccountSnsUpdateRequest accountSnsUpdateRequest) {
-        Account entity = acccountEntityService.findById(id);
+        Account entity = accountEntityService.findById(id);
         entity.updateSnsAccount(accountSnsUpdateRequest.snsAccount());
         return new AccountSnsUpdateResponse(accountSnsUpdateRequest.snsAccount());
     }
 
     @Transactional
     public AccountImageUpdateResponse updateImage(Long id, MultipartFile image) {
-        Account entity = acccountEntityService.findById(id);
+        Account entity = accountEntityService.findById(id);
         String imageUrl = awsS3Service.uploadAccountImage(image);
         entity.updateImage(imageUrl);
         return new AccountImageUpdateResponse(imageUrl);
@@ -106,7 +106,7 @@ public class AccountService {
 
     @Transactional
     public void deleteAccount(Long id) {
-        Account account = acccountEntityService.findById(id);
+        Account account = accountEntityService.findById(id);
         accountRepository.delete(account);
     }
 
