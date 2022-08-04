@@ -27,6 +27,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,8 +61,8 @@ public class AccountService {
                 imageUrl,
                 accountCreateRequest.snsAccount());
         object.encryptPassword(object.getPassword(), passwordEncoder);
-
-        AccountDetail detail = new AccountDetail(accountRepository.save(object));
+        Account entity = accountRepository.save(object);
+        AccountDetail detail = accountConverter.toAccountDetail(entity);
         return jwtTokenProvider.generatedAccountToken(detail);
     }
 
