@@ -12,3 +12,6 @@ operation::update-menu[snippets='http-request,request-headers,request-parts,requ
 
 === 메뉴 삭제
 operation::delete-menu[snippets='http-request,path-parameters,http-response']
+
+=== 나의 메뉴 검색
+operation::search-my-menu[snippets='http-request,path-parameters,request-parameters,http-response,response-headers,response-fields']

@@ -331,7 +331,7 @@ class MenuControllerTest {
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .param("keyword", request.keyword())
                         .param("sort", request.sort())
-                        .param("tasteIdList", "1", "2", "3")
+                        .param("tasteIdList", "1,2,3")
                         .param("offset", String.valueOf(request.offset()))
                         .param("limit", String.valueOf(request.limit())))
                 .andExpect(status().isOk())
@@ -348,7 +348,7 @@ class MenuControllerTest {
                                 parameterWithName("keyword").description("검색어"),
                                 parameterWithName("sort").description(
                                         "정렬 조건(recent, like, comment)"),
-                                parameterWithName("tasteIdList").description("맛 ID 조건"),
+                                parameterWithName("tasteIdList").description("맛 ID 조건(예: 1,2,3)"),
                                 parameterWithName("offset").description("페이징 offset"),
                                 parameterWithName("limit").description("패이징 limit")
                         ),

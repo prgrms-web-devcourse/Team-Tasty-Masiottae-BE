@@ -14,6 +14,7 @@
 :operation-request-body-title: 응답 바디
 :operation-path-parameters-title: 요청 파라미터
 :operation-request-parts-title: 요청 멀티 파트
+:operation-request-parameters-title: 요청 파라미터
 :operation-request-part-data-fields-title: 요청 멀티 파트 data 필드
 
 == HTTP 메서드
