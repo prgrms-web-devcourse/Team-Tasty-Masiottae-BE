@@ -3,7 +3,7 @@ package com.tasty.masiottae.menu.service;
 import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU;
 
 import com.tasty.masiottae.account.domain.Account;
-import com.tasty.masiottae.account.service.AcccountEntityService;
+import com.tasty.masiottae.account.service.AccountEntityService;
 import com.tasty.masiottae.common.util.AwsS3Service;
 import com.tasty.masiottae.menu.MenuConverter;
 import com.tasty.masiottae.menu.domain.Menu;
@@ -38,7 +38,7 @@ public class MenuService {
     private final MenuConverter menuConverter;
     private final MenuTasteRepository menuTasteRepository;
     private final TasteService tasteService;
-    private final AcccountEntityService accountEntityService;
+    private final AccountEntityService accountEntityService;
 
     @Transactional
     public MenuSaveResponse createMenu(MenuSaveUpdateRequest request, MultipartFile image) {

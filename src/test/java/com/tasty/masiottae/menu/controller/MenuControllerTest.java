@@ -381,7 +381,7 @@ class MenuControllerTest {
                                         .description("프렌차이즈 정보"),
                                 fieldWithPath("menu[].franchise.id").type(JsonFieldType.NUMBER)
                                         .description("프렌차이즈 ID"),
-                                fieldWithPath("menu[].franchise.logoUrl").type(JsonFieldType.STRING)
+                                fieldWithPath("menu[].franchise.image").type(JsonFieldType.STRING)
                                         .description("프렌차이즈 이미지 URL"),
                                 fieldWithPath("menu[].franchise.name").type(JsonFieldType.STRING)
                                         .description("프렌차이즈명"),
@@ -409,11 +409,11 @@ class MenuControllerTest {
                                         JsonFieldType.STRING).description("메뉴 옵션 설명"),
                                 fieldWithPath("menu[].tasteList[]").type(JsonFieldType.ARRAY)
                                         .description("메뉴 맛 배열"),
-                                fieldWithPath("menu[].tasteList[].tasteId").type(JsonFieldType.NUMBER)
+                                fieldWithPath("menu[].tasteList[].id").type(JsonFieldType.NUMBER)
                                         .description("맛 ID"),
-                                fieldWithPath("menu[].tasteList[].tasteName").type(JsonFieldType.STRING)
+                                fieldWithPath("menu[].tasteList[].name").type(JsonFieldType.STRING)
                                         .description("맛 이름"),
-                                fieldWithPath("menu[].tasteList[].tasteColor").type(JsonFieldType.STRING)
+                                fieldWithPath("menu[].tasteList[].color").type(JsonFieldType.STRING)
                                         .description("맛 색상 코드")
                         )
                 ));
