@@ -20,9 +20,7 @@ import com.tasty.masiottae.menu.repository.MenuRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,8 +43,6 @@ class CommentServiceTest {
     @Autowired
     CommentService commentService;
 
-    @PersistenceContext
-    EntityManager entityManager;
     Menu menu;
     Franchise franchise;
     Account account;
@@ -63,6 +59,11 @@ class CommentServiceTest {
     }
 
     @Test
+    void test() {
+        System.out.println(menu.getId());
+    }
+
+    @Test
     @DisplayName("댓글 작성 성공")
     void testCreateComment() {
         // given
@@ -75,8 +76,8 @@ class CommentServiceTest {
         // then
         Comment findComment = commentRepository.findByIdFetch(comment.commentId()).get();
         assertAll(
-            () -> assertThat(findComment.getAccount().getId()).isEqualTo(1L),
-            () -> assertThat(findComment.getMenu().getId()).isEqualTo(1L),
+            () -> assertThat(findComment.getAccount().getId()).isEqualTo(account.getId()),
+            () -> assertThat(findComment.getMenu().getId()).isEqualTo(menu.getId()),
             () -> assertThat(findComment.getMenu().getRealMenuName()).isEqualTo("realName"),
             () -> assertThat(findComment.getAccount().getEmail()).isEqualTo("test@gmail.com"),
             () -> assertThat(findComment.getContent()).isEqualTo("이것은 댓글이다.")
