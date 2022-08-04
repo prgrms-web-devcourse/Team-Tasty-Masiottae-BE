@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Component
-public class AcccountEntityService {
+public class AccountEntityService {
 
     private final AccountRepository accountRepository;
 
