@@ -21,7 +21,13 @@ public enum ErrorMessage {
     NOT_FOUND_FRANCHISE("존재하지 않는 프랜차이즈입니다."),
 
     // account
-    NOT_FOUND_ACCOUNT("존재하지 하지 않는 유저입니다.");
+    NOT_FOUND_ACCOUNT("존재하지 하지 않는 유저입니다."),
+
+    // menu
+    NOT_FOUND_MENU("존재하지 않는 메뉴입니다."),
+
+    // comment
+    NO_COMMENT_CONTENT("댓글 내용을 입력해주세요.");
 
     private final String message;
 
