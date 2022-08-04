@@ -36,7 +36,7 @@ public class CommentService {
     public CommentSaveResponse createComment(CommentSaveRequest request) {
         Menu menu = menuRepository.findById(request.menuId())
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_MENU.getMessage()));
-        Account account = accountRepository.findById(request.accountId())
+        Account account = accountRepository.findById(request.userId())
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_ACCOUNT.getMessage()));
 
         checkContentIsNotEmpty(request);
