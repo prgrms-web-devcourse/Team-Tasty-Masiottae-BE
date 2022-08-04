@@ -96,7 +96,7 @@ class MenuControllerTest {
                 responseFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("메뉴 ID"),
                     fieldWithPath("franchise.id").type(JsonFieldType.NUMBER)
                         .description("프랜차이즈 id"),
-                    fieldWithPath("franchise.logoUrl").type(JsonFieldType.STRING)
+                    fieldWithPath("franchise.image").type(JsonFieldType.STRING)
                         .description("프랜차이즈 로고"),
                     fieldWithPath("franchise.name").type(JsonFieldType.STRING)
                         .description("프랜차이즈명"),
