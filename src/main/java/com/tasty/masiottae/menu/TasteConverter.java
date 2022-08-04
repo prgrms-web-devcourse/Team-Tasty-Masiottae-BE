@@ -13,7 +13,7 @@ public class TasteConverter {
     }
 
     public Taste toTaste(TasteSaveRequest request) {
-        return Taste.createTaste(request.tasteName(), request.tasteColor());
+        return Taste.createTaste(request.name(), request.color());
     }
 
 }
