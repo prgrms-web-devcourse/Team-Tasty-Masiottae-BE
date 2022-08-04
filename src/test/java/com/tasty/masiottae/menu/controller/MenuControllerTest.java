@@ -16,6 +16,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -26,8 +27,10 @@ import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.config.RestDocsConfiguration;
 import com.tasty.masiottae.franchise.dto.FranchiseFindResponse;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
+import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
+import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
+import com.tasty.masiottae.menu.dto.SearchMyMenuResponse;
 import com.tasty.masiottae.menu.dto.TasteFindResponse;
 import com.tasty.masiottae.menu.service.MenuService;
 import com.tasty.masiottae.option.dto.OptionFindResponse;
@@ -35,10 +38,8 @@ import com.tasty.masiottae.option.dto.OptionSaveRequest;
 import com.tasty.masiottae.security.config.SecurityConfig;
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
-
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -285,5 +286,136 @@ class MenuControllerTest {
                 ));
 
         then(menuService).should().delete(menuId);
+    }
+
+    @Test
+    @DisplayName("나의 메뉴를 검색한다.")
+    void searchMyMenuTest() throws Exception {
+        List<Long> tasteIds = List.of(1L, 2L, 3L);
+
+        AccountFindResponse author = new AccountFindResponse(1L, "user1.com", "programmers",
+                "prgrms@gmail.com", "prgrms123", LocalDateTime.now(), 1);
+        FranchiseFindResponse franchise = new FranchiseFindResponse(1L, "starbucks.com", "스타벅스");
+
+        List<OptionFindResponse> optionFindResponses = List.of(
+                new OptionFindResponse("간 자바칩", "1개"),
+                new OptionFindResponse("통 자바칩", "1개"),
+                new OptionFindResponse("카라멜드리즐", "1개")
+        );
+
+        List<TasteFindResponse> tasteFindResponses = List.of(
+                new TasteFindResponse(1L, "단맛", "#000000"),
+                new TasteFindResponse(2L, "매운맛", "#000000"),
+                new TasteFindResponse(3L, "쓴맛", "#000000")
+        );
+
+        List<MenuFindResponse> menuFindResponses = List.of(
+                new MenuFindResponse(1L, franchise, "menu1.com",
+                        "슈렉 프라푸치노", "그린티 프라푸치노",
+                        author, "맛있습니다.", 0, 8000, optionFindResponses, tasteFindResponses,
+                        LocalDateTime.now(), LocalDateTime.now()),
+                new MenuFindResponse(2L, franchise, "menu1.com",
+                        "몬스터 프라푸치노", "자바칩 프라푸치노",
+                        author, "맛있습니다.", 0, 8000, optionFindResponses, tasteFindResponses,
+                        LocalDateTime.now(), LocalDateTime.now())
+        );
+
+        Long accountId = 1L;
+        SearchMyMenuRequest request = new SearchMyMenuRequest(0, 1, "프라푸치노", "recent",
+                List.of(1L, 2L, 3L));
+
+        given(menuService.searchMyMenu(accountId, request)).willReturn(
+                new SearchMyMenuResponse(menuFindResponses));
+
+        mockMvc.perform(get("/accounts/{accountId}/menu", accountId)
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .param("keyword", request.keyword())
+                        .param("sort", request.sort())
+                        .param("tasteIdList", "1", "2", "3")
+                        .param("offset", String.valueOf(request.offset()))
+                        .param("limit", String.valueOf(request.limit())))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("search-my-menu",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.ACCEPT).description(
+                                        MediaType.APPLICATION_JSON_VALUE)
+                        ),
+                        pathParameters(
+                                parameterWithName("accountId").description("회원 ID")
+                        ),
+                        requestParameters(
+                                parameterWithName("keyword").description("검색어"),
+                                parameterWithName("sort").description(
+                                        "정렬 조건(recent, like, comment)"),
+                                parameterWithName("tasteIdList").description("맛 ID 조건"),
+                                parameterWithName("offset").description("페이징 offset"),
+                                parameterWithName("limit").description("패이징 limit")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description(
+                                        MediaType.APPLICATION_JSON_VALUE)
+                        ),
+                        responseFields(
+                                fieldWithPath("menu[]").type(JsonFieldType.ARRAY)
+                                        .description("메뉴 배열"),
+                                fieldWithPath("menu[].id").type(JsonFieldType.NUMBER)
+                                        .description("메뉴 ID"),
+                                fieldWithPath("menu[].image").type(JsonFieldType.STRING)
+                                        .description("이미지 URL"),
+                                fieldWithPath("menu[].title").type(JsonFieldType.STRING)
+                                        .description("메뉴명"),
+                                fieldWithPath("menu[].originalTitle").type(JsonFieldType.STRING)
+                                        .description("기존 메뉴명"),
+                                fieldWithPath("menu[].content").type(JsonFieldType.STRING)
+                                        .description("메뉴 설명"),
+                                fieldWithPath("menu[].likes").type(JsonFieldType.NUMBER)
+                                        .description("메뉴 좋아요 개수"),
+                                fieldWithPath("menu[].expectedPrice").type(JsonFieldType.NUMBER)
+                                        .description("메뉴 가격"),
+                                fieldWithPath("menu[].createdAt").type(JsonFieldType.STRING)
+                                        .description("메뉴 생성 일시"),
+                                fieldWithPath("menu[].updatedAt").type(JsonFieldType.STRING)
+                                        .description("최종 메뉴 수정 일시"),
+                                fieldWithPath("menu[].franchise").type(JsonFieldType.OBJECT)
+                                        .description("프렌차이즈 정보"),
+                                fieldWithPath("menu[].franchise.id").type(JsonFieldType.NUMBER)
+                                        .description("프렌차이즈 ID"),
+                                fieldWithPath("menu[].franchise.logoUrl").type(JsonFieldType.STRING)
+                                        .description("프렌차이즈 이미지 URL"),
+                                fieldWithPath("menu[].franchise.name").type(JsonFieldType.STRING)
+                                        .description("프렌차이즈명"),
+                                fieldWithPath("menu[].author").type(JsonFieldType.OBJECT)
+                                        .description("회원 정보"),
+                                fieldWithPath("menu[].author.id").type(JsonFieldType.NUMBER)
+                                        .description("회원 ID"),
+                                fieldWithPath("menu[].author.image").type(JsonFieldType.STRING)
+                                        .description("회원 이미지 URL"),
+                                fieldWithPath("menu[].author.nickName").type(JsonFieldType.STRING)
+                                        .description("회원 닉네임"),
+                                fieldWithPath("menu[].author.email").type(JsonFieldType.STRING)
+                                        .description("회원 이메일"),
+                                fieldWithPath("menu[].author.snsAccount").type(JsonFieldType.STRING)
+                                        .description("회원 SNS 계정"),
+                                fieldWithPath("menu[].author.createdAt").type(JsonFieldType.STRING)
+                                        .description("회원 생성 일시"),
+                                fieldWithPath("menu[].author.menuCount").type(JsonFieldType.NUMBER)
+                                        .description("해당 회원이 생성한 메뉴 개수"),
+                                fieldWithPath("menu[].optionList[]").type(JsonFieldType.ARRAY)
+                                        .description("메뉴 옵션 배열"),
+                                fieldWithPath("menu[].optionList[].optionName").type(
+                                        JsonFieldType.STRING).description("메뉴 옵션명"),
+                                fieldWithPath("menu[].optionList[].optionDescription").type(
+                                        JsonFieldType.STRING).description("메뉴 옵션 설명"),
+                                fieldWithPath("menu[].tasteList[]").type(JsonFieldType.ARRAY)
+                                        .description("메뉴 맛 배열"),
+                                fieldWithPath("menu[].tasteList[].tasteId").type(JsonFieldType.NUMBER)
+                                        .description("맛 ID"),
+                                fieldWithPath("menu[].tasteList[].tasteName").type(JsonFieldType.STRING)
+                                        .description("맛 이름"),
+                                fieldWithPath("menu[].tasteList[].tasteColor").type(JsonFieldType.STRING)
+                                        .description("맛 색상 코드")
+                        )
+                ));
     }
 }

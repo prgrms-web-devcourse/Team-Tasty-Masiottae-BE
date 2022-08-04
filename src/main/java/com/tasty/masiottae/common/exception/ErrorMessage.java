@@ -14,12 +14,16 @@ public enum ErrorMessage {
 
     // taste
     NOT_FOUND_TASTE("존재하지 않는 맛입니다."),
+    NOT_FOUND_SOME_TASTE("존재하지 않는 맛이 포함되어 있습니다."),
 
     // franchise
     NOT_FOUND_FRANCHISE("존재하지 않는 프랜차이즈입니다."),
 
     // account
-    NOT_FOUND_ACCOUNT("존재하지 하지 않는 유저입니다.");
+    NOT_FOUND_ACCOUNT("존재하지 하지 않는 유저입니다."),
+
+    // menu
+    INVALID_MENU_ORDER_COND("존재하지 않는 메뉴 정렬 값입니다.");
 
     private final String message;
 
