@@ -32,7 +32,6 @@ public class CommentController {
     @PostMapping("/comments")
     public ResponseEntity<CommentSaveResponse> saveComment(
         @Valid @RequestBody CommentSaveRequest commentSaveRequest) {
-        commentService.createComment(commentSaveRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(commentService.createComment(commentSaveRequest));
     }
