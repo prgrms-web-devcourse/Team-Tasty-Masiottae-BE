@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorMessage {
 
+    // common
+    UNCAUGHT_ERROR("처리되지 않은 에러입니다. 담당자에게 문의해 주세요."),
     INVALID_INPUT_VALUE("잘못된 데이터를 입력하였습니다."),
 
     // s3
