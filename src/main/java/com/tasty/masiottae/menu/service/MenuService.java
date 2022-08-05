@@ -12,7 +12,6 @@ import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
-
 import com.tasty.masiottae.menu.dto.SearchCond;
 import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMyMenuResponse;
@@ -99,37 +98,40 @@ public class MenuService {
     }
 
     public SearchMyMenuResponse searchMyMenu(Long accountId, SearchMyMenuRequest request) {
-        Account account = accountEntityService.findById(accountId);
-        List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
-        MenuSortCond sortCond = MenuSortCond.find(request.sort());
-        SearchCond searchCond = new SearchCond(account, request.keyword(), sortCond,
-                findTasteByIds);
-
-        List<Menu> menus = menuRepository.search(searchCond);
-
-        if (isNotEmptyTastes(findTasteByIds)) {
-            menus = getFilteredListByTastes(findTasteByIds, menus);
-        }
-
-        if (isOveOffsetThanSize(request.offset(), menus.size())) {
-            return new SearchMyMenuResponse(null);
-        }
-
+        SearchCond searchCond = buildSearchCond(accountId, request);
+        List<Menu> menus = getFilteredList(searchCond);
         return new SearchMyMenuResponse(
                 getPagingList(request.offset(), request.limit(), menus));
     }
 
+    private SearchCond buildSearchCond(Long accountId, SearchMyMenuRequest request) {
+        Account account = accountEntityService.findById(accountId);
+        List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
+        MenuSortCond sortCond = MenuSortCond.find(request.sort());
+        return new SearchCond(account, request.keyword(), sortCond, findTasteByIds);
+    }
+
     private List<MenuFindResponse> getPagingList(int offset, int limit, List<Menu> menus) {
+        if (isOveOffsetThanSize(offset, menus.size())) {
+            return null;
+        }
+
         int end = getEndIndex(offset, limit, menus);
         return menus.subList(offset, end).stream().map(menuConverter::toMenuFindResponse)
                 .toList();
     }
 
-    private static List<Menu> getFilteredListByTastes(List<Taste> findTasteByIds, List<Menu> menus) {
-        return menus.stream()
-                .filter(menu -> menu.getMenuTasteSet().stream()
-                        .map(MenuTaste::getTaste).collect(Collectors.toSet())
-                        .equals(new HashSet<>(findTasteByIds))).toList();
+    private List<Menu> getFilteredList(SearchCond searchCond) {
+        List<Menu> menus = menuRepository.search(searchCond);
+
+        if (isNotEmptyTastes(searchCond.tastes())) {
+            return menus.stream()
+                    .filter(menu -> menu.getMenuTasteSet().stream()
+                            .map(MenuTaste::getTaste).collect(Collectors.toSet())
+                            .equals(new HashSet<>(searchCond.tastes()))).toList();
+        }
+
+        return menus;
     }
 
     private static boolean isNotEmptyTastes(List<Taste> findTasteByIds) {
