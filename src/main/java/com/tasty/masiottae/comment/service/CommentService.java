@@ -41,12 +41,13 @@ public class CommentService {
 
         checkContentIsNotEmpty(request);
 
-        Comment comment = Comment.createComment(account, menu, request.content());
+        Comment comment = Comment.createComment(account, menu, request.comment());
         Comment savedComment = commentRepository.save(comment);
 
         menu.addComment(savedComment);
         account.addComment(savedComment);
-        return new CommentSaveResponse(request.menuId(), savedComment.getId());
+        return new CommentSaveResponse(request.menuId(), savedComment.getId(),
+            savedComment.getContent());
     }
 
     public List<CommentFindResponse> findAllCommentOfOneMenu(Long menuId) {
@@ -57,7 +58,7 @@ public class CommentService {
     }
 
     private void checkContentIsNotEmpty(CommentSaveRequest request) {
-        if (!StringUtils.hasText(request.content())) {
+        if (!StringUtils.hasText(request.comment())) {
             throw new IllegalArgumentException(NO_COMMENT_CONTENT.getMessage());
         }
     }

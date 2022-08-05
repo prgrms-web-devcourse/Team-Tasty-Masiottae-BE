@@ -1,5 +1,7 @@
 package com.tasty.masiottae.comment.dto;
 
-public record CommentSaveResponse(Long menuId, Long commentId) {
+import java.time.LocalDateTime;
+
+public record CommentSaveResponse(Long menuId, Long commentId, String comment) {
 
 }
