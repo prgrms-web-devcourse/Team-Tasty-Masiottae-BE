@@ -1,6 +1,7 @@
 package com.tasty.masiottae.comment.domain;
 
 import com.tasty.masiottae.account.domain.Account;
+import com.tasty.masiottae.common.base.BaseTimeEntity;
 import com.tasty.masiottae.menu.domain.Menu;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Table
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id
     @Column(name = "id")

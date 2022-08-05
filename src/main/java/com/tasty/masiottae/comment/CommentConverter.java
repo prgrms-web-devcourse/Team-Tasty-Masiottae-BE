@@ -17,7 +17,9 @@ public class CommentConverter {
             comment.getId(),
             comment.getMenu().getId(),
             accountConverter.toAccountFindResponse(comment.getAccount()),
-            comment.getContent()
+            comment.getContent(),
+            comment.getCreatedAt(),
+            comment.getUpdatedAt()
         );
     }
 }
