@@ -60,7 +60,7 @@ class CommentControllerTest {
         // given
         CommentSaveRequest request = new CommentSaveRequest(1L, 1L, "댓글내용");
         CommentSaveResponse response = new CommentSaveResponse(request.menuId(),
-            request.userId());
+            request.userId(), request.content());
         given(commentService.createComment(request)).willReturn(response);
 
         // expected
@@ -79,7 +79,8 @@ class CommentControllerTest {
                 ),
                 responseFields(
                     fieldWithPath("menuId").type(JsonFieldType.NUMBER).description("메뉴 ID"),
-                    fieldWithPath("commentId").type(JsonFieldType.NUMBER).description("댓글 ID")
+                    fieldWithPath("commentId").type(JsonFieldType.NUMBER).description("댓글 ID"),
+                    fieldWithPath("comment").type(JsonFieldType.STRING).description("댓글 내용")
                 )));
     }
 

@@ -46,7 +46,8 @@ public class CommentService {
 
         menu.addComment(savedComment);
         account.addComment(savedComment);
-        return new CommentSaveResponse(request.menuId(), savedComment.getId());
+        return new CommentSaveResponse(request.menuId(), savedComment.getId(),
+            savedComment.getContent());
     }
 
     public List<CommentFindResponse> findAllCommentOfOneMenu(Long menuId) {
