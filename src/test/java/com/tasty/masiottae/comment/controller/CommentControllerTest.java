@@ -60,7 +60,7 @@ class CommentControllerTest {
         // given
         CommentSaveRequest request = new CommentSaveRequest(1L, 1L, "댓글내용");
         CommentSaveResponse response = new CommentSaveResponse(request.menuId(),
-            request.userId());
+            request.userId(), request.comment());
         given(commentService.createComment(request)).willReturn(response);
 
         // expected
@@ -74,12 +74,13 @@ class CommentControllerTest {
                         .description("유저 ID"),
                     fieldWithPath("menuId").type(JsonFieldType.NUMBER)
                         .description("메뉴 ID"),
-                    fieldWithPath("content").type(JsonFieldType.STRING)
+                    fieldWithPath("comment").type(JsonFieldType.STRING)
                         .description("댓글 내용")
                 ),
                 responseFields(
                     fieldWithPath("menuId").type(JsonFieldType.NUMBER).description("메뉴 ID"),
-                    fieldWithPath("commentId").type(JsonFieldType.NUMBER).description("댓글 ID")
+                    fieldWithPath("commentId").type(JsonFieldType.NUMBER).description("댓글 ID"),
+                    fieldWithPath("comment").type(JsonFieldType.STRING).description("댓글 내용")
                 )));
     }
 
@@ -92,7 +93,8 @@ class CommentControllerTest {
             .mapToObj(i -> new AccountFindResponse((long) i, "profile" + i, "nickname" + i,
                 "test" + i + "@gmail.com", "sns" + i, LocalDateTime.now(), 10)).toList();
         List<CommentFindResponse> response = IntStream.range(1, 11).mapToObj(
-            i -> new CommentFindResponse((long) i, menuId, accounts.get(i - 1), "댓글내용")
+            i -> new CommentFindResponse((long) i, menuId, accounts.get(i - 1), "댓글내용",
+                LocalDateTime.now(), LocalDateTime.now())
         ).collect(Collectors.toList());
         given(commentService.findAllCommentOfOneMenu(menuId)).willReturn(response);
 
@@ -117,6 +119,8 @@ class CommentControllerTest {
                         .description("생성일"),
                     fieldWithPath("[].author.menuCount").type(JsonFieldType.NUMBER)
                         .description("유저 생성 메뉴 개수"),
-                    fieldWithPath("[].comment").type(JsonFieldType.STRING).description("댓글 내용"))));
+                    fieldWithPath("[].comment").type(JsonFieldType.STRING).description("댓글 내용"),
+                    fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성일"),
+                    fieldWithPath("[].updatedAt").type(JsonFieldType.STRING).description("갱신일"))));
     }
 }
