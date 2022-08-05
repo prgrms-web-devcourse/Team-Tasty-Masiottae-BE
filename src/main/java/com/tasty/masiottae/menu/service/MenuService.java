@@ -13,6 +13,7 @@ import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
 
+import com.tasty.masiottae.menu.dto.SearchCond;
 import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMyMenuResponse;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
@@ -101,9 +102,10 @@ public class MenuService {
         Account account = accountEntityService.findById(accountId);
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
-
-        List<Menu> menus = menuRepository.search(account, request.keyword(), sortCond,
+        SearchCond searchCond = new SearchCond(account, request.keyword(), sortCond,
                 findTasteByIds);
+
+        List<Menu> menus = menuRepository.search(searchCond);
 
         if (isNotEmptyTastes(findTasteByIds)) {
             menus = getFilteredListByTastes(findTasteByIds, menus);

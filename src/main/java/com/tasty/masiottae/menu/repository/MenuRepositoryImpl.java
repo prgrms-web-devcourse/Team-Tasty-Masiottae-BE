@@ -9,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
+import com.tasty.masiottae.menu.dto.SearchCond;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
 import java.util.List;
 import java.util.Objects;
@@ -22,12 +23,12 @@ public class MenuRepositoryImpl implements MenuRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Menu> search(Account account, String keyword, MenuSortCond sort, List<Taste> tastes) {
+    public List<Menu> search(SearchCond searchCond) {
         return queryFactory.select(menuTaste.menu)
                 .distinct()
                 .from(menuTaste)
-                .where(containKeyword(keyword), tasteIn(tastes), accountEq(account))
-                .orderBy(sortCond(sort))
+                .where(containKeyword(searchCond.keyword()), tasteIn(searchCond.tastes()), accountEq(searchCond.account()))
+                .orderBy(sortCond(searchCond.menuSortCond()))
                 .fetch();
     }
 

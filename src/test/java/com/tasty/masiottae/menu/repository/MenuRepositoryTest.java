@@ -11,6 +11,7 @@ import com.tasty.masiottae.franchise.repository.FranchiseRepository;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.MenuTaste;
 import com.tasty.masiottae.menu.domain.Taste;
+import com.tasty.masiottae.menu.dto.SearchCond;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
 import java.util.Collections;
 import java.util.List;
@@ -72,8 +73,9 @@ class MenuRepositoryTest {
     @DisplayName("나만의 메뉴판을 조회한다.")
     void searchTest() {
         // When
-        List<Menu> search = menuRepository.search(account, "커스텀 이름", MenuSortCond.RECENT,
-                Collections.singletonList(tastes.get(0)));
+        List<Menu> search = menuRepository.search(
+                new SearchCond(account, "커스텀 이름", MenuSortCond.RECENT,
+                        Collections.singletonList(tastes.get(0))));
 
         // Then
         assertAll(
