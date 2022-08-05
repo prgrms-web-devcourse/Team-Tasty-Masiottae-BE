@@ -146,9 +146,9 @@ class MenuServiceTest {
         );
 
         List<Taste> tastes = List.of(
-                tasteRepository.save(Taste.createTaste("매운맛", "####")),
-                tasteRepository.save(Taste.createTaste("단맛", "####")),
-                tasteRepository.save(Taste.createTaste("짠맛", "####"))
+                tasteRepository.save(Taste.createTaste("단짠", "####")),
+                tasteRepository.save(Taste.createTaste("쓴맛", "####")),
+                tasteRepository.save(Taste.createTaste("신맛", "####"))
         );
 
         MenuSaveUpdateRequest request = new MenuSaveUpdateRequest(
