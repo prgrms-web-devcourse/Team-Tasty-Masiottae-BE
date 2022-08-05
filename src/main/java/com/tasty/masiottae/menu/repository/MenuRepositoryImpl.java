@@ -13,14 +13,12 @@ import com.tasty.masiottae.menu.enums.MenuSortCond;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
 public class MenuRepositoryImpl implements MenuRepositoryCustom {
 
-    @Autowired
     private final JPAQueryFactory queryFactory;
 
     @Override
