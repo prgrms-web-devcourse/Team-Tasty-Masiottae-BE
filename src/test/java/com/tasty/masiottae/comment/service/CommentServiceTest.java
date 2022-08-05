@@ -13,6 +13,7 @@ import com.tasty.masiottae.comment.dto.CommentFindResponse;
 import com.tasty.masiottae.comment.dto.CommentSaveRequest;
 import com.tasty.masiottae.comment.dto.CommentSaveResponse;
 import com.tasty.masiottae.comment.repository.CommentRepository;
+import com.tasty.masiottae.config.QuerydslConfig;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.repository.FranchiseRepository;
 import com.tasty.masiottae.menu.domain.Menu;
@@ -29,7 +30,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({CommentService.class, CommentConverter.class, AccountConverter.class})
+@Import({CommentService.class, CommentConverter.class, AccountConverter.class, QuerydslConfig.class})
 class CommentServiceTest {
 
     @Autowired

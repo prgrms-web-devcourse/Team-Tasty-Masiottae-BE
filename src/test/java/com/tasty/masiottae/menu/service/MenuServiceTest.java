@@ -1,7 +1,5 @@
 package com.tasty.masiottae.menu.service;
 
-import javax.persistence.EntityNotFoundException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,14 +12,18 @@ import com.tasty.masiottae.franchise.repository.FranchiseRepository;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
+import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
+import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
+import com.tasty.masiottae.menu.dto.SearchMyMenuResponse;
+import com.tasty.masiottae.menu.enums.MenuSortCond;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import com.tasty.masiottae.menu.repository.TasteRepository;
 import com.tasty.masiottae.option.domain.Option;
 import com.tasty.masiottae.option.dto.OptionSaveRequest;
 import io.findify.s3mock.S3Mock;
 import java.util.List;
+import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,6 +59,8 @@ class MenuServiceTest {
     private Account account;
     private Franchise franchise;
     private MenuSaveResponse menuSaveResponse;
+    private List<Taste> tastes;
+    private List<OptionSaveRequest> optionSaveRequests;
 
     @BeforeEach
     void initMenuSave() {
@@ -68,13 +72,13 @@ class MenuServiceTest {
         franchiseRepository.save(franchise);
 
         // Given
-        List<OptionSaveRequest> optionSaveRequests = List.of(
+        optionSaveRequests = List.of(
                 new OptionSaveRequest("옵션1", "설명1"),
                 new OptionSaveRequest("옵션2", "설명2"),
                 new OptionSaveRequest("옵션3", "설명3")
         );
 
-        List<Taste> tastes = List.of(
+        tastes = List.of(
                 tasteRepository.save(Taste.createTaste("매운맛", "####")),
                 tasteRepository.save(Taste.createTaste("단맛", "####")),
                 tasteRepository.save(Taste.createTaste("짠맛", "####"))
@@ -187,5 +191,46 @@ class MenuServiceTest {
     void testDelete() {
         menuService.delete(menuSaveResponse.menuId());
         assertThrows(EntityNotFoundException.class, () -> menuService.findOneMenu(menuSaveResponse.menuId()));
+    }
+
+    @Test
+    @DisplayName("나만의 메뉴판을 조회한다.")
+    void searchMyMenuTest() {
+        // Given
+        saveMoreMenus();
+        SearchMyMenuRequest request = new SearchMyMenuRequest(0, 3, "커스텀",
+                MenuSortCond.RECENT.getUrlValue(), tastes.stream().map(Taste::getId).toList());
+
+        // When
+        SearchMyMenuResponse responses = menuService.searchMyMenu(account.getId(), request);
+
+        // Then
+        assertThat(responses.menu().size()).isEqualTo(1);
+    }
+
+    private void saveMoreMenus() {
+        menuService.createMenu(new MenuSaveUpdateRequest(
+                        account.getId(),
+                        franchise.getId(),
+                        "커스텀 이름",
+                        "맛있습니다",
+                        "원래 메뉴 이름",
+                        15000,
+                        optionSaveRequests,
+                        List.of(tastes.get(1).getId(), tastes.get(2).getId())),
+                new MockMultipartFile("image", "image.png", "img/png",
+                        "image".getBytes()));
+
+        menuService.createMenu(new MenuSaveUpdateRequest(
+                        account.getId(),
+                        franchise.getId(),
+                        "커스텀 이름",
+                        "맛있습니다",
+                        "원래 메뉴 이름",
+                        15000,
+                        optionSaveRequests,
+                        List.of(tastes.get(2).getId())),
+                new MockMultipartFile("image", "image.png", "img/png",
+                        "image".getBytes()));
     }
 }
