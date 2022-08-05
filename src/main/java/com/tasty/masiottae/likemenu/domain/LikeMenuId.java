@@ -13,8 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LikeMenuId implements Serializable {
 
-    private Account account;
+    private Long account;
 
-    private Menu menu;
+    private Long menu;
+
 
 }
