@@ -60,7 +60,7 @@ class CommentControllerTest {
         // given
         CommentSaveRequest request = new CommentSaveRequest(1L, 1L, "댓글내용");
         CommentSaveResponse response = new CommentSaveResponse(request.menuId(),
-            request.accountId());
+            request.userId());
         given(commentService.createComment(request)).willReturn(response);
 
         // expected
@@ -70,7 +70,7 @@ class CommentControllerTest {
             .andDo(print())
             .andDo(document("comment-save",
                 requestFields(
-                    fieldWithPath("accountId").type(JsonFieldType.NUMBER)
+                    fieldWithPath("userId").type(JsonFieldType.NUMBER)
                         .description("유저 ID"),
                     fieldWithPath("menuId").type(JsonFieldType.NUMBER)
                         .description("메뉴 ID"),
@@ -105,12 +105,18 @@ class CommentControllerTest {
                     fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("댓글 ID"),
                     fieldWithPath("[].menuId").type(JsonFieldType.NUMBER).description("메뉴 ID"),
                     fieldWithPath("[].author.id").type(JsonFieldType.NUMBER).description("유저 ID"),
-                    fieldWithPath("[].author.image").type(JsonFieldType.STRING).description("유저 프로필 이미지"),
-                    fieldWithPath("[].author.nickName").type(JsonFieldType.STRING).description("유저 닉네임"),
-                    fieldWithPath("[].author.email").type(JsonFieldType.STRING).description("유저 이메일"),
-                    fieldWithPath("[].author.snsAccount").type(JsonFieldType.STRING).description("SNS 계정"),
-                    fieldWithPath("[].author.createdAt").type(JsonFieldType.STRING).description("생성일"),
-                    fieldWithPath("[].author.menuCount").type(JsonFieldType.NUMBER).description("유저 생성 메뉴 개수"),
+                    fieldWithPath("[].author.image").type(JsonFieldType.STRING)
+                        .description("유저 프로필 이미지"),
+                    fieldWithPath("[].author.nickName").type(JsonFieldType.STRING)
+                        .description("유저 닉네임"),
+                    fieldWithPath("[].author.email").type(JsonFieldType.STRING)
+                        .description("유저 이메일"),
+                    fieldWithPath("[].author.snsAccount").type(JsonFieldType.STRING)
+                        .description("SNS 계정"),
+                    fieldWithPath("[].author.createdAt").type(JsonFieldType.STRING)
+                        .description("생성일"),
+                    fieldWithPath("[].author.menuCount").type(JsonFieldType.NUMBER)
+                        .description("유저 생성 메뉴 개수"),
                     fieldWithPath("[].comment").type(JsonFieldType.STRING).description("댓글 내용"))));
     }
 }
