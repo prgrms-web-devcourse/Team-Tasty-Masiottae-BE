@@ -1,11 +1,6 @@
 package com.tasty.masiottae.likemenu.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.tasty.masiottae.account.domain.Account;
-import com.tasty.masiottae.common.exception.custom.NotFoundException;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.likemenu.domain.LikeMenuId;
 import com.tasty.masiottae.likemenu.repository.LikeMenuRepository;
@@ -14,8 +9,8 @@ import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +47,7 @@ public class LikeMenuService {
         }
     }
 
-    public Page<MenuFindResponse> getLikeMenu(Account account, Pageable pageable) {
+    public Page<MenuFindResponse> getPageLikeMenuByAccount(Account account, Pageable pageable) {
 
        return likeMenuRepository.findEntityGraphNByAccount(account, pageable)
                 .map(LikeMenu::getMenu)
