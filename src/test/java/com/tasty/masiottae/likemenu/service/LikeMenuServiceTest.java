@@ -25,6 +25,7 @@ import com.tasty.masiottae.menu.service.MenuService;
 import com.tasty.masiottae.option.dto.OptionSaveRequest;
 import io.findify.s3mock.S3Mock;
 import org.hibernate.SessionFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,10 +77,6 @@ class LikeMenuServiceTest {
 
     @BeforeEach
     void init() {
-        likeMenuRepository.deleteAll();
-        menuRepository.deleteAll();
-        accountRepository.deleteAll();
-
         account = Account.createAccount("test@gmail.com", "password", "nickname", "imageUrl");
 
         franchise = Franchise.createFranchise("starbucks", "logo");
@@ -111,6 +108,14 @@ class LikeMenuServiceTest {
 
     }
 
+    @AfterEach
+    void after() {
+        likeMenuRepository.deleteAll();
+        menuRepository.deleteAll();
+        accountRepository.deleteAll();
+        tasteRepository.deleteAll();
+        franchiseRepository.deleteAll();
+    }
     @Test
     @DisplayName("좋아요가 안된 메뉴를 좋아요로 바꿀 수 있다.")
     void changeLike() {

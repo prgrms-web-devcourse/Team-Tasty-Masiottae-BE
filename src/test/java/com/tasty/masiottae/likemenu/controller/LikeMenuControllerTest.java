@@ -148,8 +148,7 @@ class LikeMenuControllerTest {
                                         .description("메뉴 ID"),
                                 fieldWithPath("content[].franchise.id").type(JsonFieldType.NUMBER)
                                         .description("프랜차이즈 id"),
-                                fieldWithPath("content[].franchise.logoUrl").type(
-                                                JsonFieldType.STRING)
+                                fieldWithPath("content[].franchise.image").type(JsonFieldType.STRING)
                                         .description("프랜차이즈 로고"),
                                 fieldWithPath("content[].franchise.name").type(JsonFieldType.STRING)
                                         .description("프랜차이즈명"),
@@ -161,21 +160,18 @@ class LikeMenuControllerTest {
                                         .description("실제 메뉴명"),
                                 fieldWithPath("content[].author.id").type(JsonFieldType.NUMBER)
                                         .description("유저 ID"),
-                                fieldWithPath("content[].author.nickName").type(
-                                                JsonFieldType.STRING)
+                                fieldWithPath("content[].author.nickName").type(JsonFieldType.STRING)
                                         .description("닉네임"),
                                 fieldWithPath("content[].author.image").type(JsonFieldType.STRING)
                                         .description("유저 프로필사진"),
                                 fieldWithPath("content[].author.email").type(JsonFieldType.STRING)
                                         .description("유저 이메일"),
-                                fieldWithPath("content[].author.createdAt").type(
-                                                JsonFieldType.STRING)
+                                fieldWithPath("content[].author.createdAt").type(JsonFieldType.STRING)
                                         .description("생성일"),
                                 fieldWithPath("content[].author.snsAccount").type(
                                                 JsonFieldType.STRING)
                                         .description("유저 SNS 계정"),
-                                fieldWithPath("content[].author.menuCount").type(
-                                                JsonFieldType.NUMBER)
+                                fieldWithPath("content[].author.menuCount").type(JsonFieldType.NUMBER)
                                         .description("해당 유저의 생성메뉴 수"),
                                 fieldWithPath("content[].content").type(JsonFieldType.STRING)
                                         .description("설명"),
@@ -183,40 +179,44 @@ class LikeMenuControllerTest {
                                         .description("좋아요 수"),
                                 fieldWithPath("content[].expectedPrice").type(JsonFieldType.NUMBER)
                                         .description("예상가격"),
-                                fieldWithPath("content[].optionList[].optionName").type(
+                                fieldWithPath("content[].optionList[].name").type(
                                                 JsonFieldType.STRING)
                                         .description("옵션명"),
-                                fieldWithPath("content[].optionList[].optionDescription").type(
+                                fieldWithPath("content[].optionList[].description").type(
                                                 JsonFieldType.STRING)
                                         .description("옵션 설명"),
-                                fieldWithPath("content[].tasteList[].tasteId").type(
-                                                JsonFieldType.NUMBER)
+                                fieldWithPath("content[].tasteList[].id").type(JsonFieldType.NUMBER)
                                         .description("맛 ID"),
-                                fieldWithPath("content[].tasteList[].tasteName").type(
-                                                JsonFieldType.STRING)
+                                fieldWithPath("content[].tasteList[].name").type(JsonFieldType.STRING)
                                         .description("맛 이름"),
-                                fieldWithPath("content[].tasteList[].tasteColor").type(
+                                fieldWithPath("content[].tasteList[].color").type(
                                                 JsonFieldType.STRING)
                                         .description("맛 태그 컬러"),
                                 fieldWithPath("content[].createdAt").type(JsonFieldType.STRING)
                                         .description("생성일"),
                                 fieldWithPath("content[].updatedAt").type(JsonFieldType.STRING)
                                         .description("갱신일"),
-                                fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER)
+                                fieldWithPath("pageable.pageNumber").type(
+                                                JsonFieldType.NUMBER)
                                         .description("페이지 번호"),
-                                fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER)
+                                fieldWithPath("pageable.pageSize").type(
+                                                JsonFieldType.NUMBER)
                                         .description("페이지 크기"),
                                 fieldWithPath("pageable.offset").type(JsonFieldType.NUMBER)
                                         .description("offset"),
                                 fieldWithPath("pageable.paged").type(JsonFieldType.BOOLEAN)
                                         .description("Pageable paging 여부"),
-                                fieldWithPath("pageable.unpaged").type(JsonFieldType.BOOLEAN)
+                                fieldWithPath("pageable.unpaged").type(
+                                                JsonFieldType.BOOLEAN)
                                         .description("Pageable not paging 여부"),
-                                fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN)
+                                fieldWithPath("pageable.sort.sorted").type(
+                                                JsonFieldType.BOOLEAN)
                                         .description("페이지 정렬 여부"),
-                                fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.BOOLEAN)
+                                fieldWithPath("pageable.sort.unsorted").type(
+                                                JsonFieldType.BOOLEAN)
                                         .description("페이지 미정렬 여부"),
-                                fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN)
+                                fieldWithPath("pageable.sort.empty").type(
+                                                JsonFieldType.BOOLEAN)
                                         .description("페이지 정렬 값의 여부"),
                                 fieldWithPath("totalPages").type(JsonFieldType.NUMBER)
                                         .description("전체 페이지 수"),
