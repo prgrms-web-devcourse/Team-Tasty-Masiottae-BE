@@ -14,8 +14,9 @@ import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
+import com.tasty.masiottae.menu.dto.SearchMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
-import com.tasty.masiottae.menu.dto.SearchMyMenuResponse;
+import com.tasty.masiottae.menu.dto.SearchMenuResponse;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import com.tasty.masiottae.menu.repository.TasteRepository;
@@ -115,8 +116,8 @@ class MenuServiceTest {
                 () -> assertThat(findMenu.getRealMenuName()).isEqualTo(request.originalTitle()),
                 () -> assertThat(findMenu.getExpectedPrice()).isEqualTo(request.expectedPrice()),
                 () -> assertThat(
-                        findMenu.getOptionList().stream().map(Option::getId)).containsAll(
-                        request.tasteIdList()),
+                        findMenu.getOptionList().stream().map(Option::getOptionName)).containsAll(
+                       optionSaveRequests.stream().map(OptionSaveRequest::name).toList()),
                 () -> assertThat(
                         findMenu.getMenuTasteSet().stream().map(taste -> taste.getTaste().getId())
                                 .toList().containsAll(request.tasteIdList()))
@@ -202,7 +203,22 @@ class MenuServiceTest {
                 MenuSortCond.RECENT.getUrlValue(), tastes.stream().map(Taste::getId).toList());
 
         // When
-        SearchMyMenuResponse responses = menuService.searchMyMenu(account.getId(), request);
+        SearchMenuResponse responses = menuService.searchMyMenu(account.getId(), request);
+
+        // Then
+        assertThat(responses.menu().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("메뉴를 검색한다.")
+    void searchMenuTest() {
+        // Given
+        saveMoreMenus();
+        SearchMenuRequest request = new SearchMenuRequest(0, 1, "이름", "recent", franchise.getId(),
+                tastes.stream().map(Taste::getId).toList());
+
+        // When
+        SearchMenuResponse responses = menuService.searchMenu(request);
 
         // Then
         assertThat(responses.menu().size()).isEqualTo(1);

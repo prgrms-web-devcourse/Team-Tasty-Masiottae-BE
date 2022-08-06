@@ -5,6 +5,8 @@ import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU;
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.service.AccountEntityService;
 import com.tasty.masiottae.common.util.AwsS3Service;
+import com.tasty.masiottae.franchise.domain.Franchise;
+import com.tasty.masiottae.franchise.service.FranchiseService;
 import com.tasty.masiottae.menu.MenuConverter;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.MenuTaste;
@@ -13,8 +15,9 @@ import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
 import com.tasty.masiottae.menu.dto.SearchCond;
+import com.tasty.masiottae.menu.dto.SearchMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
-import com.tasty.masiottae.menu.dto.SearchMyMenuResponse;
+import com.tasty.masiottae.menu.dto.SearchMenuResponse;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import com.tasty.masiottae.menu.repository.MenuTasteRepository;
@@ -39,6 +42,7 @@ public class MenuService {
     private final MenuTasteRepository menuTasteRepository;
     private final TasteService tasteService;
     private final AccountEntityService accountEntityService;
+    private final FranchiseService franchiseService;
 
     @Transactional
     public MenuSaveResponse createMenu(MenuSaveUpdateRequest request, MultipartFile image) {
@@ -97,18 +101,30 @@ public class MenuService {
             .toList();
     }
 
-    public SearchMyMenuResponse searchMyMenu(Long accountId, SearchMyMenuRequest request) {
+    public SearchMenuResponse searchMyMenu(Long accountId, SearchMyMenuRequest request) {
         SearchCond searchCond = buildSearchCond(accountId, request);
         List<Menu> menus = getFilteredList(searchCond);
-        return new SearchMyMenuResponse(
+        return new SearchMenuResponse(
                 getPagingList(request.offset(), request.limit(), menus));
+    }
+
+    public SearchMenuResponse searchMenu(SearchMenuRequest request) {
+        Franchise franchise = franchiseService.findOneFranchiseEntity(
+                request.franchiseId());
+        List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
+        MenuSortCond sortCond = MenuSortCond.find(request.sort());
+        SearchCond searchCond = new SearchCond(null, request.keyword(), sortCond, franchise, findTasteByIds);
+        List<Menu> filteredList = getFilteredList(searchCond);
+
+        return new SearchMenuResponse(
+                getPagingList(request.offset(), request.limit(), filteredList));
     }
 
     private SearchCond buildSearchCond(Long accountId, SearchMyMenuRequest request) {
         Account account = accountEntityService.findById(accountId);
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
-        return new SearchCond(account, request.keyword(), sortCond, findTasteByIds);
+        return new SearchCond(account, request.keyword(), sortCond, null, findTasteByIds);
     }
 
     private List<MenuFindResponse> getPagingList(int offset, int limit, List<Menu> menus) {
