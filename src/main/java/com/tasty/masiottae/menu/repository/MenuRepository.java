@@ -26,4 +26,5 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     @QueryHints(@QueryHint(name = "javax.persistence.lock.timeout", value = "3000"))
     @Query("select m from Menu m where m.id = :menuId")
     Optional<Menu> findByIdForUpdate(@Param("menuId") Long menuId);
+
 }

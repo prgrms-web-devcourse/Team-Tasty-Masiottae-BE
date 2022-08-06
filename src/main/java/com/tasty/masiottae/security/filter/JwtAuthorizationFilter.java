@@ -66,7 +66,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         for (String roleString : rolesString) {
             roles.add(new SimpleGrantedAuthority(roleString));
         }
-        Account account = Account.createAccount(email, null, "nickName", roles.toString());
+        Account account = Account.createAccount(email, null, null, roles.toString());
 
         return new UsernamePasswordAuthenticationToken(
                 new AccountDetail(account), null, roles);

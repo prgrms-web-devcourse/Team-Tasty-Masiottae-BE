@@ -117,6 +117,7 @@ class LikeMenuControllerTest {
         Page<MenuFindResponse> pages =
                 new PageImpl<>(menuFindResponseList.subList(start, end), pageRequest,
                         menuFindResponseList.size());
+
         when(likeMenuService.getPageLikeMenuByAccount(any(), any())).thenReturn(pages);
 
         JwtToken token = new JwtToken(
@@ -133,7 +134,7 @@ class LikeMenuControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("get-Menu-AccountLike(paging)",
+                .andDo(document("get-menu-accountLike(paging)",
                         requestHeaders(
                                 headerWithName(HttpHeaders.ACCEPT).description(
                                         MediaType.APPLICATION_JSON),

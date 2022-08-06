@@ -4,15 +4,11 @@ import com.tasty.masiottae.account.domain.Account;
 import java.util.ArrayList;
 import java.util.Collection;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Getter
-@RequiredArgsConstructor
-public class AccountDetail implements UserDetails {
-
-    private final Account account;
+public record AccountDetail(Account account) implements
+        UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
