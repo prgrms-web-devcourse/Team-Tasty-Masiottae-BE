@@ -134,7 +134,7 @@ class LikeMenuControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("get-menu-accountLike(paging)",
+                .andDo(document("get-Menu-AccountLike(paging)",
                         requestHeaders(
                                 headerWithName(HttpHeaders.ACCEPT).description(
                                         MediaType.APPLICATION_JSON),
