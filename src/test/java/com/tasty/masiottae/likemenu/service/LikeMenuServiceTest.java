@@ -116,6 +116,7 @@ class LikeMenuServiceTest {
         tasteRepository.deleteAll();
         franchiseRepository.deleteAll();
     }
+
     @Test
     @DisplayName("좋아요가 안된 메뉴를 좋아요로 바꿀 수 있다.")
     void changeLike() {
