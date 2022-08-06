@@ -1,13 +1,15 @@
 package com.tasty.masiottae.security.config;
 
-//import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+import com.tasty.masiottae.account.domain.Role;
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
 import com.tasty.masiottae.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,21 +40,23 @@ public class SecurityConfig {
         AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
 
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(
-                jwtTokenProvider, authenticationManager);
+            jwtTokenProvider, authenticationManager);
         JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter(
-                jwtTokenProvider);
+            jwtTokenProvider);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
         http
-                .csrf().disable()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .authorizeRequests().anyRequest().permitAll()
-                .and()
-                .addFilter(corsFilter)
-                .addFilter(jwtAuthenticationFilter)
-                .addFilterBefore(jwtAuthorizationFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+            .csrf().disable()
+            .formLogin().disable()
+            .httpBasic().disable()
+            .sessionManagement().sessionCreationPolicy(STATELESS)
+            .and()
+            .authorizeRequests().anyRequest().permitAll()
+            .and()
+            .addFilter(corsFilter)
+            .addFilter(jwtAuthenticationFilter)
+            .addFilterBefore(jwtAuthorizationFilter,
+                UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

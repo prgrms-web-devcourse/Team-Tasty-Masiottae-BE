@@ -3,6 +3,7 @@ package com.tasty.masiottae.menu.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.tasty.masiottae.config.QuerydslConfig;
 import com.tasty.masiottae.menu.TasteConverter;
 import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.TasteFindResponse;
@@ -17,7 +18,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({TasteService.class, TasteConverter.class})
+@Import({TasteService.class, TasteConverter.class, QuerydslConfig.class})
 class TasteServiceTest {
 
     @Autowired
@@ -63,7 +64,7 @@ class TasteServiceTest {
 
         // Then
         assertThat(allTaste.size()).isEqualTo(3);
-        assertThat(allTaste).extracting("tasteId").containsExactly(tasteList.stream().map(
+        assertThat(allTaste).extracting("id").containsExactly(tasteList.stream().map(
                 Taste::getId).toArray());
     }
 }

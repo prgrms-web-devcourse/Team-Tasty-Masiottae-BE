@@ -3,7 +3,6 @@ package com.tasty.masiottae.security.auth;
 import com.tasty.masiottae.account.domain.Account;
 import java.util.ArrayList;
 import java.util.Collection;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,9 +16,6 @@ public record AccountDetail(Account account) implements
         return authorities;
     }
 
-    public Long getId() {
-        return account.getId();
-    }
 
     @Override
     public String getPassword() {

@@ -47,7 +47,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     DecodedJWT decodedJWT = jwtTokenProvider.verifyJwtToken(token);
                     Authentication authentication = getAuthentication(decodedJWT);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    log.info("권한 확인");
+                    log.info("권한 확인 -> {}", decodedJWT.getSubject());
                     filterChain.doFilter(request, response);
                 } catch (JWTVerificationException e) {
                     log.info("권한 없는 유저 접근");
@@ -77,7 +77,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         response.setStatus(HttpStatus.FORBIDDEN.value());
 
         Map<String, String> error = new HashMap<>();
-        error.put("error_message", message);
+        error.put("message", "인증된 토큰이 아닙니다.");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), error);
     }
