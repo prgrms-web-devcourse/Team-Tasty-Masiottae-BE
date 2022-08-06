@@ -14,6 +14,9 @@ import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +44,7 @@ public class LikeMenuService {
     @Transactional
     public void changeLike(Account account, Long menuId) {
         Menu menu = menuRepository.findByIdForUpdate(menuId).orElseThrow();
-        boolean isLike = likeMenuRepository.existByAccountAndMenu(account, menu);
+        boolean isLike = likeMenuRepository.existsByAccountAndMenu(account, menu);
         if (isLike) {
             cancelLike(account, menu);
         } else {
@@ -49,14 +52,12 @@ public class LikeMenuService {
         }
     }
 
-    public List<MenuFindResponse> getLikeMenu(Account account) {
-        List<LikeMenu> likeMenuList = likeMenuRepository.findEntityGraphNByAccount(
-                account);
+    public Page<MenuFindResponse> getLikeMenu(Account account, Pageable pageable) {
 
-        return likeMenuList.stream()
+       return likeMenuRepository.findEntityGraphNByAccount(account, pageable)
                 .map(LikeMenu::getMenu)
-                .map(menuConverter::toMenuFindResponse)
-                .toList();
+                .map(menuConverter::toMenuFindResponse);
+
     }
 
 
