@@ -14,7 +14,8 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
-public class WithMockAccountSecurityContextFactory implements WithSecurityContextFactory<WithMockAccount>{
+public class WithMockAccountSecurityContextFactory implements
+        WithSecurityContextFactory<WithMockAccount> {
 
     @Override
     public SecurityContext createSecurityContext(WithMockAccount annotation) {

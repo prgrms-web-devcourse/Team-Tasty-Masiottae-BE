@@ -22,15 +22,18 @@ public class LikeMenuController {
     private final LikeMenuService likeMenuService;
 
     @PostMapping(value = "/menu/{menuId}/like", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> changeLike(@PathVariable Long menuId, @LoginAccount Account account) {
+    public ResponseEntity<Void> changeLike(@PathVariable Long menuId,
+            @LoginAccount Account account) {
         likeMenuService.changeLike(account, menuId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/accounts/like", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<MenuFindResponse>> getMenuByAccountLike(@LoginAccount Account account, @PageableDefault
+    public ResponseEntity<Page<MenuFindResponse>> getMenuByAccountLike(
+            @LoginAccount Account account, @PageableDefault
             Pageable pageable) {
-        Page<MenuFindResponse> menuByAccountLikeList = likeMenuService.getPageLikeMenuByAccount(account, pageable);
+        Page<MenuFindResponse> menuByAccountLikeList = likeMenuService.getPageLikeMenuByAccount(
+                account, pageable);
         return ResponseEntity.ok(menuByAccountLikeList);
     }
 

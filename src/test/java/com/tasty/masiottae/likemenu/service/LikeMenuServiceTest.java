@@ -83,31 +83,19 @@ class LikeMenuServiceTest {
         franchiseRepository.save(franchise);
 
         // Given
-        List<OptionSaveRequest> optionSaveRequests = List.of(
-                new OptionSaveRequest("옵션1", "설명1"),
-                new OptionSaveRequest("옵션2", "설명2"),
-                new OptionSaveRequest("옵션3", "설명3")
-        );
+        List<OptionSaveRequest> optionSaveRequests = List.of(new OptionSaveRequest("옵션1", "설명1"),
+                new OptionSaveRequest("옵션2", "설명2"), new OptionSaveRequest("옵션3", "설명3"));
 
-        List<Taste> tastes = List.of(
-                tasteRepository.save(Taste.createTaste("매운맛", "####")),
+        List<Taste> tastes = List.of(tasteRepository.save(Taste.createTaste("매운맛", "####")),
                 tasteRepository.save(Taste.createTaste("단맛", "####")),
-                tasteRepository.save(Taste.createTaste("짠맛", "####"))
-        );
+                tasteRepository.save(Taste.createTaste("짠맛", "####")));
 
         MockMultipartFile multipartFile = new MockMultipartFile("file", "image.png", "img/png",
                 "Hello".getBytes());
 
-        MenuSaveUpdateRequest request = new MenuSaveUpdateRequest(
-                account.getId(),
-                franchise.getId(),
-                "커스텀 이름",
-                "맛있습니다",
-                "원래 메뉴 이름",
-                15000,
-                optionSaveRequests,
-                List.of(tastes.get(0).getId(), tastes.get(1).getId(), tastes.get(2).getId())
-        );
+        MenuSaveUpdateRequest request = new MenuSaveUpdateRequest(account.getId(),
+                franchise.getId(), "커스텀 이름", "맛있습니다", "원래 메뉴 이름", 15000, optionSaveRequests,
+                List.of(tastes.get(0).getId(), tastes.get(1).getId(), tastes.get(2).getId()));
 
         // When
         MenuSaveResponse menuSaveResponse = menuService.createMenu(request, multipartFile);
@@ -117,18 +105,18 @@ class LikeMenuServiceTest {
         menuId = menu.getId();
 
     }
+
     @Test
     @DisplayName("좋아요가 안된 메뉴를 좋아요로 바꿀 수 있다.")
     void changeLike() {
         likeMenuService.changeLike(account, menuId);
         MenuFindResponse oneMenu = menuService.findOneMenu(menuId);
         PageRequest pageRequest = PageRequest.of(0, 10);
-        Page<MenuFindResponse> likeMenuPage = likeMenuService.getPageLikeMenuByAccount(account, pageRequest);
+        Page<MenuFindResponse> likeMenuPage = likeMenuService.getPageLikeMenuByAccount(account,
+                pageRequest);
 
-        assertAll(
-                () -> assertThat(oneMenu.likes()).isEqualTo(1),
-                () -> assertThat(likeMenuPage).hasSize(1)
-        );
+        assertAll(() -> assertThat(oneMenu.likes()).isEqualTo(1),
+                () -> assertThat(likeMenuPage).hasSize(1));
     }
 
     @Test
@@ -138,12 +126,11 @@ class LikeMenuServiceTest {
         likeMenuService.changeLike(account, menuId);
         MenuFindResponse oneMenu = menuService.findOneMenu(menuId);
         PageRequest pageRequest = PageRequest.of(0, 10);
-        Page<MenuFindResponse> likeMenuPage = likeMenuService.getPageLikeMenuByAccount(account, pageRequest);
+        Page<MenuFindResponse> likeMenuPage = likeMenuService.getPageLikeMenuByAccount(account,
+                pageRequest);
 
-        assertAll(
-                () -> assertThat(oneMenu.likes()).isEqualTo(0),
-                () -> assertThat(likeMenuPage).hasSize(0)
-        );
+        assertAll(() -> assertThat(oneMenu.likes()).isEqualTo(0),
+                () -> assertThat(likeMenuPage).hasSize(0));
     }
 
     @Test
@@ -209,8 +196,9 @@ class LikeMenuServiceTest {
 
         List<Account> accountList = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            accountList.add(accountRepository.save(Account.createAccount("test@gmail.com" + i, "password" + i,
-                    "nickname" + i, "imageUrl" + i)));
+            accountList.add(accountRepository.save(
+                    Account.createAccount("test@gmail.com" + i, "password" + i, "nickname" + i,
+                            "imageUrl" + i)));
         }
 
         return accountList;

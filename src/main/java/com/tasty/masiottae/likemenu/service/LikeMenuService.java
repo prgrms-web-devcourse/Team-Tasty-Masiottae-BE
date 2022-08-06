@@ -48,8 +48,7 @@ public class LikeMenuService {
     }
 
     public Page<MenuFindResponse> getPageLikeMenuByAccount(Account account, Pageable pageable) {
-
-       return likeMenuRepository.findEntityGraphNByAccount(account, pageable)
+        return likeMenuRepository.findEntityGraphNByAccount(account, pageable)
                 .map(LikeMenu::getMenu)
                 .map(menuConverter::toMenuFindResponse);
 
