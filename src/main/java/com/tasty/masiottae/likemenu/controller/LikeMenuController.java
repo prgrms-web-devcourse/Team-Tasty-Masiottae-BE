@@ -27,7 +27,7 @@ public class LikeMenuController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/accounts/like")
+    @GetMapping(value = "/accounts/like", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<MenuFindResponse>> getMenuByAccountLike(@LoginAccount Account account, @PageableDefault
             Pageable pageable) {
         Page<MenuFindResponse> menuByAccountLikeList = likeMenuService.getPageLikeMenuByAccount(account, pageable);
