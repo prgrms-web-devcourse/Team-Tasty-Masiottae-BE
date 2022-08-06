@@ -67,9 +67,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             roles.add(new SimpleGrantedAuthority(roleString));
         }
         Account account = Account.createAccount(email, null, null, roles.toString());
-
+        AccountDetail accountDetail = new AccountDetail(account);
         return new UsernamePasswordAuthenticationToken(
-                new AccountDetail(account), null, roles);
+                accountDetail, null, roles);
     }
 
     private void respondWithError(HttpServletResponse response, String message) throws IOException {
