@@ -15,13 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountDetailService implements UserDetailsService {
 
     private final AccountEntityService accountService;
-    private final AccountConverter accountConverter;
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = accountService.findByEmail(username);
-        return accountConverter.toAccountDetail(account);
+        Account account = accountService.findEntityGraphMenuByEmail(username);
+        return new AccountDetail(account);
     }
 
 }

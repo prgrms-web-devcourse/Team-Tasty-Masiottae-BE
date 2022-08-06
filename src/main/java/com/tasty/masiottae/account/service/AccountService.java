@@ -62,7 +62,7 @@ public class AccountService {
                 accountCreateRequest.snsAccount());
         object.encryptPassword(object.getPassword(), passwordEncoder);
         Account entity = accountRepository.save(object);
-        AccountDetail detail = accountConverter.toAccountDetail(entity);
+        AccountDetail detail = new AccountDetail(entity);
         return jwtTokenProvider.generatedAccountToken(detail);
     }
 
@@ -74,6 +74,7 @@ public class AccountService {
         return accountConverter.toAccountFindResponse(
                 accountEntityService.findById(id));
     }
+
 
     @Transactional
     public void updatePassword(Long id, AccountPasswordUpdateRequest accountPasswordUpdateRequest) {
