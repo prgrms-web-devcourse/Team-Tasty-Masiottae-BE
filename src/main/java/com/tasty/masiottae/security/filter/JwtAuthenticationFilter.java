@@ -5,6 +5,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.account.dto.AccountLoginRequest;
 import com.tasty.masiottae.security.auth.AccountDetail;
@@ -54,23 +55,24 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request,
         HttpServletResponse response,
         FilterChain chain, Authentication authentication) throws IOException {
-        AccountDetail account = (AccountDetail) authentication.getPrincipal();
-        JwtTokenResponse totalResponse = makePayload(account);
+        AccountDetail accountDetail = (AccountDetail) authentication.getPrincipal();
+        JwtTokenResponse totalResponse = makePayload(accountDetail);
 
         response.setContentType(APPLICATION_JSON_VALUE);
         objectMapper.writeValue(response.getOutputStream(), totalResponse);
     }
 
-    private JwtTokenResponse makePayload(AccountDetail account) {
-        JwtToken token = jwtTokenProvider.generatedAccountToken(account);
+    private JwtTokenResponse makePayload(AccountDetail accountDetail) {
+        JwtToken token = jwtTokenProvider.generatedAccountToken(accountDetail);
+        Account account = accountDetail.account();
         AccountFindResponse accountFindResponse =
             new AccountFindResponse(account.getId(),
                 account.getImage(),
                 account.getNickName(),
-                account.getUsername(),
+                account.getEmail(),
                 account.getSnsAccount(),
                 account.getCreatedAt(),
-                account.getMenuCount());
+                account.getMenuList().size());
         return new JwtTokenResponse(token, accountFindResponse);
     }
 

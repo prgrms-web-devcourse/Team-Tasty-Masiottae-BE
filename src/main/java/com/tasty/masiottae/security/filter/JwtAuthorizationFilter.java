@@ -3,6 +3,8 @@ package com.tasty.masiottae.security.filter;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tasty.masiottae.account.domain.Account;
+import com.tasty.masiottae.security.auth.AccountDetail;
 import com.tasty.masiottae.security.jwt.JwtTokenProvider;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +25,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
@@ -62,9 +66,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         for (String roleString : rolesString) {
             roles.add(new SimpleGrantedAuthority(roleString));
         }
-
+        Account account = Account.createAccount(email, null, null, roles.toString());
+        AccountDetail accountDetail = new AccountDetail(account);
         return new UsernamePasswordAuthenticationToken(
-                email, null, roles);
+                accountDetail, null, roles);
     }
 
     private void respondWithError(HttpServletResponse response, String message) throws IOException {
