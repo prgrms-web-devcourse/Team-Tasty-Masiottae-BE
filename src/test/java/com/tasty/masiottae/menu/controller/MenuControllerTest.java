@@ -453,7 +453,7 @@ class MenuControllerTest {
         SearchMenuRequest request = new SearchMenuRequest(0, 1, "프라푸치노", "recent", 1L,
                 List.of(1L, 2L, 3L));
 
-        given(menuService.searchMenu(request)).willReturn(
+        given(menuService.searchAllMenu(request)).willReturn(
                 new SearchMenuResponse(menuFindResponses));
 
         mockMvc.perform(get("/menu")

@@ -218,7 +218,7 @@ class MenuServiceTest {
                 tastes.stream().map(Taste::getId).toList());
 
         // When
-        SearchMenuResponse responses = menuService.searchMenu(request);
+        SearchMenuResponse responses = menuService.searchAllMenu(request);
 
         // Then
         assertThat(responses.menu().size()).isEqualTo(1);

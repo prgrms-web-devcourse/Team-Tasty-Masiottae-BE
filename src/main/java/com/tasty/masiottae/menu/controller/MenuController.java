@@ -61,6 +61,6 @@ public class MenuController {
 
     @GetMapping(value = "/menu", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SearchMenuResponse> searchMenu(@ModelAttribute @Validated SearchMenuRequest request) {
-        return ResponseEntity.ok(menuService.searchMenu(request));
+        return ResponseEntity.ok(menuService.searchAllMenu(request));
     }
 }

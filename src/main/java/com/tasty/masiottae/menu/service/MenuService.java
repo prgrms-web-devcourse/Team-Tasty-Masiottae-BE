@@ -96,35 +96,27 @@ public class MenuService {
         menuRepository.deleteById(id);
     }
 
-    public List<MenuFindResponse> findAllMenu() {
-        return menuRepository.findAllFetch().stream().map(menuConverter::toMenuFindResponse)
-            .toList();
-    }
-
-    public SearchMenuResponse searchMyMenu(Long accountId, SearchMyMenuRequest request) {
-        SearchCond searchCond = buildSearchCond(accountId, request);
-        List<Menu> menus = getFilteredList(searchCond);
-        return new SearchMenuResponse(
-                getPagingList(request.offset(), request.limit(), menus));
-    }
-
-    public SearchMenuResponse searchMenu(SearchMenuRequest request) {
+    public SearchMenuResponse searchAllMenu(SearchMenuRequest request) {
         Franchise franchise = franchiseService.findOneFranchiseEntity(
                 request.franchiseId());
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
         SearchCond searchCond = new SearchCond(null, request.keyword(), sortCond, franchise, findTasteByIds);
-        List<Menu> filteredList = getFilteredList(searchCond);
-
-        return new SearchMenuResponse(
-                getPagingList(request.offset(), request.limit(), filteredList));
+        return searchMenu(searchCond, new PagingInfo(request.offset(), request.limit()));
     }
 
-    private SearchCond buildSearchCond(Long accountId, SearchMyMenuRequest request) {
+    public SearchMenuResponse searchMyMenu(Long accountId, SearchMyMenuRequest request) {
         Account account = accountEntityService.findById(accountId);
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
-        return new SearchCond(account, request.keyword(), sortCond, null, findTasteByIds);
+        SearchCond searchCond = new SearchCond(account, request.keyword(), sortCond, null, findTasteByIds);
+        return searchMenu(searchCond, new PagingInfo(request.offset(), request.limit()));
+    }
+
+    private SearchMenuResponse searchMenu(SearchCond searchCond, PagingInfo pagingInfo) {
+        List<Menu> filteredList = getFilteredList(searchCond);
+        return new SearchMenuResponse(
+                getPagingList(pagingInfo.offset(), pagingInfo.limit(), filteredList));
     }
 
     private List<MenuFindResponse> getPagingList(int offset, int limit, List<Menu> menus) {
