@@ -16,12 +16,11 @@ import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
 import com.tasty.masiottae.menu.dto.SearchCond;
 import com.tasty.masiottae.menu.dto.SearchMenuRequest;
-import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuResponse;
+import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import com.tasty.masiottae.menu.repository.MenuTasteRepository;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -136,7 +135,7 @@ public class MenuService {
             return menus.stream()
                     .filter(menu -> menu.getMenuTasteSet().stream()
                             .map(MenuTaste::getTaste).collect(Collectors.toSet())
-                            .equals(new HashSet<>(searchCond.tastes()))).toList();
+                            .containsAll(searchCond.tastes())).toList();
         }
 
         return menus;
