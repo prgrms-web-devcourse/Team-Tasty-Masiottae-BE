@@ -1,7 +1,6 @@
 package com.tasty.masiottae.comment.service;
 
 import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_ACCOUNT;
-import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_COMMENT;
 import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU;
 import static com.tasty.masiottae.common.exception.ErrorMessage.NO_COMMENT_CONTENT;
 
@@ -12,7 +11,6 @@ import com.tasty.masiottae.comment.domain.Comment;
 import com.tasty.masiottae.comment.dto.CommentFindResponse;
 import com.tasty.masiottae.comment.dto.CommentSaveRequest;
 import com.tasty.masiottae.comment.dto.CommentSaveResponse;
-import com.tasty.masiottae.comment.dto.CommentUpdateRequest;
 import com.tasty.masiottae.comment.repository.CommentRepository;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.repository.MenuRepository;
@@ -50,12 +48,6 @@ public class CommentService {
             savedComment.getContent());
     }
 
-    public Comment findComment(Long commentId) {
-        return commentRepository.findById(commentId)
-            .orElseThrow(() -> new EntityNotFoundException(
-                NOT_FOUND_COMMENT.getMessage()));
-    }
-
     public List<CommentFindResponse> findAllCommentOfOneMenu(Long menuId) {
         List<Comment> commentsOfOneMenu = commentRepository.findAllByMenuId(menuId);
         return commentsOfOneMenu.stream()
@@ -68,6 +60,7 @@ public class CommentService {
             throw new IllegalArgumentException(NO_COMMENT_CONTENT.getMessage());
         }
     }
+<<<<<<< HEAD
 
     @Transactional
     public void updateComment(Long commentId, CommentUpdateRequest request) {
@@ -81,4 +74,6 @@ public class CommentService {
     public void deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
     }
+=======
+>>>>>>> 151051b81f5779e129d612ced63d08df540eebe4
 }
