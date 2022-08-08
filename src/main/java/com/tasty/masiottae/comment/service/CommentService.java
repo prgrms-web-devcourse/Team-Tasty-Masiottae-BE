@@ -52,12 +52,6 @@ public class CommentService {
             savedComment.getContent());
     }
 
-    public Comment findUserIdByCommentId(Long commentId) {
-        return commentRepository.findByIdFetch(commentId)
-            .orElseThrow(() -> new EntityNotFoundException(
-                NOT_FOUND_COMMENT.getMessage()));
-    }
-
     public List<CommentFindResponse> findAllCommentOfOneMenu(Long menuId) {
         List<Comment> commentsOfOneMenu = commentRepository.findAllByMenuId(menuId);
         return commentsOfOneMenu.stream()
