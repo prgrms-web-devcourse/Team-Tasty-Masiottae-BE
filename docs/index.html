@@ -483,14 +483,23 @@
               <li><a href="#_메뉴_삭제_http_response">HTTP 응답 예시</a></li>
             </ul>
           </li>
-          <li><a href="#_나의_메뉴_검색">나의 메뉴 검색</a>
+          <li><a href="#_내가_생성한_메뉴_검색">내가 생성한 메뉴 검색</a>
             <ul class="sectlevel3">
-              <li><a href="#_나의_메뉴_검색_http_request">HTTP 요청 예시</a></li>
-              <li><a href="#_나의_메뉴_검색_path_parameters">요청 파라미터</a></li>
-              <li><a href="#_나의_메뉴_검색_request_parameters">요청 파라미터</a></li>
-              <li><a href="#_나의_메뉴_검색_http_response">HTTP 응답 예시</a></li>
-              <li><a href="#_나의_메뉴_검색_response_headers">응답 헤더</a></li>
-              <li><a href="#_나의_메뉴_검색_response_fields">응답 필드</a></li>
+              <li><a href="#_내가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></li>
+              <li><a href="#_내가_생성한_메뉴_검색_path_parameters">요청 파라미터</a></li>
+              <li><a href="#_내가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></li>
+              <li><a href="#_내가_생성한_메뉴_검색_http_response">HTTP 응답 예시</a></li>
+              <li><a href="#_내가_생성한_메뉴_검색_response_headers">응답 헤더</a></li>
+              <li><a href="#_내가_생성한_메뉴_검색_response_fields">응답 필드</a></li>
+            </ul>
+          </li>
+          <li><a href="#_홈_화면_메뉴_검색">홈 화면 메뉴 검색</a>
+            <ul class="sectlevel3">
+              <li><a href="#_홈_화면_메뉴_검색_http_request">HTTP 요청 예시</a></li>
+              <li><a href="#_홈_화면_메뉴_검색_request_parameters">요청 파라미터</a></li>
+              <li><a href="#_홈_화면_메뉴_검색_http_response">HTTP 응답 예시</a></li>
+              <li><a href="#_홈_화면_메뉴_검색_response_headers">응답 헤더</a></li>
+              <li><a href="#_홈_화면_메뉴_검색_response_fields">응답 필드</a></li>
             </ul>
           </li>
         </ul>
@@ -628,6 +637,26 @@
           </li>
         </ul>
       </li>
+      <li><a href="#_좋아요">좋아요</a>
+        <ul class="sectlevel2">
+          <li><a href="#_좋아요_변환">좋아요 변환</a>
+            <ul class="sectlevel3">
+              <li><a href="#_좋아요_변환_http_request">HTTP 요청 예시</a></li>
+              <li><a href="#_좋아요_변환_http_response">HTTP 응답 예시</a></li>
+              <li><a href="#_좋아요_변환_path_parameters">요청 파라미터</a></li>
+              <li><a href="#_좋아요_변환_request_headers">요청 헤더</a></li>
+            </ul>
+          </li>
+          <li><a href="#_유저가_좋아요한_게시글_보기">유저가 좋아요한 게시글 보기</a>
+            <ul class="sectlevel3">
+              <li><a href="#_유저가_좋아요한_게시글_보기_http_request">HTTP 요청 예시</a></li>
+              <li><a href="#_유저가_좋아요한_게시글_보기_http_response">HTTP 응답 예시</a></li>
+              <li><a href="#_유저가_좋아요한_게시글_보기_request_headers">요청 헤더</a></li>
+              <li><a href="#_유저가_좋아요한_게시글_보기_response_fields">응답 필드</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
       <li><a href="#_댓글">댓글</a>
         <ul class="sectlevel2">
           <li><a href="#_댓글_작성">댓글 작성</a>
@@ -751,7 +780,7 @@
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /menu HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-X-CSRF-TOKEN: df77580d-ef31-451e-8c8e-3e79a4488f25
+X-CSRF-TOKEN: 5ba5707a-4eb9-451b-8a13-31e142905952
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -1005,7 +1034,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 912
+Content-Length: 906
 
 {
   "id" : 1,
@@ -1023,18 +1052,19 @@ Content-Length: 912
     "nickName" : "닉네임",
     "email" : "유저이름",
     "snsAccount" : "이메일",
-    "createdAt" : "2022-08-05T01:40:42.146012",
+    "createdAt" : "2022-08-08T15:49:52.568332",
     "menuCount" : 10
   },
   "content" : "내용",
   "likes" : 100,
+  "comments" : 0,
   "expectedPrice" : 5000,
   "optionList" : [ {
-    "optionName" : "옵션명1",
-    "optionDescription" : "설명1"
+    "name" : "옵션명1",
+    "description" : "설명1"
   }, {
-    "optionName" : "옵션명",
-    "optionDescription" : "설명"
+    "name" : "옵션명",
+    "description" : "설명"
   } ],
   "tasteList" : [ {
     "id" : 1,
@@ -1045,8 +1075,8 @@ Content-Length: 912
     "name" : "파란맛",
     "color" : "파란색"
   } ],
-  "createdAt" : "2022-08-05T01:40:42.14609",
-  "updatedAt" : "2022-08-05T01:40:42.146104"
+  "createdAt" : "2022-08-08T15:49:52.56836",
+  "updatedAt" : "2022-08-08T15:49:52.568361"
 }</code></pre>
             </div>
           </div>
@@ -1148,17 +1178,22 @@ Content-Length: 912
               <td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 수</p></td>
             </tr>
             <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comments</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">댓글 개수</p></td>
+            </tr>
+            <tr>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>expectedPrice</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">예상가격</p></td>
             </tr>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>optionList[].optionName</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>optionList[].name</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">옵션명</p></td>
             </tr>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>optionList[].optionDescription</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>optionList[].description</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">옵션 설명</p></td>
             </tr>
@@ -1200,7 +1235,7 @@ Content-Length: 912
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /menu/1 HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-X-CSRF-TOKEN: a1b9725d-86d8-4e27-a04b-c99a0ebd1343
+X-CSRF-TOKEN: da3892b4-5ef5-4d30-b156-56a953b79808
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -1361,7 +1396,7 @@ X-Frame-Options: DENY</code></pre>
           <div class="listingblock">
             <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /menu/1 HTTP/1.1
-X-CSRF-TOKEN: feb0ff03-3fdb-44c3-bb04-60b4db9d9537
+X-CSRF-TOKEN: 1d290b17-9b20-4cff-af96-5d3ac8603cda
 Host: localhost:8080</code></pre>
             </div>
           </div>
@@ -1407,9 +1442,9 @@ X-Frame-Options: DENY</code></pre>
         </div>
       </div>
       <div class="sect2">
-        <h3 id="_나의_메뉴_검색"><a class="link" href="#_나의_메뉴_검색">나의 메뉴 검색</a></h3>
+        <h3 id="_내가_생성한_메뉴_검색"><a class="link" href="#_내가_생성한_메뉴_검색">내가 생성한 메뉴 검색</a></h3>
         <div class="sect3">
-          <h4 id="_나의_메뉴_검색_http_request"><a class="link" href="#_나의_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
+          <h4 id="_내가_생성한_메뉴_검색_http_request"><a class="link" href="#_내가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
           <div class="listingblock">
             <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /accounts/1/menu?keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;offset=0&amp;limit=1 HTTP/1.1
@@ -1419,7 +1454,7 @@ Host: localhost:8080</code></pre>
           </div>
         </div>
         <div class="sect3">
-          <h4 id="_나의_메뉴_검색_path_parameters"><a class="link" href="#_나의_메뉴_검색_path_parameters">요청 파라미터</a></h4>
+          <h4 id="_내가_생성한_메뉴_검색_path_parameters"><a class="link" href="#_내가_생성한_메뉴_검색_path_parameters">요청 파라미터</a></h4>
           <table class="tableblock frame-all grid-all stretch">
             <caption class="title">Table 1. /accounts/{accountId}/menu</caption>
             <colgroup>
@@ -1441,7 +1476,7 @@ Host: localhost:8080</code></pre>
           </table>
         </div>
         <div class="sect3">
-          <h4 id="_나의_메뉴_검색_request_parameters"><a class="link" href="#_나의_메뉴_검색_request_parameters">요청 파라미터</a></h4>
+          <h4 id="_내가_생성한_메뉴_검색_request_parameters"><a class="link" href="#_내가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></h4>
           <table class="tableblock frame-all grid-all stretch">
             <colgroup>
               <col style="width: 50%;">
@@ -1478,7 +1513,7 @@ Host: localhost:8080</code></pre>
           </table>
         </div>
         <div class="sect3">
-          <h4 id="_나의_메뉴_검색_http_response"><a class="link" href="#_나의_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
+          <h4 id="_내가_생성한_메뉴_검색_http_response"><a class="link" href="#_내가_생성한_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
           <div class="listingblock">
             <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -1492,7 +1527,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2406
+Content-Length: 2374
 
 {
   "menu" : [ {
@@ -1511,21 +1546,22 @@ Content-Length: 2406
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-05T01:44:21.552251",
+      "createdAt" : "2022-08-08T15:49:52.692672",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
     "likes" : 0,
+    "comments" : 0,
     "expectedPrice" : 8000,
     "optionList" : [ {
-      "optionName" : "간 자바칩",
-      "optionDescription" : "1개"
+      "name" : "간 자바칩",
+      "description" : "1개"
     }, {
-      "optionName" : "통 자바칩",
-      "optionDescription" : "1개"
+      "name" : "통 자바칩",
+      "description" : "1개"
     }, {
-      "optionName" : "카라멜드리즐",
-      "optionDescription" : "1개"
+      "name" : "카라멜드리즐",
+      "description" : "1개"
     } ],
     "tasteList" : [ {
       "id" : 1,
@@ -1540,8 +1576,8 @@ Content-Length: 2406
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-05T01:44:21.553171",
-    "updatedAt" : "2022-08-05T01:44:21.553183"
+    "createdAt" : "2022-08-08T15:49:52.692681",
+    "updatedAt" : "2022-08-08T15:49:52.692681"
   }, {
     "id" : 2,
     "franchise" : {
@@ -1558,21 +1594,22 @@ Content-Length: 2406
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-05T01:44:21.552251",
+      "createdAt" : "2022-08-08T15:49:52.692672",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
     "likes" : 0,
+    "comments" : 0,
     "expectedPrice" : 8000,
     "optionList" : [ {
-      "optionName" : "간 자바칩",
-      "optionDescription" : "1개"
+      "name" : "간 자바칩",
+      "description" : "1개"
     }, {
-      "optionName" : "통 자바칩",
-      "optionDescription" : "1개"
+      "name" : "통 자바칩",
+      "description" : "1개"
     }, {
-      "optionName" : "카라멜드리즐",
-      "optionDescription" : "1개"
+      "name" : "카라멜드리즐",
+      "description" : "1개"
     } ],
     "tasteList" : [ {
       "id" : 1,
@@ -1587,15 +1624,15 @@ Content-Length: 2406
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-05T01:44:21.553201",
-    "updatedAt" : "2022-08-05T01:44:21.553207"
+    "createdAt" : "2022-08-08T15:49:52.692682",
+    "updatedAt" : "2022-08-08T15:49:52.692683"
   } ]
 }</code></pre>
             </div>
           </div>
         </div>
         <div class="sect3">
-          <h4 id="_나의_메뉴_검색_response_headers"><a class="link" href="#_나의_메뉴_검색_response_headers">응답 헤더</a></h4>
+          <h4 id="_내가_생성한_메뉴_검색_response_headers"><a class="link" href="#_내가_생성한_메뉴_검색_response_headers">응답 헤더</a></h4>
           <table class="tableblock frame-all grid-all stretch">
             <colgroup>
               <col style="width: 50%;">
@@ -1616,7 +1653,7 @@ Content-Length: 2406
           </table>
         </div>
         <div class="sect3">
-          <h4 id="_나의_메뉴_검색_response_fields"><a class="link" href="#_나의_메뉴_검색_response_fields">응답 필드</a></h4>
+          <h4 id="_내가_생성한_메뉴_검색_response_fields"><a class="link" href="#_내가_생성한_메뉴_검색_response_fields">응답 필드</a></h4>
           <table class="tableblock frame-all grid-all stretch">
             <colgroup>
               <col style="width: 33.3333%;">
@@ -1665,6 +1702,11 @@ Content-Length: 2406
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].likes</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 좋아요 개수</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].comments</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 댓글 개수</p></td>
             </tr>
             <tr>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].expectedPrice</code></p></td>
@@ -1747,12 +1789,375 @@ Content-Length: 2406
               <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 옵션 배열</p></td>
             </tr>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].optionList[].optionName</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].optionList[].name</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 옵션명</p></td>
             </tr>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].optionList[].optionDescription</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].optionList[].description</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 옵션 설명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].tasteList[]</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 맛 배열</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].tasteList[].id</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">맛 ID</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].tasteList[].name</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">맛 이름</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].tasteList[].color</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">맛 색상 코드</p></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_홈_화면_메뉴_검색"><a class="link" href="#_홈_화면_메뉴_검색">홈 화면 메뉴 검색</a></h3>
+        <div class="sect3">
+          <h4 id="_홈_화면_메뉴_검색_http_request"><a class="link" href="#_홈_화면_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
+          <div class="listingblock">
+            <div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /menu?keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;franchiseId=1&amp;offset=0&amp;limit=1 HTTP/1.1
+Accept: application/json
+Host: localhost:8080</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_홈_화면_메뉴_검색_request_parameters"><a class="link" href="#_홈_화면_메뉴_검색_request_parameters">요청 파라미터</a></h4>
+          <table class="tableblock frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 50%;">
+              <col style="width: 50%;">
+            </colgroup>
+            <thead>
+            <tr>
+              <th class="tableblock halign-left valign-top">Parameter</th>
+              <th class="tableblock halign-left valign-top">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">검색어</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">정렬 조건(recent, like, comment)</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>tasteIdList</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">맛 ID 조건(예: 1,2,3)</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>offset</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 offset</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>limit</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">패이징 limit</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>franchiseId</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">프랜차이즈 ID(null 전달시 전체 프렌차이즈 조회)</p></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="sect3">
+          <h4 id="_홈_화면_메뉴_검색_http_response"><a class="link" href="#_홈_화면_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
+          <div class="listingblock">
+            <div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 2374
+
+{
+  "menu" : [ {
+    "id" : 1,
+    "franchise" : {
+      "id" : 1,
+      "image" : "starbucks.com",
+      "name" : "스타벅스"
+    },
+    "image" : "menu1.com",
+    "title" : "슈렉 프라푸치노",
+    "originalTitle" : "그린티 프라푸치노",
+    "author" : {
+      "id" : 1,
+      "image" : "user1.com",
+      "nickName" : "programmers",
+      "email" : "prgrms@gmail.com",
+      "snsAccount" : "prgrms123",
+      "createdAt" : "2022-08-08T15:49:52.638711",
+      "menuCount" : 1
+    },
+    "content" : "맛있습니다.",
+    "likes" : 0,
+    "comments" : 0,
+    "expectedPrice" : 8000,
+    "optionList" : [ {
+      "name" : "간 자바칩",
+      "description" : "1개"
+    }, {
+      "name" : "통 자바칩",
+      "description" : "1개"
+    }, {
+      "name" : "카라멜드리즐",
+      "description" : "1개"
+    } ],
+    "tasteList" : [ {
+      "id" : 1,
+      "name" : "단맛",
+      "color" : "#000000"
+    }, {
+      "id" : 2,
+      "name" : "매운맛",
+      "color" : "#000000"
+    }, {
+      "id" : 3,
+      "name" : "쓴맛",
+      "color" : "#000000"
+    } ],
+    "createdAt" : "2022-08-08T15:49:52.638733",
+    "updatedAt" : "2022-08-08T15:49:52.638734"
+  }, {
+    "id" : 2,
+    "franchise" : {
+      "id" : 1,
+      "image" : "starbucks.com",
+      "name" : "스타벅스"
+    },
+    "image" : "menu1.com",
+    "title" : "몬스터 프라푸치노",
+    "originalTitle" : "자바칩 프라푸치노",
+    "author" : {
+      "id" : 1,
+      "image" : "user1.com",
+      "nickName" : "programmers",
+      "email" : "prgrms@gmail.com",
+      "snsAccount" : "prgrms123",
+      "createdAt" : "2022-08-08T15:49:52.638711",
+      "menuCount" : 1
+    },
+    "content" : "맛있습니다.",
+    "likes" : 0,
+    "comments" : 0,
+    "expectedPrice" : 8000,
+    "optionList" : [ {
+      "name" : "간 자바칩",
+      "description" : "1개"
+    }, {
+      "name" : "통 자바칩",
+      "description" : "1개"
+    }, {
+      "name" : "카라멜드리즐",
+      "description" : "1개"
+    } ],
+    "tasteList" : [ {
+      "id" : 1,
+      "name" : "단맛",
+      "color" : "#000000"
+    }, {
+      "id" : 2,
+      "name" : "매운맛",
+      "color" : "#000000"
+    }, {
+      "id" : 3,
+      "name" : "쓴맛",
+      "color" : "#000000"
+    } ],
+    "createdAt" : "2022-08-08T15:49:52.638739",
+    "updatedAt" : "2022-08-08T15:49:52.638739"
+  } ]
+}</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_홈_화면_메뉴_검색_response_headers"><a class="link" href="#_홈_화면_메뉴_검색_response_headers">응답 헤더</a></h4>
+          <table class="tableblock frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 50%;">
+              <col style="width: 50%;">
+            </colgroup>
+            <thead>
+            <tr>
+              <th class="tableblock halign-left valign-top">Name</th>
+              <th class="tableblock halign-left valign-top">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">application/json</p></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="sect3">
+          <h4 id="_홈_화면_메뉴_검색_response_fields"><a class="link" href="#_홈_화면_메뉴_검색_response_fields">응답 필드</a></h4>
+          <table class="tableblock frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 33.3333%;">
+              <col style="width: 33.3333%;">
+              <col style="width: 33.3334%;">
+            </colgroup>
+            <thead>
+            <tr>
+              <th class="tableblock halign-left valign-top">Path</th>
+              <th class="tableblock halign-left valign-top">Type</th>
+              <th class="tableblock halign-left valign-top">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[]</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 배열</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].id</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 ID</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].image</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">이미지 URL</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].title</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].originalTitle</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">기존 메뉴명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].content</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 설명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].likes</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 좋아요 개수</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].comments</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 댓글 개수</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].expectedPrice</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 가격</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].createdAt</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 생성 일시</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].updatedAt</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">최종 메뉴 수정 일시</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].franchise</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">프렌차이즈 정보</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].franchise.id</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">프렌차이즈 ID</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].franchise.image</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">프렌차이즈 이미지 URL</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].franchise.name</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">프렌차이즈명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">회원 정보</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.id</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">회원 ID</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.image</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">회원 이미지 URL</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.nickName</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">회원 닉네임</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.email</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">회원 이메일</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.snsAccount</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">회원 SNS 계정</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.createdAt</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">회원 생성 일시</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.menuCount</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">해당 회원이 생성한 메뉴 개수</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].optionList[]</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 옵션 배열</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].optionList[].name</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 옵션명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].optionList[].description</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 옵션 설명</p></td>
             </tr>
@@ -1917,7 +2322,7 @@ Content-Length: 184
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 49
-X-CSRF-TOKEN: ef6ef213-013d-4e28-9291-8ba9df4f0137
+X-CSRF-TOKEN: a7979087-aa2f-4a29-b6e5-08fe334450c1
 Host: localhost:8080
 
 {
@@ -2067,7 +2472,7 @@ Content-Length: 19
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /signup HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-X-CSRF-TOKEN: b92f8920-998a-4e00-879f-5cd267e8831d
+X-CSRF-TOKEN: 072b3f70-8d1d-42ae-ae14-c34c04c9c8b6
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2192,7 +2597,7 @@ Content-Length: 257
 
 {
   "accessToken" : "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0.-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
-  "expirationTime" : "2022-08-04T16:40:28.015+00:00"
+  "expirationTime" : "2022-08-08T06:49:19.421+00:00"
 }</code></pre>
             </div>
           </div>
@@ -2451,7 +2856,7 @@ Content-Length: 260
           <div class="listingblock">
             <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /accounts/1 HTTP/1.1
-X-CSRF-TOKEN: 60c074d4-ad14-430c-9970-f037a069e5f9
+X-CSRF-TOKEN: bc0b0ef2-61d6-432e-89e5-da21028ad21d
 Host: localhost:8080</code></pre>
             </div>
           </div>
@@ -2564,7 +2969,7 @@ Content-Length: 678
     "nickName" : "nickname",
     "email" : "example@naver.com",
     "snsAccount" : "snsTest",
-    "createdAt" : "2022-08-05T01:40:28.05451",
+    "createdAt" : "2022-08-08T15:49:19.46379",
     "menuCount" : 0
   } ],
   "pageable" : {
@@ -2853,7 +3258,7 @@ Content-Length: 188
   "nickName" : "nickname",
   "email" : "example@naver.com",
   "snsAccount" : "snsTest",
-  "createdAt" : "2022-08-05T01:40:28.148723",
+  "createdAt" : "2022-08-08T15:49:19.569721",
   "menuCount" : 0
 }</code></pre>
             </div>
@@ -2947,7 +3352,7 @@ Content-Length: 188
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /accounts/1/password HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 33
-X-CSRF-TOKEN: 1ef55e49-5537-4a6f-8adb-00c108bf86a4
+X-CSRF-TOKEN: 1ac7a67f-3e66-4bde-b782-cc11f7b423f8
 Host: localhost:8080
 
 {
@@ -3012,7 +3417,7 @@ Host: localhost:8080
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 40
-X-CSRF-TOKEN: 6fa80962-6b6a-4151-a630-31b1d2f26e41
+X-CSRF-TOKEN: 114f858f-61a1-486d-9877-fd3ae0bb4c6f
 Host: localhost:8080
 
 {
@@ -3148,7 +3553,7 @@ Content-Length: 47
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 43
-X-CSRF-TOKEN: 153e9d1d-80dc-458c-9f75-07eb7e431961
+X-CSRF-TOKEN: 59b44878-8abd-444b-a844-b75dcbb79a27
 Host: localhost:8080
 
 {
@@ -3283,7 +3688,7 @@ Content-Length: 53
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /accounts/1/image HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-X-CSRF-TOKEN: 04f60cb3-81f3-4013-a524-ca89b766bda6
+X-CSRF-TOKEN: d7ce2dcf-edce-4386-bff4-b08856993b83
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -3578,9 +3983,9 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 406
+Content-Length: 409
 
-[{"id":1,"image":"logo1","name":"franchise1"},{"id":1,"image":"logo2","name":"franchise2"},{"id":5,"image":"logo3","name":"franchise3"},{"id":7,"image":"logo4","name":"franchise4"},{"id":8,"image":"logo5","name":"franchise5"},{"id":1,"image":"logo6","name":"franchise6"},{"id":7,"image":"logo7","name":"franchise7"},{"id":3,"image":"logo8","name":"franchise8"},{"id":8,"image":"logo9","name":"franchise9"}]</code></pre>
+[{"id":5,"image":"logo1","name":"franchise1"},{"id":6,"image":"logo2","name":"franchise2"},{"id":10,"image":"logo3","name":"franchise3"},{"id":7,"image":"logo4","name":"franchise4"},{"id":10,"image":"logo5","name":"franchise5"},{"id":2,"image":"logo6","name":"franchise6"},{"id":6,"image":"logo7","name":"franchise7"},{"id":10,"image":"logo8","name":"franchise8"},{"id":1,"image":"logo9","name":"franchise9"}]</code></pre>
             </div>
           </div>
         </div>
@@ -3588,7 +3993,7 @@ Content-Length: 406
           <h4 id="_프랜차이즈_전체_조회_response_body"><a class="link" href="#_프랜차이즈_전체_조회_response_body">Response body</a></h4>
           <div class="listingblock">
             <div class="content">
-              <pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":1,"image":"logo1","name":"franchise1"},{"id":1,"image":"logo2","name":"franchise2"},{"id":5,"image":"logo3","name":"franchise3"},{"id":7,"image":"logo4","name":"franchise4"},{"id":8,"image":"logo5","name":"franchise5"},{"id":1,"image":"logo6","name":"franchise6"},{"id":7,"image":"logo7","name":"franchise7"},{"id":3,"image":"logo8","name":"franchise8"},{"id":8,"image":"logo9","name":"franchise9"}]</code></pre>
+              <pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":5,"image":"logo1","name":"franchise1"},{"id":6,"image":"logo2","name":"franchise2"},{"id":10,"image":"logo3","name":"franchise3"},{"id":7,"image":"logo4","name":"franchise4"},{"id":10,"image":"logo5","name":"franchise5"},{"id":2,"image":"logo6","name":"franchise6"},{"id":6,"image":"logo7","name":"franchise7"},{"id":10,"image":"logo8","name":"franchise8"},{"id":1,"image":"logo9","name":"franchise9"}]</code></pre>
             </div>
           </div>
         </div>
@@ -3630,6 +4035,462 @@ Content-Length: 406
     </div>
   </div>
   <div class="sect1">
+    <h2 id="_좋아요"><a class="link" href="#_좋아요">좋아요</a></h2>
+    <div class="sectionbody">
+      <div class="sect2">
+        <h3 id="_좋아요_변환"><a class="link" href="#_좋아요_변환">좋아요 변환</a></h3>
+        <div class="sect3">
+          <h4 id="_좋아요_변환_http_request"><a class="link" href="#_좋아요_변환_http_request">HTTP 요청 예시</a></h4>
+          <div class="listingblock">
+            <div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /menu/1/like HTTP/1.1
+Authorization: com.tasty.masiottae.security.jwt.JwtToken@5e618639
+Accept: application/json
+X-CSRF-TOKEN: e62bb14e-15fb-4c81-b5a6-f6f48cacf499
+Host: localhost:8080</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_좋아요_변환_http_response"><a class="link" href="#_좋아요_변환_http_response">HTTP 응답 예시</a></h4>
+          <div class="listingblock">
+            <div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_좋아요_변환_path_parameters"><a class="link" href="#_좋아요_변환_path_parameters">요청 파라미터</a></h4>
+          <table class="tableblock frame-all grid-all stretch">
+            <caption class="title">Table 1. /menu/{menuId}/like</caption>
+            <colgroup>
+              <col style="width: 50%;">
+              <col style="width: 50%;">
+            </colgroup>
+            <thead>
+            <tr>
+              <th class="tableblock halign-left valign-top">Parameter</th>
+              <th class="tableblock halign-left valign-top">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menuId</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">좋아요한 메뉴 id</p></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="sect3">
+          <h4 id="_좋아요_변환_request_headers"><a class="link" href="#_좋아요_변환_request_headers">요청 헤더</a></h4>
+          <table class="tableblock frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 50%;">
+              <col style="width: 50%;">
+            </colgroup>
+            <thead>
+            <tr>
+              <th class="tableblock halign-left valign-top">Name</th>
+              <th class="tableblock halign-left valign-top">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">application/json</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">JWT Access 토큰</p></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_유저가_좋아요한_게시글_보기"><a class="link" href="#_유저가_좋아요한_게시글_보기">유저가 좋아요한 게시글 보기</a></h3>
+        <div class="sect3">
+          <h4 id="_유저가_좋아요한_게시글_보기_http_request"><a class="link" href="#_유저가_좋아요한_게시글_보기_http_request">HTTP 요청 예시</a></h4>
+          <div class="listingblock">
+            <div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /accounts/like?page=0&amp;size=10 HTTP/1.1
+Authorization: com.tasty.masiottae.security.jwt.JwtToken@5a85526b
+Accept: application/json
+Host: localhost:8080</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_유저가_좋아요한_게시글_보기_http_response"><a class="link" href="#_유저가_좋아요한_게시글_보기_http_response">HTTP 응답 예시</a></h4>
+          <div class="listingblock">
+            <div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 1463
+
+{
+  "content" : [ {
+    "id" : 1,
+    "franchise" : {
+      "id" : 1,
+      "image" : "logo",
+      "name" : "스타벅스"
+    },
+    "image" : "img.png",
+    "title" : "커스텀제목",
+    "originalTitle" : "원래제목",
+    "author" : {
+      "id" : 1,
+      "image" : "이미지 url",
+      "nickName" : "닉네임",
+      "email" : "유저이름",
+      "snsAccount" : "이메일",
+      "createdAt" : "2022-08-08T15:49:35.837185",
+      "menuCount" : 10
+    },
+    "content" : "내용",
+    "likes" : 100,
+    "comments" : 0,
+    "expectedPrice" : 5000,
+    "optionList" : [ {
+      "name" : "옵션명1",
+      "description" : "설명1"
+    }, {
+      "name" : "옵션명",
+      "description" : "설명"
+    } ],
+    "tasteList" : [ {
+      "id" : 1,
+      "name" : "빨간맛",
+      "color" : "빨간색"
+    }, {
+      "id" : 2,
+      "name" : "파란맛",
+      "color" : "파란색"
+    } ],
+    "createdAt" : "2022-08-08T15:49:35.83727",
+    "updatedAt" : "2022-08-08T15:49:35.837279"
+  } ],
+  "pageable" : {
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "offset" : 0,
+    "pageSize" : 10,
+    "pageNumber" : 0,
+    "paged" : true,
+    "unpaged" : false
+  },
+  "totalPages" : 1,
+  "totalElements" : 1,
+  "last" : true,
+  "size" : 10,
+  "number" : 0,
+  "sort" : {
+    "empty" : true,
+    "sorted" : false,
+    "unsorted" : true
+  },
+  "numberOfElements" : 1,
+  "first" : true,
+  "empty" : false
+}</code></pre>
+            </div>
+          </div>
+        </div>
+        <div class="sect3">
+          <h4 id="_유저가_좋아요한_게시글_보기_request_headers"><a class="link" href="#_유저가_좋아요한_게시글_보기_request_headers">요청 헤더</a></h4>
+          <table class="tableblock frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 50%;">
+              <col style="width: 50%;">
+            </colgroup>
+            <thead>
+            <tr>
+              <th class="tableblock halign-left valign-top">Name</th>
+              <th class="tableblock halign-left valign-top">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">application/json</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">JWT Access 토큰</p></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="sect3">
+          <h4 id="_유저가_좋아요한_게시글_보기_response_fields"><a class="link" href="#_유저가_좋아요한_게시글_보기_response_fields">응답 필드</a></h4>
+          <table class="tableblock frame-all grid-all stretch">
+            <colgroup>
+              <col style="width: 33.3333%;">
+              <col style="width: 33.3333%;">
+              <col style="width: 33.3334%;">
+            </colgroup>
+            <thead>
+            <tr>
+              <th class="tableblock halign-left valign-top">Path</th>
+              <th class="tableblock halign-left valign-top">Type</th>
+              <th class="tableblock halign-left valign-top">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].id</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 ID</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].franchise.id</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">프랜차이즈 id</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].franchise.image</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">프랜차이즈 로고</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].franchise.name</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">프랜차이즈명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].image</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">이미지경로</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].title</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].originalTitle</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">실제 메뉴명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].author.id</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">유저 ID</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].author.nickName</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">닉네임</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].author.image</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">유저 프로필사진</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].author.email</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">유저 이메일</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].author.createdAt</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">생성일</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].author.snsAccount</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">유저 SNS 계정</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].author.menuCount</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">해당 유저의 생성메뉴 수</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].content</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">설명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].likes</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 수</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].comments</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">댓글 수</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].expectedPrice</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">예상가격</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].optionList[].name</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">옵션명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].optionList[].description</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">옵션 설명</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].tasteList[].id</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">맛 ID</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].tasteList[].name</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">맛 이름</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].tasteList[].color</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">맛 태그 컬러</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].createdAt</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">생성일</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].updatedAt</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">갱신일</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageNumber</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageSize</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 크기</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.offset</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">offset</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.paged</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">Pageable paging 여부</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.unpaged</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">Pageable not paging 여부</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.sorted</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 정렬 여부</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.unsorted</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 미정렬 여부</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.empty</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 정렬 값의 여부</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalPages</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">전체 페이지 수</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>totalElements</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">전체 게시글 수</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>last</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지가 마지막 여부</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>numberOfElements</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지 내의 원소 개수</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>first</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지가 첫번째 페이지인지 여부</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지의 크기</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지의 index</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>empty</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 비어있는지 여부</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 정보</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.sorted</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 정렬 여부</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.unsorted</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 미정렬 여부</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort.empty</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 속성 존재 여부</p></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sect1">
     <h2 id="_댓글"><a class="link" href="#_댓글">댓글</a></h2>
     <div class="sectionbody">
       <div class="sect2">
@@ -3640,11 +4501,11 @@ Content-Length: 406
             <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /comments HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 51
-X-CSRF-TOKEN: e7d7c319-f10e-4e10-8d61-68b579b5f7ce
+Content-Length: 48
+X-CSRF-TOKEN: 03c8cd82-64e6-466f-9401-877d3e3d976c
 Host: localhost:8080
 
-{"accountId":1,"menuId":1,"content":"댓글내용"}</code></pre>
+{"userId":1,"menuId":1,"comment":"댓글내용"}</code></pre>
             </div>
           </div>
         </div>
@@ -3663,9 +4524,9 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 26
+Content-Length: 51
 
-{"menuId":1,"commentId":1}</code></pre>
+{"menuId":1,"commentId":1,"comment":"댓글내용"}</code></pre>
             </div>
           </div>
         </div>
@@ -3673,7 +4534,7 @@ Content-Length: 26
           <h4 id="_댓글_작성_request_body"><a class="link" href="#_댓글_작성_request_body">응답 바디</a></h4>
           <div class="listingblock">
             <div class="content">
-              <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"accountId":1,"menuId":1,"content":"댓글내용"}</code></pre>
+              <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"userId":1,"menuId":1,"comment":"댓글내용"}</code></pre>
             </div>
           </div>
         </div>
@@ -3694,7 +4555,7 @@ Content-Length: 26
             </thead>
             <tbody>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>accountId</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">유저 ID</p></td>
             </tr>
@@ -3704,7 +4565,7 @@ Content-Length: 26
               <td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 ID</p></td>
             </tr>
             <tr>
-              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">댓글 내용</p></td>
             </tr>
@@ -3715,7 +4576,7 @@ Content-Length: 26
           <h4 id="_댓글_작성_response_body"><a class="link" href="#_댓글_작성_response_body">Response body</a></h4>
           <div class="listingblock">
             <div class="content">
-              <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"menuId":1,"commentId":1}</code></pre>
+              <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"menuId":1,"commentId":1,"comment":"댓글내용"}</code></pre>
             </div>
           </div>
         </div>
@@ -3744,6 +4605,11 @@ Content-Length: 26
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>commentId</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">댓글 ID</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>comment</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">댓글 내용</p></td>
             </tr>
             </tbody>
           </table>
@@ -3798,9 +4664,9 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2077
+Content-Length: 2894
 
-[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-05T01:40:28.659558","menuCount":10},"comment":"댓글내용"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-05T01:40:28.659588","menuCount":10},"comment":"댓글내용"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-05T01:40:28.659601","menuCount":10},"comment":"댓글내용"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-05T01:40:28.659612","menuCount":10},"comment":"댓글내용"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-05T01:40:28.659623","menuCount":10},"comment":"댓글내용"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-05T01:40:28.659634","menuCount":10},"comment":"댓글내용"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-05T01:40:28.659643","menuCount":10},"comment":"댓글내용"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-05T01:40:28.659653","menuCount":10},"comment":"댓글내용"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-05T01:40:28.659662","menuCount":10},"comment":"댓글내용"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-05T01:40:28.659672","menuCount":10},"comment":"댓글내용"}]</code></pre>
+[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-08T15:49:20.216773","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217224","updatedAt":"2022-08-08T15:49:20.217234"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-08T15:49:20.216813","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217249","updatedAt":"2022-08-08T15:49:20.217254"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-08T15:49:20.216828","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.21726","updatedAt":"2022-08-08T15:49:20.217265"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-08T15:49:20.216841","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217271","updatedAt":"2022-08-08T15:49:20.217275"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-08T15:49:20.216855","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.21728","updatedAt":"2022-08-08T15:49:20.217284"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-08T15:49:20.216867","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217289","updatedAt":"2022-08-08T15:49:20.217294"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-08T15:49:20.216878","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217299","updatedAt":"2022-08-08T15:49:20.217303"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-08T15:49:20.21689","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217318","updatedAt":"2022-08-08T15:49:20.217323"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-08T15:49:20.216901","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217328","updatedAt":"2022-08-08T15:49:20.217332"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-08T15:49:20.216913","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217337","updatedAt":"2022-08-08T15:49:20.217341"}]</code></pre>
             </div>
           </div>
         </div>
@@ -3808,7 +4674,7 @@ Content-Length: 2077
           <h4 id="_특정_메뉴에_달려있는_댓글_조회_response_body"><a class="link" href="#_특정_메뉴에_달려있는_댓글_조회_response_body">Response body</a></h4>
           <div class="listingblock">
             <div class="content">
-              <pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-05T01:40:28.659558","menuCount":10},"comment":"댓글내용"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-05T01:40:28.659588","menuCount":10},"comment":"댓글내용"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-05T01:40:28.659601","menuCount":10},"comment":"댓글내용"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-05T01:40:28.659612","menuCount":10},"comment":"댓글내용"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-05T01:40:28.659623","menuCount":10},"comment":"댓글내용"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-05T01:40:28.659634","menuCount":10},"comment":"댓글내용"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-05T01:40:28.659643","menuCount":10},"comment":"댓글내용"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-05T01:40:28.659653","menuCount":10},"comment":"댓글내용"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-05T01:40:28.659662","menuCount":10},"comment":"댓글내용"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-05T01:40:28.659672","menuCount":10},"comment":"댓글내용"}]</code></pre>
+              <pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-08T15:49:20.216773","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217224","updatedAt":"2022-08-08T15:49:20.217234"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-08T15:49:20.216813","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217249","updatedAt":"2022-08-08T15:49:20.217254"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-08T15:49:20.216828","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.21726","updatedAt":"2022-08-08T15:49:20.217265"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-08T15:49:20.216841","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217271","updatedAt":"2022-08-08T15:49:20.217275"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-08T15:49:20.216855","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.21728","updatedAt":"2022-08-08T15:49:20.217284"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-08T15:49:20.216867","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217289","updatedAt":"2022-08-08T15:49:20.217294"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-08T15:49:20.216878","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217299","updatedAt":"2022-08-08T15:49:20.217303"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-08T15:49:20.21689","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217318","updatedAt":"2022-08-08T15:49:20.217323"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-08T15:49:20.216901","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217328","updatedAt":"2022-08-08T15:49:20.217332"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-08T15:49:20.216913","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-08T15:49:20.217337","updatedAt":"2022-08-08T15:49:20.217341"}]</code></pre>
             </div>
           </div>
         </div>
@@ -3878,6 +4744,16 @@ Content-Length: 2077
               <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
               <td class="tableblock halign-left valign-top"><p class="tableblock">댓글 내용</p></td>
             </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].createdAt</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">생성일</p></td>
+            </tr>
+            <tr>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].updatedAt</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+              <td class="tableblock halign-left valign-top"><p class="tableblock">갱신일</p></td>
+            </tr>
             </tbody>
           </table>
         </div>
@@ -3887,7 +4763,7 @@ Content-Length: 2077
 </div>
 <div id="footer">
   <div id="footer-text">
-    Last updated 2022-08-05 01:41:23 +0900
+    Last updated 2022-08-08 15:39:44 +0900
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

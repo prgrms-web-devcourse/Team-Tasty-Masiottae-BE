@@ -4,10 +4,10 @@ package com.tasty.masiottae.menu.controller;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
+import com.tasty.masiottae.menu.dto.SearchMenuRequest;
+import com.tasty.masiottae.menu.dto.SearchMenuResponse;
 import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
-import com.tasty.masiottae.menu.dto.SearchMyMenuResponse;
 import com.tasty.masiottae.menu.service.MenuService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -53,14 +53,14 @@ public class MenuController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/menu", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MenuFindResponse>> findAllMenu() {
-        return ResponseEntity.ok(menuService.findAllMenu());
+    @GetMapping(value = "/accounts/{accountId}/menu", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SearchMenuResponse> searchMyMenu(
+            @ModelAttribute @Validated SearchMyMenuRequest request, @PathVariable Long accountId) {
+        return ResponseEntity.ok(menuService.searchMyMenu(accountId, request));
     }
 
-    @GetMapping(value = "/accounts/{accountId}/menu", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SearchMyMenuResponse> searchMyMenu(
-        @ModelAttribute @Validated SearchMyMenuRequest request, @PathVariable Long accountId) {
-        return ResponseEntity.ok(menuService.searchMyMenu(accountId, request));
+    @GetMapping(value = "/menu", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SearchMenuResponse> searchMenu(@ModelAttribute @Validated SearchMenuRequest request) {
+        return ResponseEntity.ok(menuService.searchAllMenu(request));
     }
 }
