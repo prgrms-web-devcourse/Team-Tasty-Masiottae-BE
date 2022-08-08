@@ -1,10 +1,5 @@
 package com.tasty.masiottae.likemenu.controller;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -20,6 +15,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.config.RestDocsConfiguration;
@@ -33,6 +29,10 @@ import com.tasty.masiottae.security.config.SecurityConfig;
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
 import com.tasty.masiottae.security.jwt.JwtToken;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +103,7 @@ class LikeMenuControllerTest {
         MenuFindResponse menuFindResponse = new MenuFindResponse(1L,
                 new FranchiseFindResponse(1L, "logo", "스타벅스"), "img.png", "커스텀제목", "원래제목",
                 new AccountFindResponse(1L, "이미지 url", "닉네임", "유저이름", "이메일", LocalDateTime.now(),
-                        10), "내용", 100, 5000,
+                        10), "내용", 100, 0, 5000,
                 List.of(new OptionFindResponse("옵션명1", "설명1"), new OptionFindResponse("옵션명", "설명")),
                 List.of(new TasteFindResponse(1L, "빨간맛", "빨간색"),
                         new TasteFindResponse(2L, "파란맛", "파란색")), LocalDateTime.now(),
@@ -177,6 +177,8 @@ class LikeMenuControllerTest {
                                         .description("설명"),
                                 fieldWithPath("content[].likes").type(JsonFieldType.NUMBER)
                                         .description("좋아요 수"),
+                                fieldWithPath("content[].comments").type(JsonFieldType.NUMBER)
+                                        .description("댓글 수"),
                                 fieldWithPath("content[].expectedPrice").type(JsonFieldType.NUMBER)
                                         .description("예상가격"),
                                 fieldWithPath("content[].optionList[].name").type(
