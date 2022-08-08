@@ -1,5 +1,8 @@
 package com.tasty.masiottae.franchise.service;
 
+import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_FRANCHISE;
+
+import com.tasty.masiottae.common.exception.custom.NotFoundException;
 import com.tasty.masiottae.common.util.AwsS3Service;
 import com.tasty.masiottae.franchise.FranchiseConverter;
 import com.tasty.masiottae.franchise.domain.Franchise;
@@ -15,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional(readOnly = true)
@@ -43,5 +45,13 @@ public class FranchiseService {
         return franchiseRepository.findAll(Sort.by(Direction.ASC, "name")).stream()
                 .map(franchiseConverter::toFranchiseFindResponse).collect(
                         Collectors.toList());
+    }
+
+    public Franchise findOneFranchiseEntity(Long franchiseId) {
+        if (Objects.isNull(franchiseId)) {
+            return null;
+        }
+        return franchiseRepository.findById(franchiseId).orElseThrow(() -> new NotFoundException(
+                NOT_FOUND_FRANCHISE.getMessage()));
     }
 }

@@ -40,10 +40,11 @@ class MenuRepositoryTest {
     Menu menu1;
     Menu menu2;
     Menu menu3;
+    Franchise franchise;
 
     @BeforeEach
     void init() {
-        Franchise franchise = franchiseRepository.save(
+        franchise = franchiseRepository.save(
                 Franchise.createFranchise("스타벅스", "aaa.com"));
         account = accountRepository.save(
                 Account.createAccount("test@gmail.com", "passwrod", "nickanme", "aaa.com"));
@@ -70,11 +71,11 @@ class MenuRepositoryTest {
     }
 
     @Test
-    @DisplayName("나만의 메뉴판을 조회한다.")
+    @DisplayName("메뉴를 검색한다.")
     void searchTest() {
         // When
         List<Menu> search = menuRepository.search(
-                new SearchCond(account, "커스텀 이름", MenuSortCond.RECENT,
+                new SearchCond(account, "커스텀", MenuSortCond.RECENT, franchise,
                         Collections.singletonList(tastes.get(0))));
 
         // Then

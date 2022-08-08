@@ -8,7 +8,7 @@ import java.util.List;
 
 public record MenuFindResponse(Long id, FranchiseFindResponse franchise, String image, String title,
                                String originalTitle, AccountFindResponse author,
-                               String content, Integer likes,
+                               String content, Integer likes, Integer comments,
                                Integer expectedPrice, List<OptionFindResponse> optionList,
                                List<TasteFindResponse> tasteList, LocalDateTime createdAt,
                                LocalDateTime updatedAt) {
