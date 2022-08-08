@@ -94,6 +94,6 @@ public class CommentService {
         findComment.getAccount().getCommentList().remove(findComment);
         findComment.setMenu(null);
         findComment.setAccount(null);
-        commentRepository.deleteById(commentId);
+        commentRepository.deleteById(findComment.getId());
     }
 }
