@@ -35,9 +35,7 @@ public enum ErrorMessage {
     NOT_FOUND_MENU("존재하지 않는 메뉴입니다."),
 
     // comment
-    NO_COMMENT_CONTENT("댓글 내용을 입력해주세요."),
-    NOT_FOUND_COMMENT("존재하지 않는 댓글입니다."),
-    COMMENT_ACCESS_DENIED("접근 권한이 없는 댓글입니다.");
+    NO_COMMENT_CONTENT("댓글 내용을 입력해주세요.");
 
     private final String message;
 
