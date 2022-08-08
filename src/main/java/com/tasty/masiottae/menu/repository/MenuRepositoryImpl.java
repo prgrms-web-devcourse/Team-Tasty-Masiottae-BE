@@ -7,6 +7,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tasty.masiottae.account.domain.Account;
+import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.SearchCond;
@@ -27,9 +28,14 @@ public class MenuRepositoryImpl implements MenuRepositoryCustom {
         return queryFactory.select(menuTaste.menu)
                 .distinct()
                 .from(menuTaste)
-                .where(containKeyword(searchCond.keyword()), tasteIn(searchCond.tastes()), accountEq(searchCond.account()))
+                .where(containKeyword(searchCond.keyword()), tasteIn(searchCond.tastes()),
+                        accountEq(searchCond.account()), franchiseEq(searchCond.franchise()))
                 .orderBy(sortCond(searchCond.menuSortCond()))
                 .fetch();
+    }
+
+    private BooleanExpression franchiseEq(Franchise franchise) {
+        return Objects.isNull(franchise) ? null : menuTaste.menu.franchise.eq(franchise);
     }
 
     private BooleanExpression accountEq(Account account) {
@@ -40,7 +46,7 @@ public class MenuRepositoryImpl implements MenuRepositoryCustom {
         return switch (menuSortCond) {
             case RECENT -> menuTaste.menu.createdAt.desc();
             case LIKE -> menuTaste.menu.likesCount.desc();
-            case COMMENT -> null;
+            case COMMENT -> menuTaste.menu.commentCount.desc();
         };
     }
 
