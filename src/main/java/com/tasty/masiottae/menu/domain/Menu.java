@@ -53,6 +53,9 @@ public class Menu extends BaseTimeEntity {
     @Column(name = "likes_count")
     private Integer likesCount;
 
+    @Column(name = "comment_count")
+    private Integer commentCount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
@@ -86,6 +89,7 @@ public class Menu extends BaseTimeEntity {
         this.pictureUrl = pictureUrl;
         this.expectedPrice = expectedPrice;
         this.likesCount = 0;
+        this.commentCount = 0;
         this.account = account;
         this.franchise = franchise;
         this.description = description;
@@ -119,6 +123,7 @@ public class Menu extends BaseTimeEntity {
     }
 
     public void addComment(Comment comment) {
+        commentCount++;
         comments.add(comment);
     }
 

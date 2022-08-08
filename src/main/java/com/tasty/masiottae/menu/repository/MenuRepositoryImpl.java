@@ -46,7 +46,7 @@ public class MenuRepositoryImpl implements MenuRepositoryCustom {
         return switch (menuSortCond) {
             case RECENT -> menuTaste.menu.createdAt.desc();
             case LIKE -> menuTaste.menu.likesCount.desc();
-            case COMMENT -> null;
+            case COMMENT -> menuTaste.menu.commentCount.desc();
         };
     }
 
