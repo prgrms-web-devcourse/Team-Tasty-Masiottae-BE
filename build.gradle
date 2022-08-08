@@ -80,6 +80,9 @@ test {
 
 asciidoctor {
     configurations 'asciidoctorExtensions'
+    sources{
+        include("**/index.adoc","**/common/*.adoc")
+    }
     inputs.dir snippetsDir
     dependsOn test
     baseDirFollowsSourceFile()
