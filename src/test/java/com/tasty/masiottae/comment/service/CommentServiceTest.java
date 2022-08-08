@@ -12,6 +12,7 @@ import com.tasty.masiottae.comment.domain.Comment;
 import com.tasty.masiottae.comment.dto.CommentFindResponse;
 import com.tasty.masiottae.comment.dto.CommentSaveRequest;
 import com.tasty.masiottae.comment.dto.CommentSaveResponse;
+import com.tasty.masiottae.comment.dto.CommentUpdateRequest;
 import com.tasty.masiottae.comment.repository.CommentRepository;
 import com.tasty.masiottae.config.QuerydslConfig;
 import com.tasty.masiottae.franchise.domain.Franchise;
@@ -30,7 +31,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({CommentService.class, CommentConverter.class, AccountConverter.class, QuerydslConfig.class})
+@Import({CommentService.class, CommentConverter.class, AccountConverter.class,
+    QuerydslConfig.class})
 class CommentServiceTest {
 
     @Autowired
@@ -129,5 +131,34 @@ class CommentServiceTest {
 
         // then
         assertThat(allCommentOfOneMenu).hasSize(10);
+    }
+
+    @Test
+    @DisplayName("댓글 단건 조회")
+    void testFindComment() {
+        // given
+        Comment comment = Comment.createComment(account, menu, "댓글내용");
+        Comment savedComment = commentRepository.save(comment);
+
+        // when
+        Comment findComment = commentService.findComment(savedComment.getId());
+
+        // then
+        assertThat(findComment.getId()).isEqualTo(savedComment.getId());
+    }
+
+    @Test
+    @DisplayName("댓글 내용 수정")
+    void testUpdateComment() {
+        // given
+        Comment comment = Comment.createComment(account, menu, "댓글내용");
+        Comment savedComment = commentRepository.save(comment);
+        CommentUpdateRequest request = new CommentUpdateRequest("새로운 댓글내용");
+
+        // when
+        commentService.updateComment(savedComment.getId(), request);
+
+        // then
+        assertThat(savedComment.getContent()).isEqualTo(request.comment());
     }
 }
