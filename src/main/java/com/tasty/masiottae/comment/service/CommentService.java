@@ -44,8 +44,6 @@ public class CommentService {
         Comment comment = Comment.createComment(account, menu, request.comment());
         Comment savedComment = commentRepository.save(comment);
 
-        menu.addComment(savedComment);
-        account.addComment(savedComment);
         return new CommentSaveResponse(request.menuId(), savedComment.getId(),
             savedComment.getContent());
     }
