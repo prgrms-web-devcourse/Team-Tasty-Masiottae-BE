@@ -19,9 +19,9 @@ public class LoggingAspect {
         Object[] args = joinPoint.getArgs();
 
         if (args[0] instanceof Exception) {
-            log.warn("{}", makeFormattedString(
+            log.error("{}", makeFormattedString(
                 "<Exception type>", args[0].getClass().getCanonicalName(), true));
-            log.warn("{}\n", makeFormattedString(
+            log.error("{}\n", makeFormattedString(
                 "<Default message>", ((Exception) args[0]).getMessage(), true));
         }
     }
@@ -31,11 +31,11 @@ public class LoggingAspect {
         returning = "response")
     public void afterReturningFindAccountsAdvice(
         JoinPoint joinPoint, ResponseEntity<ErrorResponse> response) {
-        log.info("{}", makeFormattedString(
+        log.error("{}", makeFormattedString(
             "Handler", joinPoint.getSignature().toShortString(), false));
-        log.info("{}", makeFormattedString(
+        log.error("{}", makeFormattedString(
             "Message", response.getBody().getMessage(), false));
-        log.info("{}\n", makeFormattedString(
+        log.error("{}\n", makeFormattedString(
             "Status", response.getStatusCode().toString(), false));
     }
 
