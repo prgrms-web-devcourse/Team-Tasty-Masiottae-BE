@@ -52,4 +52,8 @@ public class Comment extends BaseTimeEntity {
         menu.addComment(comment);
         return comment;
     }
+
+    public void changeContent(String newContent) {
+        this.content = newContent;
+    }
 }

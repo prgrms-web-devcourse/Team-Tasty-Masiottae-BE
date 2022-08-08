@@ -62,11 +62,6 @@ class CommentServiceTest {
     }
 
     @Test
-    void test() {
-        System.out.println(menu.getId());
-    }
-
-    @Test
     @DisplayName("댓글 작성 성공")
     void testCreateComment() {
         // given
@@ -160,5 +155,22 @@ class CommentServiceTest {
 
         // then
         assertThat(savedComment.getContent()).isEqualTo(request.comment());
+    }
+
+    @Test
+    @DisplayName("댓글 삭제")
+    void testDeleteComment() {
+        // given
+        List<Comment> comments = IntStream.range(1, 11).mapToObj(
+            i -> Comment.createComment(account, menu, "댓글내용" + i)
+        ).collect(Collectors.toList());
+        commentRepository.saveAll(comments);
+        System.out.println(menu.getComments().size());
+
+        // when
+        commentService.deleteComment(menu.getId(), comments.get(0).getId());
+        System.out.println(menu.getComments().size());
+        // then
+        assertThat(menu.getComments()).hasSize(9);
     }
 }
