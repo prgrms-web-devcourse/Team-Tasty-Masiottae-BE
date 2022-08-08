@@ -1,7 +1,5 @@
 package com.tasty.masiottae.comment.controller;
 
-import static com.tasty.masiottae.common.exception.ErrorMessage.COMMENT_ACCESS_DENIED;
-
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.comment.dto.CommentFindResponse;
 import com.tasty.masiottae.comment.dto.CommentSaveRequest;
@@ -48,24 +46,16 @@ public class CommentController {
     public ResponseEntity<Void> updateComment(
         @PathVariable("commentId") Long commentId, @LoginAccount Account account,
         @Valid @RequestBody CommentUpdateRequest request) {
-        checkAuthUser(commentId, account);
-        commentService.updateComment(commentId, request);
+        commentService.updateComment(commentId, account, request);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/menu/{menuId}/comments/{commentId}")
+    @DeleteMapping("comments/{commentId}")
     public ResponseEntity<Void> removeComment(
-        @PathVariable("menuId") Long menuId,
         @PathVariable("commentId") Long commentId, @LoginAccount Account account) {
-        checkAuthUser(commentId, account);
-        commentService.deleteComment(menuId, commentId);
+        commentService.deleteComment(account, commentId);
         return ResponseEntity.noContent().build();
     }
 
-    private void checkAuthUser(Long commentId, Account account) {
-        Long userIdOfComment = commentService.findComment(commentId).getAccount().getId();
-        if (!userIdOfComment.equals(account.getId())) {
-            throw new IllegalArgumentException(COMMENT_ACCESS_DENIED.getMessage());
-        }
-    }
+
 }

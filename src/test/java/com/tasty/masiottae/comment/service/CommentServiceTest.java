@@ -128,19 +128,6 @@ class CommentServiceTest {
         assertThat(allCommentOfOneMenu).hasSize(10);
     }
 
-    @Test
-    @DisplayName("댓글 단건 조회")
-    void testFindComment() {
-        // given
-        Comment comment = Comment.createComment(account, menu, "댓글내용");
-        Comment savedComment = commentRepository.save(comment);
-
-        // when
-        Comment findComment = commentService.findComment(savedComment.getId());
-
-        // then
-        assertThat(findComment.getId()).isEqualTo(savedComment.getId());
-    }
 
     @Test
     @DisplayName("댓글 내용 수정")
@@ -151,7 +138,7 @@ class CommentServiceTest {
         CommentUpdateRequest request = new CommentUpdateRequest("새로운 댓글내용");
 
         // when
-        commentService.updateComment(savedComment.getId(), request);
+        commentService.updateComment(savedComment.getId(), account, request);
 
         // then
         assertThat(savedComment.getContent()).isEqualTo(request.comment());
@@ -165,11 +152,10 @@ class CommentServiceTest {
             i -> Comment.createComment(account, menu, "댓글내용" + i)
         ).collect(Collectors.toList());
         commentRepository.saveAll(comments);
-        System.out.println(menu.getComments().size());
 
         // when
-        commentService.deleteComment(menu.getId(), comments.get(0).getId());
-        System.out.println(menu.getComments().size());
+        commentService.deleteComment(account, comments.get(0).getId());
+
         // then
         assertThat(menu.getComments()).hasSize(9);
     }

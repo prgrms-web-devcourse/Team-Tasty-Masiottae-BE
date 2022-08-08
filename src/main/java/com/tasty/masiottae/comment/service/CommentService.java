@@ -1,5 +1,6 @@
 package com.tasty.masiottae.comment.service;
 
+import static com.tasty.masiottae.common.exception.ErrorMessage.COMMENT_ACCESS_DENIED;
 import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_ACCOUNT;
 import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_COMMENT;
 import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU;
@@ -51,8 +52,8 @@ public class CommentService {
             savedComment.getContent());
     }
 
-    public Comment findComment(Long commentId) {
-        return commentRepository.findById(commentId)
+    public Comment findUserIdByCommentId(Long commentId) {
+        return commentRepository.findByIdFetch(commentId)
             .orElseThrow(() -> new EntityNotFoundException(
                 NOT_FOUND_COMMENT.getMessage()));
     }
@@ -71,21 +72,28 @@ public class CommentService {
     }
 
     @Transactional
-    public void updateComment(Long commentId, CommentUpdateRequest request) {
+    public void updateComment(Long commentId, Account account, CommentUpdateRequest request) {
         Comment findComment = commentRepository.findById(commentId)
             .orElseThrow(() -> new NotFoundException(
                 NOT_FOUND_COMMENT.getMessage()));
+        if (!findComment.getAccount().getId().equals(account.getId())) {
+            throw new IllegalArgumentException(COMMENT_ACCESS_DENIED.getMessage());
+        }
         findComment.changeContent(request.comment());
     }
 
     @Transactional
-    public void deleteComment(Long menuId, Long commentId) {
-        Menu findMenu = menuRepository.findById(menuId)
-            .orElseThrow(() -> new NotFoundException(NOT_FOUND_MENU.getMessage()));
+    public void deleteComment(Account account, Long commentId) {
         Comment findComment = commentRepository.findById(commentId)
             .orElseThrow(() -> new NotFoundException(
                 NOT_FOUND_COMMENT.getMessage()));
-        findMenu.getComments().remove(findComment);
+        if (!findComment.getAccount().getId().equals(account.getId())) {
+            throw new IllegalArgumentException(COMMENT_ACCESS_DENIED.getMessage());
+        }
+        findComment.getMenu().getComments().remove(findComment);
+        findComment.getAccount().getCommentList().remove(findComment);
+        findComment.setMenu(null);
+        findComment.setAccount(null);
         commentRepository.deleteById(commentId);
     }
 }

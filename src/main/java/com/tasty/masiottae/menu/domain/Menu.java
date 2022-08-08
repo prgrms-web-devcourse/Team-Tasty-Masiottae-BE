@@ -162,7 +162,4 @@ public class Menu extends BaseTimeEntity {
         return --this.likesCount;
     }
 
-    public void removeComment(Comment comment) {
-        comments.remove(comment);
-    }
 }

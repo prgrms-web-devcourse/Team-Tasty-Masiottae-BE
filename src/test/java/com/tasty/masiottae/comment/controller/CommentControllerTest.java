@@ -2,8 +2,12 @@ package com.tasty.masiottae.comment.controller;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -19,11 +23,15 @@ import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.comment.dto.CommentFindResponse;
 import com.tasty.masiottae.comment.dto.CommentSaveRequest;
 import com.tasty.masiottae.comment.dto.CommentSaveResponse;
+import com.tasty.masiottae.comment.dto.CommentUpdateRequest;
 import com.tasty.masiottae.comment.service.CommentService;
+import com.tasty.masiottae.config.WithMockAccount;
 import com.tasty.masiottae.security.config.SecurityConfig;
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
+import com.tasty.masiottae.security.jwt.JwtToken;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -35,8 +43,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = CommentController.class, excludeFilters = {
@@ -44,7 +52,6 @@ import org.springframework.test.web.servlet.MockMvc;
     @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthorizationFilter.class),
     @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class)})
 @AutoConfigureRestDocs
-@WithMockUser
 class CommentControllerTest {
 
     @Autowired
@@ -122,5 +129,63 @@ class CommentControllerTest {
                     fieldWithPath("[].comment").type(JsonFieldType.STRING).description("댓글 내용"),
                     fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("생성일"),
                     fieldWithPath("[].updatedAt").type(JsonFieldType.STRING).description("갱신일"))));
+    }
+
+    @Test
+    @DisplayName("자신이 쓴 댓글 수정")
+    @WithMockAccount
+    void testUpdateComment() throws Exception {
+        Long commentId = 1L;
+        JwtToken token = new JwtToken("bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+            + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
+            + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
+            + "-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4", new Date());
+        mockMvc.perform(patch("/comments/{commentId}", commentId)
+                .header("Authorization", token)
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(new CommentUpdateRequest("새로운 댓글 내용")))
+                .with(csrf().asHeader())
+            )
+            .andExpect(status().isNoContent())
+            .andDo(print())
+            .andDo(document("comment-update",
+                pathParameters(
+                    parameterWithName("commentId").description("댓글 ID")
+                ),
+                requestHeaders(
+                    headerWithName(HttpHeaders.ACCEPT).description(APPLICATION_JSON),
+                    headerWithName("Authorization").description("JWT Access 토큰")
+                ),
+                requestFields(
+                    fieldWithPath("comment").type(JsonFieldType.STRING).description("댓글 내용")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("자신이 쓴 댓글 삭제")
+    @WithMockAccount
+    void testRemoveComment() throws Exception {
+        Long commentId = 1L;
+        JwtToken token = new JwtToken("bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+            + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
+            + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
+            + "-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4", new Date());
+
+        mockMvc.perform(delete("/comments/{commentId}", commentId)
+                .header("Authorization", token)
+                .accept(APPLICATION_JSON)
+                .with(csrf().asHeader())
+            )
+            .andExpect(status().isNoContent())
+            .andDo(document("comment-delete",
+                pathParameters(
+                    parameterWithName("commentId").description("댓글 ID")
+                ),
+                requestHeaders(
+                    headerWithName(HttpHeaders.ACCEPT).description(APPLICATION_JSON),
+                    headerWithName("Authorization").description("JWT Access 토큰")
+                )));
     }
 }
