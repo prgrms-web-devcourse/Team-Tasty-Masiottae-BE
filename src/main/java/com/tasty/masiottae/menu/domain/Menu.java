@@ -151,4 +151,12 @@ public class Menu extends BaseTimeEntity {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public int addLike() {
+        return ++this.likesCount;
+    }
+
+    public int removeLike() {
+        return --this.likesCount;
+    }
 }

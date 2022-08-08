@@ -21,8 +21,14 @@ public class AccountEntityService {
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_ACCOUNT.getMessage()));
     }
 
+
     public Account findByEmail(String email) {
         return accountRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_ACCOUNT.getMessage()));
+    }
+
+    public Account findEntityGraphMenuByEmail(String email) {
+        return accountRepository.findEntityGraphMenuByEmail(email)
                 .orElseThrow(() -> new NotFoundException(NOT_FOUND_ACCOUNT.getMessage()));
     }
 

@@ -123,9 +123,9 @@ class MenuControllerTest {
                     fieldWithPath("likes").type(JsonFieldType.NUMBER).description("좋아요 수"),
                     fieldWithPath("expectedPrice").type(JsonFieldType.NUMBER)
                         .description("예상가격"),
-                    fieldWithPath("optionList[].optionName").type(JsonFieldType.STRING)
+                    fieldWithPath("optionList[].name").type(JsonFieldType.STRING)
                         .description("옵션명"),
-                    fieldWithPath("optionList[].optionDescription").type(JsonFieldType.STRING)
+                    fieldWithPath("optionList[].description").type(JsonFieldType.STRING)
                         .description("옵션 설명"),
                     fieldWithPath("tasteList[].id").type(JsonFieldType.NUMBER)
                         .description("맛 ID"),
@@ -404,9 +404,9 @@ class MenuControllerTest {
                                         .description("해당 회원이 생성한 메뉴 개수"),
                                 fieldWithPath("menu[].optionList[]").type(JsonFieldType.ARRAY)
                                         .description("메뉴 옵션 배열"),
-                                fieldWithPath("menu[].optionList[].optionName").type(
+                                fieldWithPath("menu[].optionList[].name").type(
                                         JsonFieldType.STRING).description("메뉴 옵션명"),
-                                fieldWithPath("menu[].optionList[].optionDescription").type(
+                                fieldWithPath("menu[].optionList[].description").type(
                                         JsonFieldType.STRING).description("메뉴 옵션 설명"),
                                 fieldWithPath("menu[].tasteList[]").type(JsonFieldType.ARRAY)
                                         .description("메뉴 맛 배열"),

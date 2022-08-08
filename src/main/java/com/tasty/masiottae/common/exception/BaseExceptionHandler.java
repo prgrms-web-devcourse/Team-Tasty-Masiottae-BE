@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class BaseExceptionHandler {
 
     @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<ErrorResponse> handlerUncaughtException(
-        final Exception e) {
-        log.error(e.getMessage());
+    public ResponseEntity<ErrorResponse> handleUncaughtException(final Exception e) {
         final ErrorResponse response = ErrorResponse.of(UNCAUGHT_ERROR.getMessage(),
             HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -23,21 +23,5 @@ public class AccountConverter {
         );
     }
 
-    public AccountDetail toAccountDetail(Account account) {
-        Collection<SimpleGrantedAuthority> authroties = new ArrayList<>();
-        authroties.add(new SimpleGrantedAuthority(account.getRole().getAuthority()));
-
-        return new AccountDetail(
-            account.getId(),
-            account.getEmail(),
-            account.getPassword(),
-            account.getNickName(),
-            account.getImage(),
-            account.getSnsAccount(),
-            account.getMenuList().size(),
-            authroties,
-            account.getCreatedAt()
-        );
-    }
 
 }

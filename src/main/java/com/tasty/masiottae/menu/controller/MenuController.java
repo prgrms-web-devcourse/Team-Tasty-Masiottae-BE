@@ -30,7 +30,7 @@ public class MenuController {
 
     @PostMapping(value = "/menu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MenuSaveResponse> saveMenu(@RequestPart MenuSaveUpdateRequest data,
-            @RequestPart(required = false) MultipartFile image) {
+        @RequestPart(required = false) MultipartFile image) {
         return new ResponseEntity<>(menuService.createMenu(data, image), HttpStatus.CREATED);
     }
 
@@ -42,7 +42,7 @@ public class MenuController {
 
     @PostMapping(value = "/menu/{menuId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateMenu(@RequestPart MenuSaveUpdateRequest data,
-            @RequestPart MultipartFile image, @PathVariable Long menuId) {
+        @RequestPart(required = false) MultipartFile image, @PathVariable Long menuId) {
         menuService.updateMenu(menuId, data, image);
         return ResponseEntity.ok().build();
     }
