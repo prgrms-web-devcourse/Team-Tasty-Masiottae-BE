@@ -12,6 +12,7 @@ import com.tasty.masiottae.comment.domain.Comment;
 import com.tasty.masiottae.comment.dto.CommentFindResponse;
 import com.tasty.masiottae.comment.dto.CommentSaveRequest;
 import com.tasty.masiottae.comment.dto.CommentSaveResponse;
+import com.tasty.masiottae.comment.dto.CommentUpdateRequest;
 import com.tasty.masiottae.comment.repository.CommentRepository;
 import com.tasty.masiottae.config.QuerydslConfig;
 import com.tasty.masiottae.franchise.domain.Franchise;
@@ -30,7 +31,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({CommentService.class, CommentConverter.class, AccountConverter.class, QuerydslConfig.class})
+@Import({CommentService.class, CommentConverter.class, AccountConverter.class,
+    QuerydslConfig.class})
 class CommentServiceTest {
 
     @Autowired
@@ -57,11 +59,6 @@ class CommentServiceTest {
         accountRepository.save(account);
         franchiseRepository.save(franchise);
         menuRepository.save(menu);
-    }
-
-    @Test
-    void test() {
-        System.out.println(menu.getId());
     }
 
     @Test
@@ -129,5 +126,37 @@ class CommentServiceTest {
 
         // then
         assertThat(allCommentOfOneMenu).hasSize(10);
+    }
+
+
+    @Test
+    @DisplayName("댓글 내용 수정")
+    void testUpdateComment() {
+        // given
+        Comment comment = Comment.createComment(account, menu, "댓글내용");
+        Comment savedComment = commentRepository.save(comment);
+        CommentUpdateRequest request = new CommentUpdateRequest("새로운 댓글내용");
+
+        // when
+        commentService.updateComment(savedComment.getId(), account, request);
+
+        // then
+        assertThat(savedComment.getContent()).isEqualTo(request.comment());
+    }
+
+    @Test
+    @DisplayName("댓글 삭제")
+    void testDeleteComment() {
+        // given
+        List<Comment> comments = IntStream.range(1, 11).mapToObj(
+            i -> Comment.createComment(account, menu, "댓글내용" + i)
+        ).collect(Collectors.toList());
+        commentRepository.saveAll(comments);
+
+        // when
+        commentService.deleteComment(account, comments.get(0).getId());
+
+        // then
+        assertThat(menu.getComments()).hasSize(9);
     }
 }

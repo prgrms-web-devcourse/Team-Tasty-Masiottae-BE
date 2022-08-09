@@ -6,7 +6,6 @@ import com.tasty.masiottae.common.base.BaseTimeEntity;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.option.domain.Option;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -108,18 +107,19 @@ public class Menu extends BaseTimeEntity {
             .build();
     }
 
-    public static Menu createMenu(Long menuId, String realMenuName, String customMenuName, String pictureUrl,
-            Integer expectedPrice, Account account, Franchise franchise, String description) {
+    public static Menu createMenu(Long menuId, String realMenuName, String customMenuName,
+        String pictureUrl,
+        Integer expectedPrice, Account account, Franchise franchise, String description) {
         return Menu.builder()
-                .id(menuId)
-                .realMenuName(realMenuName)
-                .customMenuName(customMenuName)
-                .pictureUrl(pictureUrl)
-                .expectedPrice(expectedPrice)
-                .account(account)
-                .franchise(franchise)
-                .description(description)
-                .build();
+            .id(menuId)
+            .realMenuName(realMenuName)
+            .customMenuName(customMenuName)
+            .pictureUrl(pictureUrl)
+            .expectedPrice(expectedPrice)
+            .account(account)
+            .franchise(franchise)
+            .description(description)
+            .build();
     }
 
     public void addComment(Comment comment) {
@@ -144,8 +144,10 @@ public class Menu extends BaseTimeEntity {
         this.description = menu.description;
         this.pictureUrl = menu.pictureUrl;
         this.expectedPrice = menu.expectedPrice;
-        menu.optionList.forEach(option -> this.optionList.add(Option.createOption(option.getOptionName(), option.getDescription())));
-        menu.menuTasteSet.forEach(menuTaste -> this.menuTasteSet.add(MenuTaste.createMenuTaste(menuTaste.getMenu(), menuTaste.getTaste())));
+        menu.optionList.forEach(option -> this.optionList.add(
+            Option.createOption(option.getOptionName(), option.getDescription())));
+        menu.menuTasteSet.forEach(menuTaste -> this.menuTasteSet.add(
+            MenuTaste.createMenuTaste(menuTaste.getMenu(), menuTaste.getTaste())));
     }
 
     public void setId(Long id) {
@@ -159,4 +161,5 @@ public class Menu extends BaseTimeEntity {
     public int removeLike() {
         return --this.likesCount;
     }
+
 }
