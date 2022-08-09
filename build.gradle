@@ -32,6 +32,9 @@ ext {
 }
 
 bootJar {
+    processResources {
+        duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
+    }
     dependsOn asciidoctor
     from ("${asciidoctor.outputDir}") {
         into "BOOT-INF/classes/static/docs"
