@@ -4,6 +4,11 @@ plugins {
     id "org.asciidoctor.jvm.convert" version "3.3.2"
     id 'java'
     id 'checkstyle'
+    id 'jacoco'
+}
+
+jacoco {
+    toolVersion = '0.8.7'
 }
 
 checkstyle {
@@ -78,12 +83,13 @@ bootJar {
 test {
     useJUnitPlatform()
     outputs.dir snippetsDir
+    finalizedBy 'jacocoTestReport'
 }
 
 asciidoctor {
     configurations 'asciidoctorExtensions'
-    sources{
-        include("**/index.adoc","**/common/*.adoc")
+    sources {
+        include("**/index.adoc", "**/common/*.adoc")
     }
     inputs.dir snippetsDir
     dependsOn test
@@ -94,11 +100,20 @@ asciidoctor.doFirst {
     delete file('src/main/resources/static/docs')
 }
 
+jacocoTestReport {
+    reports {
+        html.enabled(true)
+        xml.enabled(false)
+        csv.enabled(false)
+    }
+}
+
 task copyDocument(type: Copy) {
     dependsOn asciidoctor
     from file("build/docs/asciidoc")
     into file("src/main/resources/static/docs")
 }
+
 
 build {
     dependsOn copyDocument
