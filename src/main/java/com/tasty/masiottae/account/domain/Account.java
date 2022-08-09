@@ -86,6 +86,7 @@ public class Account extends BaseTimeEntity {
                 .image(image)
                 .build();
     }
+
     public static Account createAccount(String email, String password, String nickName, String image) {
         return Account.builder()
                 .email(email)
