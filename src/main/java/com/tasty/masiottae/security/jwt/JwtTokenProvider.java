@@ -8,6 +8,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.Date;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
+import com.tasty.masiottae.security.auth.AccountDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,17 +21,18 @@ public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
 
-    public JwtToken generatedAccountToken(UserDetails userDetails) {
+    public JwtToken generatedAccountToken(AccountDetail accountDetail) {
 
         Algorithm algorithm = Algorithm.HMAC256(
             jwtProperties.getSecret().getBytes());
         Date expirationDate = new Date(
             System.currentTimeMillis() + jwtProperties.getExpirationTime());
         String token = JWT.create()
-            .withSubject(userDetails.getUsername())
+            .withSubject(accountDetail.getUsername())
             .withExpiresAt(expirationDate)
-            .withClaim("roles", userDetails.getAuthorities().stream()
+            .withClaim("roles", accountDetail.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .withClaim("id", accountDetail.account().getId())
             .sign(algorithm);
 
         return new JwtToken(jwtProperties.getTokenPrefix() + token, expirationDate);

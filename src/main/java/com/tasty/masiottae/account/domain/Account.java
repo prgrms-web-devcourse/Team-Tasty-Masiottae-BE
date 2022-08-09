@@ -66,7 +66,8 @@ public class Account extends BaseTimeEntity {
     private List<Comment> commentList = new ArrayList<>();
 
     @Builder
-    private Account(String email, String password, String nickName, String image, String snsAccount) {
+    private Account(Long id, String email, String password, String nickName, String image, String snsAccount) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.nickName = nickName;
@@ -76,6 +77,15 @@ public class Account extends BaseTimeEntity {
         this.createdAt = LocalDateTime.now();
     }
 
+    public static Account createAccount(Long id, String email, String password, String nickName, String image) {
+        return Account.builder()
+                .id(id)
+                .email(email)
+                .password(password)
+                .nickName(nickName)
+                .image(image)
+                .build();
+    }
     public static Account createAccount(String email, String password, String nickName, String image) {
         return Account.builder()
                 .email(email)
