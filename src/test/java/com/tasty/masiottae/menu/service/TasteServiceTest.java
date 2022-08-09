@@ -34,7 +34,7 @@ class TasteServiceTest {
     TasteService tasteService;
 
     @Test
-    @DisplayName("맛을 저장한다.")
+    @DisplayName("Taste를 저장한다.")
     void createTasteTest() {
         // Given
         String name = "매운맛";
@@ -57,7 +57,7 @@ class TasteServiceTest {
     }
 
     @Test
-    @DisplayName("이미 존재하는 이름으로 맛을 생성하려하면 예외가 발생한다.")
+    @DisplayName("이미 존재하는 이름으로 Taste를 생성하려하면 예외가 발생한다.")
     void createTasteExistsNameTest() {
         // Given
         String duplicatedName = "매운맛";
@@ -78,7 +78,7 @@ class TasteServiceTest {
     }
 
     @Test
-    @DisplayName("전체 맛을 조회한다.")
+    @DisplayName("전체 Taste를 조회한다.")
     void findAllTasteTest() {
         // Given
         List<Taste> savedTastes = List.of(
