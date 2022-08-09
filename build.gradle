@@ -31,15 +31,6 @@ ext {
     snippetsDir = file('build/generated-snippets')
 }
 
-bootJar {
-    processResources {
-        duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.INCLUDE
-    }
-    dependsOn asciidoctor
-    from ("${asciidoctor.outputDir}") {
-        into "BOOT-INF/classes/static/docs"
-    }
-}
 
 dependencies {
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
