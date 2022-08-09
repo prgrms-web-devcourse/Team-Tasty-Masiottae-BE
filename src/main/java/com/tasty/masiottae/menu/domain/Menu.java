@@ -136,7 +136,7 @@ public class Menu extends BaseTimeEntity {
         option.setMenu(this);
     }
 
-    public void update(Menu menu) {
+    public void update(Menu menu, Set<MenuTaste> menuTasteSet) {
         this.optionList.clear();
         this.menuTasteSet.clear();
         this.realMenuName = menu.realMenuName;
@@ -146,8 +146,7 @@ public class Menu extends BaseTimeEntity {
         this.expectedPrice = menu.expectedPrice;
         menu.optionList.forEach(option -> this.optionList.add(
             Option.createOption(option.getOptionName(), option.getDescription())));
-        menu.menuTasteSet.forEach(menuTaste -> this.menuTasteSet.add(
-            MenuTaste.createMenuTaste(menuTaste.getMenu(), menuTaste.getTaste())));
+        menu.menuTasteSet.addAll(menuTasteSet);
     }
 
     public void setId(Long id) {

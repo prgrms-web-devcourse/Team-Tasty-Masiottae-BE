@@ -23,6 +23,7 @@ import com.tasty.masiottae.menu.repository.MenuRepository;
 import com.tasty.masiottae.menu.repository.MenuTasteRepository;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -79,7 +80,13 @@ public class MenuService {
         Menu menu = menuConverter.toMenu(request, menuImageUrl);
         menu.setId(menuId);
         menuTasteRepository.deleteAll(menu.getMenuTasteSet());
-        originMenu.update(menu);
+        Set<MenuTaste> menuTasteSet = request.tasteIdList().stream().map(tasteId -> {
+            Taste taste = Taste.createTaste(tasteId);
+            return MenuTaste.createMenuTaste(menu, taste);
+        }).collect(Collectors.toSet());
+        menuTasteRepository.saveAll(menuTasteSet);
+
+        originMenu.update(menu, menuTasteSet);
     }
 
     public Menu findByFetchEntity(Long menuId) {

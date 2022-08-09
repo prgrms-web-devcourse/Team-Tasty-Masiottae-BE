@@ -29,12 +29,17 @@ public class Taste extends BaseTimeEntity {
     private String tasteColor;
 
     @Builder
-    private Taste(String tasteName, String tasteColor) {
+    private Taste(Long id, String tasteName, String tasteColor) {
+        this.id = id;
         this.tasteName = tasteName;
         this.tasteColor = tasteColor;
     }
 
     public static Taste createTaste(String tasteName, String tasteColor) {
-        return new Taste(tasteName, tasteColor);
+        return Taste.builder().tasteName(tasteName).tasteColor(tasteColor).build();
+    }
+    
+    public static Taste createTaste(Long id) {
+        return Taste.builder().id(id).build();
     }
 }
