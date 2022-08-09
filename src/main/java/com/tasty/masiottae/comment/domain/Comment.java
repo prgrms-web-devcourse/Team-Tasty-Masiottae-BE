@@ -53,7 +53,15 @@ public class Comment extends BaseTimeEntity {
         return comment;
     }
 
-    public void changeContent(String content) {
-        this.content = content;
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public void changeContent(String newContent) {
+        this.content = newContent;
     }
 }
