@@ -62,11 +62,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private Authentication getAuthentication(DecodedJWT decodedJWT) {
         String email = decodedJWT.getSubject();
         String[] rolesString = decodedJWT.getClaim("roles").asArray(String.class);
+        Long id = decodedJWT.getClaim("id").asLong();
         Collection<GrantedAuthority> roles = new ArrayList<>();
         for (String roleString : rolesString) {
             roles.add(new SimpleGrantedAuthority(roleString));
         }
-        Account account = Account.createAccount(email, null, null, roles.toString());
+        Account account = Account.createAccount(id, email, null, null, roles.toString());
         AccountDetail accountDetail = new AccountDetail(account);
         return new UsernamePasswordAuthenticationToken(
                 accountDetail, null, roles);

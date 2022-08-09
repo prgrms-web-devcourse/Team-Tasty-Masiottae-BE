@@ -31,12 +31,6 @@ ext {
     snippetsDir = file('build/generated-snippets')
 }
 
-bootJar {
-    dependsOn asciidoctor
-    from ("${asciidoctor.outputDir}") {
-        into "BOOT-INF/classes/static/docs"
-    }
-}
 
 dependencies {
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
@@ -73,6 +67,14 @@ dependencies {
     testImplementation 'io.findify:s3mock_2.13:0.2.6'
 }
 
+bootJar {
+    dependsOn asciidoctor
+    copy {
+        from "${asciidoctor.outputDir}"
+        into 'BOOT-INF/classes/static/docs'
+    }
+}
+
 test {
     useJUnitPlatform()
     outputs.dir snippetsDir
@@ -89,13 +91,13 @@ asciidoctor {
 }
 
 asciidoctor.doFirst {
-    delete file('docs')
+    delete file('src/main/resources/static/docs')
 }
 
 task copyDocument(type: Copy) {
     dependsOn asciidoctor
     from file("build/docs/asciidoc")
-    into file("docs")
+    into file("src/main/resources/static/docs")
 }
 
 build {
