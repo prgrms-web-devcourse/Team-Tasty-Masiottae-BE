@@ -67,6 +67,14 @@ dependencies {
     testImplementation 'io.findify:s3mock_2.13:0.2.6'
 }
 
+bootJar {
+    dependsOn asciidoctor
+    copy {
+        from "${asciidoctor.outputDir}"
+        into 'BOOT-INF/classes/static/docs'
+    }
+}
+
 test {
     useJUnitPlatform()
     outputs.dir snippetsDir
