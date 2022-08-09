@@ -89,13 +89,13 @@ asciidoctor {
 }
 
 asciidoctor.doFirst {
-    delete file('docs')
+    delete file('src/main/resources/static/docs')
 }
 
 task copyDocument(type: Copy) {
     dependsOn asciidoctor
     from file("build/docs/asciidoc")
-    into file("docs")
+    into file("src/main/resources/static/docs")
 }
 
 build {
