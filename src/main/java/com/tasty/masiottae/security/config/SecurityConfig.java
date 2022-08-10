@@ -61,7 +61,7 @@ public class SecurityConfig {
             .and()
             .authorizeRequests().antMatchers("/accounts/**")
                 .hasAnyAuthority("ROLE_ACCOUNT")
-            .anyRequest().authenticated()
+            .anyRequest().permitAll()
             .and()
             .addFilter(corsFilter)
             .addFilter(jwtAuthenticationFilter)
