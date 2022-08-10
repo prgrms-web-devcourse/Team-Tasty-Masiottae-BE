@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 
 public record JwtTokenResponse(
-        @JsonProperty(value = "token")
-        JwtToken jwtToken,
+        @JsonProperty(value = "accessToken")
+        JwtAccessToken jwtAccessToken,
+        @JsonProperty(value = "refreshToken")
+        JwtRefreshToken jwtRefreshToken,
         @JsonProperty(value = "account")
         AccountFindResponse accountFindResponse) {
 }

@@ -1,17 +1,11 @@
 package com.tasty.masiottae.security.jwt;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
-import java.util.Date;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Getter
-@RequiredArgsConstructor
-@JsonRootName("token")
-public class JwtToken {
-
-    private final String accessToken;
-
-    private final Date expirationTime;
+public record JwtToken(
+    @JsonProperty(value = "accessToken")
+    JwtAccessToken jwtAccessToken,
+    @JsonProperty(value = "refreshToken")
+    JwtRefreshToken jwtRefreshToken) {
 
 }
