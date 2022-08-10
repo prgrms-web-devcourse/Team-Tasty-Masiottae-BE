@@ -21,7 +21,7 @@ public class TokenCache {
     private final ConcurrentMap<String, JwtRefreshToken> refreshTokenCache;
     private final ConcurrentMap<String, List<JwtAccessToken>> accessTokenCache;
 
-    public TokenCache(@Autowired JwtProperties jwtProperties) {
+    public TokenCache() {
         this.refreshTokenCache = new ConcurrentHashMap<>();
         this.accessTokenCache = new ConcurrentHashMap<>();
     }
