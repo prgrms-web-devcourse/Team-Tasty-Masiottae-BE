@@ -2,14 +2,13 @@ package com.tasty.masiottae.security.config;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
-import com.tasty.masiottae.account.domain.Role;
+import com.tasty.masiottae.account.repository.TokenCache;
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
 import com.tasty.masiottae.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,6 +26,7 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final TokenCache tokenCache;
     private final CorsFilter corsFilter;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationConfiguration authenticationConfiguration;
@@ -42,18 +42,26 @@ public class SecurityConfig {
         AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
 
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(
-            jwtTokenProvider, authenticationManager);
+            tokenCache, jwtTokenProvider, authenticationManager);
         JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter(
-            jwtTokenProvider);
+            tokenCache, jwtTokenProvider);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
         http
             .csrf().disable()
             .formLogin().disable()
             .httpBasic().disable()
+            .logout().disable()
             .sessionManagement().sessionCreationPolicy(STATELESS)
             .and()
-            .authorizeRequests().anyRequest().permitAll()
+            .authorizeRequests().antMatchers("/signup", "/login", "/logout", "/accounts/check", "/re-issue").permitAll()
+            .and()
+            .authorizeRequests().antMatchers("/accounts")
+                .hasAnyAuthority("ROLE_ACCOUNT", "ROLE_MANAGER")
+            .and()
+            .authorizeRequests().antMatchers("/accounts/**")
+                .hasAnyAuthority("ROLE_ACCOUNT")
+            .anyRequest().authenticated()
             .and()
             .addFilter(corsFilter)
             .addFilter(jwtAuthenticationFilter)
