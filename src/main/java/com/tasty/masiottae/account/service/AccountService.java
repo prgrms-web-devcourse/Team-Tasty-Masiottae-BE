@@ -2,7 +2,6 @@ package com.tasty.masiottae.account.service;
 
 import static com.tasty.masiottae.account.domain.CheckProperty.EMAIL;
 import static com.tasty.masiottae.account.domain.CheckProperty.NICK_NAME;
-import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_ACCOUNT;
 
 import com.tasty.masiottae.account.converter.AccountConverter;
 import com.tasty.masiottae.account.domain.Account;
@@ -10,30 +9,32 @@ import com.tasty.masiottae.account.dto.AccountCreateRequest;
 import com.tasty.masiottae.account.dto.AccountDuplicatedResponse;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.account.dto.AccountImageUpdateResponse;
+import com.tasty.masiottae.account.dto.AccountLogoutRequest;
 import com.tasty.masiottae.account.dto.AccountNickNameUpdateRequest;
 import com.tasty.masiottae.account.dto.AccountNickNameUpdateResponse;
 import com.tasty.masiottae.account.dto.AccountPasswordUpdateRequest;
+import com.tasty.masiottae.account.dto.AccountReIssueRequest;
 import com.tasty.masiottae.account.dto.AccountSnsUpdateRequest;
 import com.tasty.masiottae.account.dto.AccountSnsUpdateResponse;
 import com.tasty.masiottae.account.repository.AccountRepository;
-import com.tasty.masiottae.common.exception.custom.NotFoundException;
+import com.tasty.masiottae.account.repository.TimerUtils;
+import com.tasty.masiottae.account.repository.TokenCache;
 import com.tasty.masiottae.common.util.AwsS3Service;
 import com.tasty.masiottae.security.auth.AccountDetail;
+import com.tasty.masiottae.security.jwt.JwtAccessToken;
+import com.tasty.masiottae.security.jwt.JwtRefreshToken;
 import com.tasty.masiottae.security.jwt.JwtToken;
 import com.tasty.masiottae.security.jwt.JwtTokenProvider;
 import java.util.Objects;
 import java.util.Optional;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-@Getter
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
@@ -43,6 +44,7 @@ public class AccountService {
     private final AccountEntityService accountEntityService;
     private final AwsS3Service awsS3Service;
 
+    private final TokenCache tokenCache;
     private final JwtTokenProvider jwtTokenProvider;
     private final AccountConverter accountConverter;
     private final PasswordEncoder passwordEncoder;
@@ -50,20 +52,19 @@ public class AccountService {
     @Transactional
     public JwtToken saveAccount(AccountCreateRequest accountCreateRequest,
             MultipartFile image) {
-        String imageUrl = null;
+        Account object = accountConverter.fromAccountCreateRequest(accountCreateRequest, image);
+        object.encryptPassword(object.getPassword(), passwordEncoder);
+
         if (Objects.nonNull(image)) {
-            imageUrl = awsS3Service.uploadAccountImage(image);
+            object.updateImage(awsS3Service.uploadAccountImage(image));
         }
 
-        Account object = Account.createAccount(accountCreateRequest.email(),
-                accountCreateRequest.password(),
-                accountCreateRequest.nickName(),
-                imageUrl,
-                accountCreateRequest.snsAccount());
-        object.encryptPassword(object.getPassword(), passwordEncoder);
         Account entity = accountRepository.save(object);
         AccountDetail detail = new AccountDetail(entity);
-        return jwtTokenProvider.generatedAccountToken(detail);
+        JwtAccessToken accessToken = jwtTokenProvider.generateAccessToken(detail);
+        JwtRefreshToken refreshToken = jwtTokenProvider.generateRefreshToken(detail);
+        tokenCache.registerRefreshToken(detail.getUsername(), refreshToken);
+        return accountConverter.toJwtToken(accessToken, refreshToken);
     }
 
     public Page<AccountFindResponse> findAllAccounts(Pageable pageable) {
@@ -74,7 +75,6 @@ public class AccountService {
         return accountConverter.toAccountFindResponse(
                 accountEntityService.findById(id));
     }
-
 
     @Transactional
     public void updatePassword(Long id, AccountPasswordUpdateRequest accountPasswordUpdateRequest) {
@@ -134,10 +134,32 @@ public class AccountService {
         return new AccountDuplicatedResponse(isEmail, errorMessage);
     }
 
-    public void validateExistsAccount(Long id) {
-        if (!accountRepository.existsById(id)) {
-            throw new NotFoundException(NOT_FOUND_ACCOUNT.getMessage());
+    public JwtAccessToken reIssueAccessToken(AccountReIssueRequest request) {
+        if (tokenCache.holdRefreshToken(request.email(), request.refreshToken())
+            && !tokenCache.isAccessTokenInBlackList(request.email(), request.accessToken())) {
+            tokenCache.blockAccessToken(
+                request.email(),
+                request.accessToken(),
+                TimerUtils.getExpirationDate(jwtTokenProvider.getExpirationTime()));
+
+            Account entity = accountEntityService.findEntityGraphMenuByEmail(request.email());
+            AccountDetail detail = new AccountDetail(entity);
+            return jwtTokenProvider.generateAccessToken(detail);
         }
+
+        throw new IllegalArgumentException("토큰 정보가 잘못 입력되었습니다.");
+    }
+
+    public void logout(AccountLogoutRequest request) {
+        if (!tokenCache.holdRefreshToken(request.email(), request.refreshToken())) {
+            throw new IllegalArgumentException("리프레쉬 토큰 정보가 잘못 입력되었습니다.");
+        }
+
+        tokenCache.removeRefreshToken(request.email());
+        tokenCache.blockAccessToken(
+            request.email(),
+            request.accessToken(),
+            TimerUtils.getExpirationDate(jwtTokenProvider.getExpirationTime()));
     }
 
 }
