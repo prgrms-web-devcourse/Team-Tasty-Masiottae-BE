@@ -79,7 +79,7 @@ public class MenuService {
         String menuImageUrl = getImageUrl(originMenu.getPictureUrl(), image);
         Menu menu = menuConverter.toMenu(request, menuImageUrl);
         menu.setId(menuId);
-        menuTasteRepository.deleteAll(menu.getMenuTasteSet());
+        menuTasteRepository.deleteAll(menu.getMenuTasteList());
         Set<MenuTaste> menuTasteSet = request.tasteIdList().stream().map(tasteId -> {
             Taste taste = Taste.createTaste(tasteId);
             return MenuTaste.createMenuTaste(menu, taste);
@@ -141,7 +141,7 @@ public class MenuService {
 
         if (isNotEmptyTastes(searchCond.tastes())) {
             return menus.stream()
-                    .filter(menu -> menu.getMenuTasteSet().stream()
+                    .filter(menu -> menu.getMenuTasteList().stream()
                             .map(MenuTaste::getTaste).collect(Collectors.toSet())
                             .containsAll(searchCond.tastes())).toList();
         }

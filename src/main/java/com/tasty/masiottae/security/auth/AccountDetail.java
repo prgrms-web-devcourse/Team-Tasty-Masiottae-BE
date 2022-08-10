@@ -6,8 +6,9 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public record AccountDetail(Account account) implements
-        UserDetails {
+public record AccountDetail(
+    Account account
+) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -16,6 +17,9 @@ public record AccountDetail(Account account) implements
         return authorities;
     }
 
+    public Long getId() {
+        return account.getId();
+    }
 
     @Override
     public String getPassword() {

@@ -84,7 +84,7 @@ public class CommentService {
         if (!findComment.getAccount().getId().equals(account.getId())) {
             throw new IllegalArgumentException(COMMENT_ACCESS_DENIED.getMessage());
         }
-        findComment.getMenu().getComments().remove(findComment);
+        findComment.getMenu().getCommentList().remove(findComment);
         findComment.getAccount().getCommentList().remove(findComment);
         findComment.setMenu(null);
         findComment.setAccount(null);
