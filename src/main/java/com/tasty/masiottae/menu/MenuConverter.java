@@ -93,7 +93,7 @@ public class MenuConverter {
                 menu.getOptionList().stream()
                         .map(option -> new OptionConverter().toOptionFindResponse(option)).collect(
                                 Collectors.toList()),
-                menu.getMenuTasteSet().stream()
+                menu.getMenuTasteList().stream()
                         .map(menuTaste -> new TasteFindResponse(menuTaste.getTaste().getId(),
                                 menuTaste.getTaste().getTasteName(),
                                 menuTaste.getTaste().getTasteColor()))

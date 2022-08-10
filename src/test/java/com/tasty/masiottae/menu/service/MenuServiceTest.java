@@ -119,7 +119,7 @@ class MenuServiceTest {
                         findMenu.getOptionList().stream().map(Option::getOptionName)).containsAll(
                        optionSaveRequests.stream().map(OptionSaveRequest::name).toList()),
                 () -> assertThat(
-                        findMenu.getMenuTasteSet().stream().map(taste -> taste.getTaste().getId())
+                        findMenu.getMenuTasteList().stream().map(taste -> taste.getTaste().getId())
                                 .toList().containsAll(request.tasteIdList()))
         );
     }
@@ -181,7 +181,7 @@ class MenuServiceTest {
                         findMenu.getOptionList().stream().map(Option::getId)).containsAll(
                         request.tasteIdList()),
                 () -> assertThat(
-                        findMenu.getMenuTasteSet().stream().map(taste -> taste.getTaste().getId())
+                        findMenu.getMenuTasteList().stream().map(taste -> taste.getTaste().getId())
                                 .toList().containsAll(request.tasteIdList()))
         );
 

@@ -157,6 +157,6 @@ class CommentServiceTest {
         commentService.deleteComment(account, comments.get(0).getId());
 
         // then
-        assertThat(menu.getComments()).hasSize(9);
+        assertThat(menu.getCommentList()).hasSize(9);
     }
 }

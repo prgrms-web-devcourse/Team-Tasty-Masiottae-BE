@@ -7,7 +7,6 @@ import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.option.domain.Option;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -68,7 +67,7 @@ public class Menu extends BaseTimeEntity {
     private String description;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "menu")
     private List<LikeMenu> likeMenuList = new ArrayList<>();
@@ -77,7 +76,7 @@ public class Menu extends BaseTimeEntity {
     private List<Option> optionList = new ArrayList<>();
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MenuTaste> menuTasteSet = new HashSet<>();
+    private List<MenuTaste> menuTasteList = new ArrayList<>();
 
     @Builder
     private Menu(Long id, String realMenuName, String customMenuName, String pictureUrl,
@@ -124,11 +123,11 @@ public class Menu extends BaseTimeEntity {
 
     public void addComment(Comment comment) {
         commentCount++;
-        comments.add(comment);
+        commentList.add(comment);
     }
 
     public void addMenuTaste(MenuTaste menuTaste) {
-        menuTasteSet.add(menuTaste);
+        menuTasteList.add(menuTaste);
     }
 
     public void addOption(Option option) {
@@ -138,7 +137,7 @@ public class Menu extends BaseTimeEntity {
 
     public void update(Menu menu, Set<MenuTaste> menuTasteSet) {
         this.optionList.clear();
-        this.menuTasteSet.clear();
+        this.menuTasteList.clear();
         this.realMenuName = menu.realMenuName;
         this.customMenuName = menu.customMenuName;
         this.description = menu.description;
@@ -146,7 +145,7 @@ public class Menu extends BaseTimeEntity {
         this.expectedPrice = menu.expectedPrice;
         menu.optionList.forEach(option -> this.optionList.add(
             Option.createOption(option.getOptionName(), option.getDescription())));
-        menu.menuTasteSet.addAll(menuTasteSet);
+        menu.menuTasteList.addAll(menuTasteSet);
     }
 
     public void setId(Long id) {
