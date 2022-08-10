@@ -67,7 +67,7 @@ public class Menu extends BaseTimeEntity {
     private String description;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "menu")
     private List<LikeMenu> likeMenuList = new ArrayList<>();
@@ -123,7 +123,7 @@ public class Menu extends BaseTimeEntity {
 
     public void addComment(Comment comment) {
         commentCount++;
-        comments.add(comment);
+        commentList.add(comment);
     }
 
     public void addMenuTaste(MenuTaste menuTaste) {
