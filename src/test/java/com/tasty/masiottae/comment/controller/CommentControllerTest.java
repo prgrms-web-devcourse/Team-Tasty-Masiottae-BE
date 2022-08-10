@@ -29,7 +29,7 @@ import com.tasty.masiottae.config.WithMockAccount;
 import com.tasty.masiottae.security.config.SecurityConfig;
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
-import com.tasty.masiottae.security.jwt.JwtToken;
+import com.tasty.masiottae.security.jwt.JwtAccessToken;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -137,7 +137,7 @@ class CommentControllerTest {
     @WithMockAccount
     void testUpdateComment() throws Exception {
         Long commentId = 1L;
-        JwtToken token = new JwtToken("bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+        JwtAccessToken token = new JwtAccessToken("bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
             + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
             + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
             + "-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4", new Date());
@@ -169,7 +169,7 @@ class CommentControllerTest {
     @WithMockAccount
     void testRemoveComment() throws Exception {
         Long commentId = 1L;
-        JwtToken token = new JwtToken("bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+        JwtAccessToken token = new JwtAccessToken("bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
             + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
             + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
             + "-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4", new Date());
