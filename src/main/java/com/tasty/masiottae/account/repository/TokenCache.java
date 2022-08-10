@@ -1,16 +1,13 @@
 package com.tasty.masiottae.account.repository;
 
 import com.tasty.masiottae.security.jwt.JwtAccessToken;
-import com.tasty.masiottae.security.jwt.JwtProperties;
 import com.tasty.masiottae.security.jwt.JwtRefreshToken;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -64,7 +61,7 @@ public class TokenCache {
     }
 
     @Scheduled(fixedRate = 24 * 60 * 60 * 1000)
-    public void invalidateRefreshToken() {
+    public void expireRefreshToken() {
         for (String username : refreshTokenCache.keySet()) {
             JwtRefreshToken refreshToken = refreshTokenCache.get(username);
 
@@ -77,7 +74,7 @@ public class TokenCache {
     }
 
     @Scheduled(fixedRate = 12 * 60 * 60 * 1000)
-    public void invalidateAccessToken() {
+    public void expireAccessToken() {
         for (String username : accessTokenCache.keySet()) {
             List<JwtAccessToken> accessTokens = accessTokenCache.get(username);
 
