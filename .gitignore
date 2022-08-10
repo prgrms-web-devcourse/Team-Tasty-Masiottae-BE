@@ -37,4 +37,3 @@ out/
 .vscode/
 /src/main/generated/
 /logs/
-/src/main/resources/static/docs/index.html
