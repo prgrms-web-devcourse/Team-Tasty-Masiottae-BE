@@ -1,4 +1,4 @@
-package com.tasty.masiottae.common.util;
+package com.tasty.masiottae.common.aws;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

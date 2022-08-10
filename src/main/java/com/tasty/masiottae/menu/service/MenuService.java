@@ -4,7 +4,7 @@ import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU;
 
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.service.AccountEntityService;
-import com.tasty.masiottae.common.util.AwsS3Service;
+import com.tasty.masiottae.common.aws.AwsS3ImageUploader;
 import com.tasty.masiottae.common.util.PageInfo;
 import com.tasty.masiottae.common.util.PageUtil;
 import com.tasty.masiottae.franchise.domain.Franchise;
@@ -39,7 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class MenuService {
 
     private final MenuRepository menuRepository;
-    private final AwsS3Service s3Service;
+    private final AwsS3ImageUploader s3ImageUploader;
     private final MenuConverter menuConverter;
     private final MenuTasteRepository menuTasteRepository;
     private final TasteService tasteService;
@@ -61,7 +61,7 @@ public class MenuService {
         String menuImageUrl = imageUrl;
 
         if (Objects.nonNull(image)) {
-            menuImageUrl = s3Service.uploadMenuImage(image);
+            menuImageUrl = s3ImageUploader.uploadMenuImage(image);
         }
         return menuImageUrl;
     }
