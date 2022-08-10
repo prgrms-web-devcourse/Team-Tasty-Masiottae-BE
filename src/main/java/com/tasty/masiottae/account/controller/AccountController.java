@@ -10,12 +10,15 @@ import com.tasty.masiottae.account.dto.AccountCreateRequest;
 import com.tasty.masiottae.account.dto.AccountDuplicatedResponse;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.account.dto.AccountImageUpdateResponse;
+import com.tasty.masiottae.account.dto.AccountLogoutRequest;
 import com.tasty.masiottae.account.dto.AccountNickNameUpdateRequest;
 import com.tasty.masiottae.account.dto.AccountNickNameUpdateResponse;
 import com.tasty.masiottae.account.dto.AccountPasswordUpdateRequest;
+import com.tasty.masiottae.account.dto.AccountReIssueRequest;
 import com.tasty.masiottae.account.dto.AccountSnsUpdateRequest;
 import com.tasty.masiottae.account.dto.AccountSnsUpdateResponse;
 import com.tasty.masiottae.account.service.AccountService;
+import com.tasty.masiottae.security.jwt.JwtAccessToken;
 import com.tasty.masiottae.security.jwt.JwtToken;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -109,6 +112,20 @@ public class AccountController {
         }
 
         return ResponseEntity.ok(accountDuplicatedResponse);
+    }
+
+    @PostMapping(value = "/re-issue", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<JwtAccessToken> reIssueAccessToken(
+        @RequestBody AccountReIssueRequest request) {
+        JwtAccessToken accessToken = accountService.reIssueAccessToken(request);
+        return ResponseEntity.ok(accessToken);
+    }
+
+    @PostMapping(value = "/logout", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> logout(
+        @RequestBody AccountLogoutRequest request) {
+        accountService.logout(request);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -8,13 +8,14 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.account.dto.AccountLoginRequest;
+import com.tasty.masiottae.account.repository.TokenCache;
 import com.tasty.masiottae.security.auth.AccountDetail;
-import com.tasty.masiottae.security.jwt.JwtToken;
+import com.tasty.masiottae.security.jwt.JwtAccessToken;
+import com.tasty.masiottae.security.jwt.JwtRefreshToken;
 import com.tasty.masiottae.security.jwt.JwtTokenProvider;
 import com.tasty.masiottae.security.jwt.JwtTokenResponse;
 import java.io.IOException;
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    private final TokenCache tokenCache;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
 
@@ -63,7 +65,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     private JwtTokenResponse makePayload(AccountDetail accountDetail) {
-        JwtToken token = jwtTokenProvider.generatedAccountToken(accountDetail);
+        JwtAccessToken accessToken = jwtTokenProvider.generateAccessToken(accountDetail);
+        JwtRefreshToken refreshToken = jwtTokenProvider.generateRefreshToken(accountDetail);
+        tokenCache.registerRefreshToken(accountDetail.getUsername(), refreshToken);
         Account account = accountDetail.account();
         AccountFindResponse accountFindResponse =
             new AccountFindResponse(account.getId(),
@@ -73,7 +77,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 account.getSnsAccount(),
                 account.getCreatedAt(),
                 account.getMenuList().size());
-        return new JwtTokenResponse(token, accountFindResponse);
+        return new JwtTokenResponse(accessToken, refreshToken, accountFindResponse);
     }
 
     private ObjectMapper getObjectMapper() {

@@ -28,7 +28,7 @@ import com.tasty.masiottae.option.dto.OptionFindResponse;
 import com.tasty.masiottae.security.config.SecurityConfig;
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
-import com.tasty.masiottae.security.jwt.JwtToken;
+import com.tasty.masiottae.security.jwt.JwtAccessToken;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,7 +72,7 @@ class LikeMenuControllerTest {
     @DisplayName("좋아요 변경")
     void changeLike() throws Exception {
         Long menuId = 1L;
-        JwtToken token = new JwtToken(
+        JwtAccessToken token = new JwtAccessToken(
                 "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
                         + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
                         + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
@@ -120,7 +120,7 @@ class LikeMenuControllerTest {
 
         when(likeMenuService.getPageLikeMenuByAccount(any(), any())).thenReturn(pages);
 
-        JwtToken token = new JwtToken(
+        JwtAccessToken token = new JwtAccessToken(
                 "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
                         + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
                         + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
