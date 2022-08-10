@@ -75,7 +75,6 @@ class CommentControllerTest {
         mockMvc.perform(post("/comments").contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)).with(csrf().asHeader()))
             .andExpect(status().isCreated())
-            .andDo(print())
             .andDo(document("comment-save",
                 requestFields(
                     fieldWithPath("userId").type(JsonFieldType.NUMBER)
@@ -149,7 +148,6 @@ class CommentControllerTest {
                 .with(csrf().asHeader())
             )
             .andExpect(status().isNoContent())
-            .andDo(print())
             .andDo(document("comment-update",
                 pathParameters(
                     parameterWithName("commentId").description("댓글 ID")
