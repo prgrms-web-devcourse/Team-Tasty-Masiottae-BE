@@ -171,3 +171,15 @@ operation::update-image[snippets='http-request,request-headers,request-parts,htt
 속성의 중복 여부를 확인할 수 있습니다. (중복 여부 확인 가능 속성: email, nickName)
 
 operation::check-account[snippets='http-request,request-headers,request-parameters,http-response,response-headers,response-fields']
+
+=== 토큰 재발급
+
+만료된 엑세스 토큰을 재발급할 수 있습니다.
+
+operation::re-issue[snippets='http-request,request-headers,request-fields,http-response,response-headers,response-fields']
+
+=== 로그아웃
+
+로그인된 아이디를 로그아웃할 수 있습니다.
+
+operation::logout[snippets='http-request,request-headers,request-fields']
