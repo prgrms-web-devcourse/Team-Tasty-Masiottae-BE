@@ -103,8 +103,9 @@ public class MenuService {
     }
 
     public SearchMenuResponse searchAllMenu(SearchMenuRequest request) {
-        Franchise franchise = franchiseService.findOneFranchiseEntity(
-                request.franchiseId());
+        Franchise franchise =
+                request.franchiseId() == 0 ? null : franchiseService.findOneFranchiseEntity(
+                        request.franchiseId());
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
         SearchCond searchCond = new SearchCond(null, request.keyword(), sortCond, franchise, findTasteByIds);
