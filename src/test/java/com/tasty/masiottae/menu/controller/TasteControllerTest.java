@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tasty.masiottae.config.RestDocsConfiguration;
+import com.tasty.masiottae.config.WithMockAccount;
 import com.tasty.masiottae.menu.dto.TasteFindResponse;
 import com.tasty.masiottae.menu.dto.TasteSaveRequest;
 import com.tasty.masiottae.menu.dto.TasteSaveResponse;
@@ -24,6 +25,7 @@ import com.tasty.masiottae.menu.service.TasteService;
 import com.tasty.masiottae.security.config.SecurityConfig;
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +39,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = TasteController.class, excludeFilters = {
@@ -45,7 +46,7 @@ import org.springframework.test.web.servlet.MockMvc;
     @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthorizationFilter.class),
     @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class)})
 @AutoConfigureRestDocs
-@WithMockUser
+@WithMockAccount
 @Import(RestDocsConfiguration.class)
 class TasteControllerTest {
 
@@ -80,18 +81,97 @@ class TasteControllerTest {
                                         MediaType.APPLICATION_JSON_VALUE)
                         ),
                         requestFields(
-                               fieldWithPath("name").type(JsonFieldType.STRING).description("맛 이름"),
-                               fieldWithPath("color").type(JsonFieldType.STRING).description("맛 색상 코드(16진수, 알파벳은 소문자), 예: #ff0000")
+                                fieldWithPath("name").type(JsonFieldType.STRING)
+                                        .description("맛 이름"),
+                                fieldWithPath("color").type(JsonFieldType.STRING)
+                                        .description("맛 색상 코드(16진수, 알파벳은 소문자), 예: #ff0000")
                         ),
                         responseHeaders(
-                                headerWithName(HttpHeaders.CONTENT_TYPE).description(MediaType.APPLICATION_JSON_VALUE)
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description(
+                                        MediaType.APPLICATION_JSON_VALUE)
                         ),
                         responseFields(
-                                fieldWithPath("tasteId").type(JsonFieldType.NUMBER).description("생성된 맛 ID")
+                                fieldWithPath("tasteId").type(JsonFieldType.NUMBER)
+                                        .description("생성된 맛 ID")
                         )
                 ));
 
         then(tasteService).should().createTaste(request);
+    }
+
+    @Test
+    @DisplayName("이미 존재하는 이름의 맛을 저장하려하면 상태 코드 400을 응답한다.")
+    void createDuplicateTasteTest() throws Exception {
+        // Given
+        TasteSaveRequest request = new TasteSaveRequest("중복 이름", "#ff0000");
+        given(tasteService.createTaste(request)).willAnswer(invocation -> {
+            throw new SQLIntegrityConstraintViolationException("Duplicate entry '단' ...");
+        });
+
+        // When // Then
+        mockMvc.perform(post("/tastes")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(request))
+                        .with(csrf().asHeader()))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+
+        then(tasteService).should().createTaste(request);
+    }
+
+    @Test
+    @DisplayName("잘못된 형식의 색상 코드를 전달하면 상태코드 400을 응답한다.")
+    void createTasteInvalidColorCodeTest() throws Exception {
+        // Given
+        TasteSaveRequest request = new TasteSaveRequest("단짠", "wrong color code");
+
+        // When // Then
+        mockMvc.perform(post("/tastes")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(request))
+                        .with(csrf().asHeader()))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+
+        then(tasteService).shouldHaveNoInteractions();
+    }
+
+    @Test
+    @DisplayName("name 필드에 빈값 또는 null을 전달하면 상태코드 400을 응답한다.")
+    void createTasteBlankNameTest() throws Exception {
+        // Given
+        TasteSaveRequest request = new TasteSaveRequest("", "#000000");
+
+        // When // Then
+        mockMvc.perform(post("/tastes")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(request))
+                        .with(csrf().asHeader()))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+
+        then(tasteService).shouldHaveNoInteractions();
+    }
+
+    @Test
+    @DisplayName("tasteColor 필드에 빈값 또는 null을 전달하면 상태코드 400을 응답한다.")
+    void createTasteBlankColorCodeTest() throws Exception {
+        // Given
+        TasteSaveRequest request = new TasteSaveRequest("맛이름", null);
+
+        // When // Then
+        mockMvc.perform(post("/tastes")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(objectMapper.writeValueAsString(request))
+                        .with(csrf().asHeader()))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+
+        then(tasteService).shouldHaveNoInteractions();
     }
 
     @Test
@@ -119,10 +199,15 @@ class TasteControllerTest {
                                         MediaType.APPLICATION_JSON_VALUE)
                         ),
                         responseFields(
-                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("맛 ID"),
-                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("맛 이름"),
-                                fieldWithPath("[].color").type(JsonFieldType.STRING).description("맛 색상 코드(16진수)")
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER)
+                                        .description("맛 ID"),
+                                fieldWithPath("[].name").type(JsonFieldType.STRING)
+                                        .description("맛 이름"),
+                                fieldWithPath("[].color").type(JsonFieldType.STRING)
+                                        .description("맛 색상 코드(16진수)")
                         )
                 ));
+
+        then(tasteService).should().findAllTaste();
     }
 }

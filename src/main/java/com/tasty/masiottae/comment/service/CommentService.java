@@ -1,5 +1,6 @@
 package com.tasty.masiottae.comment.service;
 
+import static com.tasty.masiottae.common.exception.ErrorMessage.COMMENT_ACCESS_DENIED;
 import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_ACCOUNT;
 import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_COMMENT;
 import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU;
@@ -14,6 +15,7 @@ import com.tasty.masiottae.comment.dto.CommentSaveRequest;
 import com.tasty.masiottae.comment.dto.CommentSaveResponse;
 import com.tasty.masiottae.comment.dto.CommentUpdateRequest;
 import com.tasty.masiottae.comment.repository.CommentRepository;
+import com.tasty.masiottae.common.exception.custom.NotFoundException;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import java.util.List;
@@ -50,12 +52,6 @@ public class CommentService {
             savedComment.getContent());
     }
 
-    public Comment findComment(Long commentId) {
-        return commentRepository.findById(commentId)
-            .orElseThrow(() -> new EntityNotFoundException(
-                NOT_FOUND_COMMENT.getMessage()));
-    }
-
     public List<CommentFindResponse> findAllCommentOfOneMenu(Long menuId) {
         List<Comment> commentsOfOneMenu = commentRepository.findAllByMenuId(menuId);
         return commentsOfOneMenu.stream()
@@ -70,14 +66,28 @@ public class CommentService {
     }
 
     @Transactional
-    public void updateComment(Long commentId, CommentUpdateRequest request) {
+    public void updateComment(Long commentId, Account account, CommentUpdateRequest request) {
         Comment findComment = commentRepository.findById(commentId)
-            .orElseThrow(() -> new EntityNotFoundException(
+            .orElseThrow(() -> new NotFoundException(
                 NOT_FOUND_COMMENT.getMessage()));
+        if (!findComment.getAccount().getId().equals(account.getId())) {
+            throw new IllegalArgumentException(COMMENT_ACCESS_DENIED.getMessage());
+        }
         findComment.changeContent(request.comment());
     }
 
-    public void deleteComment(Long commentId) {
-        commentRepository.deleteById(commentId);
+    @Transactional
+    public void deleteComment(Account account, Long commentId) {
+        Comment findComment = commentRepository.findById(commentId)
+            .orElseThrow(() -> new NotFoundException(
+                NOT_FOUND_COMMENT.getMessage()));
+        if (!findComment.getAccount().getId().equals(account.getId())) {
+            throw new IllegalArgumentException(COMMENT_ACCESS_DENIED.getMessage());
+        }
+        findComment.getMenu().getComments().remove(findComment);
+        findComment.getAccount().getCommentList().remove(findComment);
+        findComment.setMenu(null);
+        findComment.setAccount(null);
+        commentRepository.deleteById(findComment.getId());
     }
 }

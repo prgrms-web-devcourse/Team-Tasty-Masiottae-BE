@@ -147,8 +147,7 @@ class LikeMenuServiceTest {
     @ParameterizedTest
     @ValueSource(ints = {10, 50, 100})
     @DisplayName("n명의 유저가 동시에 좋아요를 누를시 메뉴의 좋아요 카운트는 n이어야 한다.")
-    void multiLikeAddTest() throws InterruptedException {
-        int count = 100;
+    void multiLikeAddTest(int count) throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(count);
         CountDownLatch latch = new CountDownLatch(count);
         List<Account> accountList = initAccountList(count);
@@ -171,8 +170,7 @@ class LikeMenuServiceTest {
     @ParameterizedTest
     @ValueSource(ints = {10, 50, 100})
     @DisplayName("좋아요가 되어 있는 n명의 유저가 동시에 좋아요를 누를시 메뉴의 좋아요 카운트는 0이어야 한다.")
-    void multiLikeRemoveTest() throws InterruptedException {
-        int count = 100;
+    void multiLikeRemoveTest(int count) throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(count);
         CountDownLatch createLatch = new CountDownLatch(count);
         List<Account> accountList = initAccountList(count);
