@@ -482,7 +482,7 @@ class MenuControllerTest {
                                 parameterWithName("offset").description("페이징 offset"),
                                 parameterWithName("limit").description("패이징 limit"),
                                 parameterWithName("franchiseId").description(
-                                        "프랜차이즈 ID(null 전달시 전체 프렌차이즈 조회)")
+                                        "프랜차이즈 ID(0 전달시 전체 프렌차이즈 조회)")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description(
