@@ -9,6 +9,8 @@ import com.tasty.masiottae.account.repository.TimerUtils;
 import java.util.Date;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
+import com.tasty.masiottae.security.auth.AccountDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +28,7 @@ public class JwtTokenProvider {
         String token = generateToken(userDetails, expirationDateForAccessToken);
         return new JwtAccessToken(jwtProperties.getTokenPrefix() + token, expirationDateForAccessToken);
     }
+
 
     public JwtRefreshToken generateRefreshToken(UserDetails userDetails) {
         Date expirationDateForRefreshToken

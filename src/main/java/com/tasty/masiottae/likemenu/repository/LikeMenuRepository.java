@@ -14,7 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface LikeMenuRepository extends JpaRepository<LikeMenu, LikeMenuId> {
-
     boolean existsByAccountAndMenu(
             Account account, Menu menu);
 

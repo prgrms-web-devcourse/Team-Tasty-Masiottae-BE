@@ -1,4 +1,4 @@
-= 맛이 어때 API 가이드
+= 맛이 어때 API 가이드(자동화)
 :icons: font
 :source-highlighter: highlightjs
 :toc: left
