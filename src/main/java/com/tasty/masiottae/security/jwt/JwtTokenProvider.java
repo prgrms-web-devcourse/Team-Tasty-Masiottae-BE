@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.tasty.masiottae.account.repository.TimerUtils;
+import com.tasty.masiottae.security.auth.AccountDetail;
 import java.util.Date;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
@@ -46,10 +47,12 @@ public class JwtTokenProvider {
 
     private String generateToken(UserDetails userDetails, Date expirationDate) {
         Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret().getBytes());
+        AccountDetail accountDetail = (AccountDetail) userDetails;
         return JWT.create()
-            .withSubject(userDetails.getUsername())
+            .withSubject(accountDetail.getUsername())
             .withExpiresAt(expirationDate)
-            .withClaim("roles", userDetails.getAuthorities().stream()
+            .withClaim("id", accountDetail.getId())
+            .withClaim("roles", accountDetail.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
             .sign(algorithm);
     }
