@@ -4,7 +4,9 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tasty.masiottae.account.domain.Account;
+import com.tasty.masiottae.account.repository.TokenCache;
 import com.tasty.masiottae.security.auth.AccountDetail;
+import com.tasty.masiottae.security.jwt.JwtAccessToken;
 import com.tasty.masiottae.security.jwt.JwtTokenProvider;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,14 +27,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
+    private final TokenCache tokenCache;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -45,6 +46,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             if (Objects.nonNull(token) && token.startsWith(jwtTokenProvider.getPrefix())) {
                 try {
                     DecodedJWT decodedJWT = jwtTokenProvider.verifyJwtToken(token);
+                    checkBlackList(decodedJWT.getSubject(), token);
                     Authentication authentication = getAuthentication(decodedJWT);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     log.info("권한 확인 -> {}", decodedJWT.getSubject());
@@ -72,12 +74,18 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 accountDetail, null, roles);
     }
 
+    private void checkBlackList(String username, String accessToken) {
+        if (tokenCache.isAccessTokenInBlackList(username, accessToken)) {
+            throw new JWTVerificationException("사용이 불가한 토큰");
+        }
+    }
+
     private void respondWithError(HttpServletResponse response, String message) throws IOException {
         response.setHeader("error", message);
         response.setStatus(HttpStatus.FORBIDDEN.value());
 
         Map<String, String> error = new HashMap<>();
-        error.put("message", "인증된 토큰이 아닙니다.");
+        error.put("message", message);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), error);
     }
