@@ -67,8 +67,26 @@ class FranchiseControllerTest {
         mockMvc.perform(multipart("/franchises").file(multipartFile)
                 .param("name", request.name())
                 .with(csrf().asHeader()).contentType(MULTIPART_FORM_DATA_VALUE))
-            .andExpect(status().isCreated())
-            .andDo(print());
+            .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("프랜차이즈 생성 실패 : 프랜차이즈 이름 미입력")
+    @WithMockUser(roles = "ADMIN")
+    void testSaveFranchiseFailedByNameEmpty() throws Exception {
+        // given
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "image.png", "img/png",
+            "Hello".getBytes());
+        FranchiseSaveRequest request = new FranchiseSaveRequest("", multipartFile);
+
+        FranchiseSaveResponse response = franchiseService.createFranchise(request);
+        given(franchiseService.createFranchise(request)).willReturn(response);
+
+        // expected
+        mockMvc.perform(multipart("/franchises").file(multipartFile)
+                .param("name", request.name())
+                .with(csrf().asHeader()).contentType(MULTIPART_FORM_DATA_VALUE))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
