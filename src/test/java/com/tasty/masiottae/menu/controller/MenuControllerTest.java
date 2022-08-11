@@ -53,7 +53,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = MenuController.class, excludeFilters = {
@@ -317,8 +316,6 @@ class MenuControllerTest {
     @Test
     @DisplayName("나의 메뉴를 검색한다.")
     void searchMyMenuTest() throws Exception {
-        List<Long> tasteIds = List.of(1L, 2L, 3L);
-
         AccountFindResponse author = new AccountFindResponse(1L, "user1.com", "programmers",
                 "prgrms@gmail.com", "prgrms123", LocalDateTime.now(), 1);
         FranchiseFindResponse franchise = new FranchiseFindResponse(1L, "starbucks.com", "스타벅스");
@@ -346,29 +343,25 @@ class MenuControllerTest {
                         LocalDateTime.now(), LocalDateTime.now())
         );
 
-        Long accountId = 1L;
         SearchMyMenuRequest request = new SearchMyMenuRequest(0, 1, "프라푸치노", "recent",
                 List.of(1L, 2L, 3L));
 
-        given(menuService.searchMyMenu(accountId, request)).willReturn(
+        given(menuService.searchMyMenu(any(), any())).willReturn(
                 new SearchMenuResponse(menuFindResponses));
 
-        mockMvc.perform(get("/accounts/{accountId}/menu", accountId)
+        mockMvc.perform(get("/my-menu")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .with(csrf().asHeader())
                         .param("keyword", request.keyword())
                         .param("sort", request.sort())
                         .param("tasteIdList", "1,2,3")
                         .param("offset", String.valueOf(request.offset()))
                         .param("limit", String.valueOf(request.limit())))
                 .andExpect(status().isOk())
-                .andDo(print())
                 .andDo(document("search-my-menu",
                         requestHeaders(
                                 headerWithName(HttpHeaders.ACCEPT).description(
                                         MediaType.APPLICATION_JSON_VALUE)
-                        ),
-                        pathParameters(
-                                parameterWithName("accountId").description("회원 ID")
                         ),
                         requestParameters(
                                 parameterWithName("keyword").description("검색어"),
