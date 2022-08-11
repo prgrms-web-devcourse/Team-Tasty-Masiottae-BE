@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.repository.TokenCache;
 import com.tasty.masiottae.security.auth.AccountDetail;
-import com.tasty.masiottae.security.jwt.JwtAccessToken;
 import com.tasty.masiottae.security.jwt.JwtTokenProvider;
 import java.io.IOException;
 import java.util.ArrayList;
