@@ -15,6 +15,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -196,6 +197,7 @@ class CommentControllerTest {
     @WithMockAccount
     void testRemoveComment() throws Exception {
         Long commentId = 1L;
+
         JwtAccessToken token = new JwtAccessToken("bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
             + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
             + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
@@ -204,9 +206,9 @@ class CommentControllerTest {
         mockMvc.perform(delete("/comments/{commentId}", commentId)
                 .header("Authorization", token)
                 .accept(APPLICATION_JSON)
-                .with(csrf().asHeader())
-            )
-            .andExpect(status().isNoContent())
+                .with(csrf().asHeader()))
+            .andExpect(status().isOk())
+            .andDo(print())
             .andDo(document("comment-delete",
                 pathParameters(
                     parameterWithName("commentId").description("댓글 ID")
@@ -214,6 +216,9 @@ class CommentControllerTest {
                 requestHeaders(
                     headerWithName(HttpHeaders.ACCEPT).description(APPLICATION_JSON),
                     headerWithName("Authorization").description("JWT Access 토큰")
+                ),
+                responseFields(
+                    fieldWithPath("menuId").type(JsonFieldType.NUMBER).description("메뉴 ID")
                 )));
     }
 }
