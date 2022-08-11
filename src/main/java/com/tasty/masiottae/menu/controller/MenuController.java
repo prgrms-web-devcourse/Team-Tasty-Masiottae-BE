@@ -51,10 +51,10 @@ public class MenuController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/accounts/{accountId}/menu", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/my-menu", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SearchMenuResponse> searchMyMenu(
-            @ModelAttribute @Validated SearchMyMenuRequest request, @PathVariable Long accountId) {
-        return ResponseEntity.ok(menuService.searchMyMenu(accountId, request));
+            @ModelAttribute @Validated SearchMyMenuRequest request, @LoginAccount Account account) {
+        return ResponseEntity.ok(menuService.searchMyMenu(account, request));
     }
 
     @GetMapping(value = "/menu", produces = MediaType.APPLICATION_JSON_VALUE)

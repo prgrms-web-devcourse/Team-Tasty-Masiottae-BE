@@ -124,8 +124,7 @@ public class MenuService {
         return searchMenu(searchCond, new PageInfo(request.offset(), request.limit()));
     }
 
-    public SearchMenuResponse searchMyMenu(Long accountId, SearchMyMenuRequest request) {
-        Account account = accountEntityService.findById(accountId);
+    public SearchMenuResponse searchMyMenu(Account account, SearchMyMenuRequest request) {
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
         SearchCond searchCond = new SearchCond(account, request.keyword(), sortCond, null, findTasteByIds);
