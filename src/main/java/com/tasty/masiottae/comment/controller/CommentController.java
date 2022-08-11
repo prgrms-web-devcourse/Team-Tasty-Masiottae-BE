@@ -1,6 +1,7 @@
 package com.tasty.masiottae.comment.controller;
 
 import com.tasty.masiottae.account.domain.Account;
+import com.tasty.masiottae.comment.dto.CommentDeleteResponse;
 import com.tasty.masiottae.comment.dto.CommentFindResponse;
 import com.tasty.masiottae.comment.dto.CommentSaveRequest;
 import com.tasty.masiottae.comment.dto.CommentSaveResponse;
@@ -48,9 +49,9 @@ public class CommentController {
     }
 
     @DeleteMapping("/comments/{commentId}")
-    public ResponseEntity<Void> removeComment(
+    public ResponseEntity<CommentDeleteResponse> removeComment(
         @PathVariable("commentId") Long commentId, @LoginAccount Account account) {
-        commentService.deleteComment(account, commentId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+            new CommentDeleteResponse(commentService.deleteComment(account, commentId)));
     }
 }

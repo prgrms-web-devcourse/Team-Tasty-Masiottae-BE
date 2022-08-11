@@ -126,6 +126,11 @@ public class Menu extends BaseTimeEntity {
         commentList.add(comment);
     }
 
+    public void removeComment(Comment comment) {
+        commentCount--;
+        commentList.remove(comment);
+    }
+
     public void addMenuTaste(MenuTaste menuTaste) {
         menuTasteList.add(menuTaste);
     }
