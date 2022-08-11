@@ -1,13 +1,8 @@
 package com.tasty.masiottae.likemenu.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.repository.AccountRepository;
 import com.tasty.masiottae.config.S3TestConfig;
@@ -24,6 +19,12 @@ import com.tasty.masiottae.menu.repository.TasteRepository;
 import com.tasty.masiottae.menu.service.MenuService;
 import com.tasty.masiottae.option.dto.OptionSaveRequest;
 import io.findify.s3mock.S3Mock;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

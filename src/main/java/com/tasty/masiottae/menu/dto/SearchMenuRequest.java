@@ -15,6 +15,8 @@ public record SearchMenuRequest(
         @NotNull(message = "limit 값은 null 이어서는 안됩니다.")
         @Positive(message = "limit은 0보다 커야합니다.")
         Integer limit,
-        String keyword, @NotBlank(message = "정렬 조건을 지정해주세요.") String sort, Long franchiseId,
+        String keyword, @NotBlank(message = "정렬 조건을 지정해주세요.") String sort,
+        @NotNull(message = "franchiseId는 null이어서는 안됩니다.") @PositiveOrZero(message = "franchiseId는 0이상의 정수 값이어야 합니다.") Long franchiseId,
         @Size(max = 4, message = "taste 검색 조건 지정은 최대 4개까지 가능합니다.") List<Long> tasteIdList) {
+
 }

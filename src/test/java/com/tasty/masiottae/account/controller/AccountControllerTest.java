@@ -47,7 +47,7 @@ import com.tasty.masiottae.account.dto.AccountReIssueRequest;
 import com.tasty.masiottae.account.dto.AccountSnsUpdateRequest;
 import com.tasty.masiottae.account.dto.AccountSnsUpdateResponse;
 import com.tasty.masiottae.account.service.AccountService;
-import com.tasty.masiottae.common.util.AwsS3Service;
+import com.tasty.masiottae.common.aws.AwsS3ImageUploader;
 import com.tasty.masiottae.config.RestDocsConfiguration;
 import com.tasty.masiottae.security.config.SecurityConfig;
 import com.tasty.masiottae.security.jwt.JwtAccessToken;
@@ -93,7 +93,7 @@ class AccountControllerTest {
     AccountService accountService;
 
     @MockBean
-    AwsS3Service awsS3Service;
+    AwsS3ImageUploader s3ImageUploader;
 
     JwtAccessToken accessToken = new JwtAccessToken(
         "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"

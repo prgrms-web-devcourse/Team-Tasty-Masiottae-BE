@@ -20,7 +20,6 @@ import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,9 +38,9 @@ public class CommentService {
     @Transactional
     public CommentSaveResponse createComment(CommentSaveRequest request) {
         Menu menu = menuRepository.findById(request.menuId())
-            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_MENU.getMessage()));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_MENU.getMessage()));
         Account account = accountRepository.findById(request.userId())
-            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_ACCOUNT.getMessage()));
+            .orElseThrow(() -> new NotFoundException(NOT_FOUND_ACCOUNT.getMessage()));
 
         checkContentIsNotEmpty(request);
 
@@ -84,7 +83,7 @@ public class CommentService {
         if (!findComment.getAccount().getId().equals(account.getId())) {
             throw new IllegalArgumentException(COMMENT_ACCESS_DENIED.getMessage());
         }
-        findComment.getMenu().getComments().remove(findComment);
+        findComment.getMenu().getCommentList().remove(findComment);
         findComment.getAccount().getCommentList().remove(findComment);
         findComment.setMenu(null);
         findComment.setAccount(null);

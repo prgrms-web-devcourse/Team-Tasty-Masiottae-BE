@@ -15,7 +15,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,7 +74,6 @@ class CommentControllerTest {
         mockMvc.perform(post("/comments").contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)).with(csrf().asHeader()))
             .andExpect(status().isCreated())
-            .andDo(print())
             .andDo(document("comment-save",
                 requestFields(
                     fieldWithPath("userId").type(JsonFieldType.NUMBER)
@@ -90,6 +88,36 @@ class CommentControllerTest {
                     fieldWithPath("commentId").type(JsonFieldType.NUMBER).description("댓글 ID"),
                     fieldWithPath("comment").type(JsonFieldType.STRING).description("댓글 내용")
                 )));
+    }
+
+    @Test
+    @DisplayName("메뉴에 댓글 작성 실패 : 댓글 내용 Empty")
+    void testSaveCommentFailedByEmptyComment() throws Exception {
+        // given
+        CommentSaveRequest request = new CommentSaveRequest(1L, 1L, "");
+        CommentSaveResponse response = new CommentSaveResponse(request.menuId(),
+            request.userId(), request.comment());
+        given(commentService.createComment(request)).willReturn(response);
+
+        // expected
+        mockMvc.perform(post("/comments").contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)).with(csrf().asHeader()))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("메뉴에 댓글 작성 실패 : 댓글 내용 Empty")
+    void testSaveCommentFailedByBlankComment() throws Exception {
+        // given
+        CommentSaveRequest request = new CommentSaveRequest(1L, 1L, " ");
+        CommentSaveResponse response = new CommentSaveResponse(request.menuId(),
+            request.userId(), request.comment());
+        given(commentService.createComment(request)).willReturn(response);
+
+        // expected
+        mockMvc.perform(post("/comments").contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)).with(csrf().asHeader()))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -149,7 +177,6 @@ class CommentControllerTest {
                 .with(csrf().asHeader())
             )
             .andExpect(status().isNoContent())
-            .andDo(print())
             .andDo(document("comment-update",
                 pathParameters(
                     parameterWithName("commentId").description("댓글 ID")

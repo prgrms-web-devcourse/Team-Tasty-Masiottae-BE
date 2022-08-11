@@ -6,7 +6,9 @@ import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.service.AccountEntityService;
 import com.tasty.masiottae.common.exception.ErrorMessage;
 import com.tasty.masiottae.common.exception.custom.ForbiddenException;
-import com.tasty.masiottae.common.util.AwsS3Service;
+import com.tasty.masiottae.common.aws.AwsS3ImageUploader;
+import com.tasty.masiottae.common.util.PageInfo;
+import com.tasty.masiottae.common.util.PageUtil;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.service.FranchiseService;
 import com.tasty.masiottae.menu.MenuConverter;
@@ -35,7 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class MenuService {
 
     private final MenuRepository menuRepository;
-    private final AwsS3Service s3Service;
+    private final AwsS3ImageUploader s3ImageUploader;
     private final MenuConverter menuConverter;
     private final MenuTasteRepository menuTasteRepository;
     private final TasteService tasteService;
@@ -57,7 +59,7 @@ public class MenuService {
         String menuImageUrl = imageUrl;
 
         if (Objects.nonNull(image)) {
-            menuImageUrl = s3Service.uploadMenuImage(image);
+            menuImageUrl = s3ImageUploader.uploadMenuImage(image);
         } else if (isChange) {
             menuImageUrl = null;
         }
@@ -76,13 +78,15 @@ public class MenuService {
     @Transactional
     public void updateMenu(Long menuId, MenuUpdateRequest request, MultipartFile image, Account account) {
         Menu originMenu = findEntity(menuId);
+
         if (!originMenu.getAccount().getId().equals(account.getId())) {
             throw new ForbiddenException(ErrorMessage.NOT_ACCESS_ANOTHER_ACCOUNT.getMessage());
         }
 
         String menuImageUrl = getImageUrl(originMenu.getPictureUrl(), image, request.isRemoveImage());
         Menu menu = menuConverter.toMenu(menuId, request, account, menuImageUrl);
-        menuTasteRepository.deleteAll(menu.getMenuTasteSet());
+        menuTasteRepository.deleteAll(menu.getMenuTasteList());
+
         Set<MenuTaste> menuTasteSet = request.tasteIdList().stream().map(tasteId -> {
             Taste taste = Taste.createTaste(tasteId);
             return MenuTaste.createMenuTaste(menu, taste);
@@ -111,12 +115,13 @@ public class MenuService {
     }
 
     public SearchMenuResponse searchAllMenu(SearchMenuRequest request) {
-        Franchise franchise = franchiseService.findOneFranchiseEntity(
-                request.franchiseId());
+        Franchise franchise =
+                request.franchiseId() == 0 ? null : franchiseService.findOneFranchiseEntity(
+                        request.franchiseId());
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
         SearchCond searchCond = new SearchCond(null, request.keyword(), sortCond, franchise, findTasteByIds);
-        return searchMenu(searchCond, new PagingInfo(request.offset(), request.limit()));
+        return searchMenu(searchCond, new PageInfo(request.offset(), request.limit()));
     }
 
     public SearchMenuResponse searchMyMenu(Long accountId, SearchMyMenuRequest request) {
@@ -124,47 +129,31 @@ public class MenuService {
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
         SearchCond searchCond = new SearchCond(account, request.keyword(), sortCond, null, findTasteByIds);
-        return searchMenu(searchCond, new PagingInfo(request.offset(), request.limit()));
+        return searchMenu(searchCond, new PageInfo(request.offset(), request.limit()));
     }
 
-    private SearchMenuResponse searchMenu(SearchCond searchCond, PagingInfo pagingInfo) {
-        List<Menu> filteredList = getFilteredList(searchCond);
-        return new SearchMenuResponse(
-                getPagingList(pagingInfo.offset(), pagingInfo.limit(), filteredList));
-    }
-
-    private List<MenuFindResponse> getPagingList(int offset, int limit, List<Menu> menus) {
-        if (isOveOffsetThanSize(offset, menus.size())) {
-            return null;
-        }
-
-        int end = getEndIndex(offset, limit, menus);
-        return menus.subList(offset, end).stream().map(menuConverter::toMenuFindResponse)
-                .toList();
-    }
-
-    private List<Menu> getFilteredList(SearchCond searchCond) {
+    private SearchMenuResponse searchMenu(SearchCond searchCond, PageInfo pageInfo) {
         List<Menu> menus = menuRepository.search(searchCond);
 
         if (isNotEmptyTastes(searchCond.tastes())) {
-            return menus.stream()
-                    .filter(menu -> menu.getMenuTasteSet().stream()
+            menus = menus.stream()
+                    .filter(menu -> menu.getMenuTasteList().stream()
                             .map(MenuTaste::getTaste).collect(Collectors.toSet())
                             .containsAll(searchCond.tastes())).toList();
         }
 
-        return menus;
+        try {
+            return new SearchMenuResponse(PageUtil.page(pageInfo, menus).stream()
+                    .map(menuConverter::toMenuFindResponse)
+                    .toList());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     private static boolean isNotEmptyTastes(List<Taste> findTasteByIds) {
         return !findTasteByIds.isEmpty();
     }
 
-    private boolean isOveOffsetThanSize(int offset, int size) {
-        return offset >= size;
-    }
 
-    private int getEndIndex(int offset, int limit, List<Menu> menus) {
-        return Math.min(offset + limit, menus.size());
-    }
 }

@@ -13,6 +13,12 @@ import com.tasty.masiottae.franchise.repository.FranchiseRepository;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.*;
+import com.tasty.masiottae.menu.dto.MenuFindResponse;
+import com.tasty.masiottae.menu.dto.MenuSaveResponse;
+
+import com.tasty.masiottae.menu.dto.SearchMenuRequest;
+import com.tasty.masiottae.menu.dto.SearchMenuResponse;
+import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import com.tasty.masiottae.menu.repository.TasteRepository;
@@ -117,7 +123,7 @@ class MenuServiceTest {
                         findMenu.getOptionList().stream().map(Option::getOptionName)).containsAll(
                         optionSaveRequests.stream().map(OptionSaveRequest::name).toList()),
                 () -> assertThat(
-                        findMenu.getMenuTasteSet().stream().map(taste -> taste.getTaste().getId())
+                        findMenu.getMenuTasteList().stream().map(taste -> taste.getTaste().getId())
                                 .toList().containsAll(request.tasteIdList()))
         );
     }
@@ -179,7 +185,8 @@ class MenuServiceTest {
                         findMenu.getOptionList().stream().map(Option::getId)).containsAll(
                         request.tasteIdList()),
                 () -> assertThat(
-                        findMenu.getMenuTasteSet().stream().map(taste -> taste.getTaste().getId())
+
+                        findMenu.getMenuTasteList().stream().map(taste -> taste.getTaste().getId())
                                 .toList().containsAll(request.tasteIdList())),
                 () -> assertThat(findMenu.getPictureUrl()).isNotEqualTo(originPictureUrl)
         );
@@ -229,7 +236,7 @@ class MenuServiceTest {
                         findMenu.getOptionList().stream().map(Option::getId)).containsAll(
                         request.tasteIdList()),
                 () -> assertThat(
-                        findMenu.getMenuTasteSet().stream().map(taste -> taste.getTaste().getId())
+                        findMenu.getMenuTasteList().stream().map(taste -> taste.getTaste().getId())
                                 .toList().containsAll(request.tasteIdList())),
                 () -> assertThat(findMenu.getPictureUrl()).isEqualTo(originPictureUrl)
         );
@@ -277,7 +284,7 @@ class MenuServiceTest {
                         findMenu.getOptionList().stream().map(Option::getId)).containsAll(
                         request.tasteIdList()),
                 () -> assertThat(
-                        findMenu.getMenuTasteSet().stream().map(taste -> taste.getTaste().getId())
+                        findMenu.getMenuTasteList().stream().map(taste -> taste.getTaste().getId())
                                 .toList().containsAll(request.tasteIdList())),
                 () -> assertThat(findMenu.getPictureUrl()).isEqualTo(null)
         );

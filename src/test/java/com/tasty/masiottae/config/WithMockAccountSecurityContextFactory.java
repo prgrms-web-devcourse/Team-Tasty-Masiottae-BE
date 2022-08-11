@@ -1,11 +1,10 @@
 package com.tasty.masiottae.config;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.domain.Role;
 import com.tasty.masiottae.security.auth.AccountDetail;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

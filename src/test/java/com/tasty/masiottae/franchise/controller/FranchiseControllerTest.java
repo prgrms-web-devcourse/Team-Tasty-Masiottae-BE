@@ -9,7 +9,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -67,8 +66,26 @@ class FranchiseControllerTest {
         mockMvc.perform(multipart("/franchises").file(multipartFile)
                 .param("name", request.name())
                 .with(csrf().asHeader()).contentType(MULTIPART_FORM_DATA_VALUE))
-            .andExpect(status().isCreated())
-            .andDo(print());
+            .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("프랜차이즈 생성 실패 : 프랜차이즈 이름 미입력")
+    @WithMockUser(roles = "ADMIN")
+    void testSaveFranchiseFailedByNameEmpty() throws Exception {
+        // given
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "image.png", "img/png",
+            "Hello".getBytes());
+        FranchiseSaveRequest request = new FranchiseSaveRequest("", multipartFile);
+
+        FranchiseSaveResponse response = franchiseService.createFranchise(request);
+        given(franchiseService.createFranchise(request)).willReturn(response);
+
+        // expected
+        mockMvc.perform(multipart("/franchises").file(multipartFile)
+                .param("name", request.name())
+                .with(csrf().asHeader()).contentType(MULTIPART_FORM_DATA_VALUE))
+            .andExpect(status().isBadRequest());
     }
 
     @Test

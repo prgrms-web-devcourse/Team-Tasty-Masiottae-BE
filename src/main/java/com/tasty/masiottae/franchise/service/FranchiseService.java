@@ -2,8 +2,8 @@ package com.tasty.masiottae.franchise.service;
 
 import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_FRANCHISE;
 
+import com.tasty.masiottae.common.aws.AwsS3ImageUploader;
 import com.tasty.masiottae.common.exception.custom.NotFoundException;
-import com.tasty.masiottae.common.util.AwsS3Service;
 import com.tasty.masiottae.franchise.FranchiseConverter;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.dto.FranchiseFindResponse;
@@ -26,14 +26,14 @@ public class FranchiseService {
 
     private final FranchiseRepository franchiseRepository;
     private final FranchiseConverter franchiseConverter;
-    private final AwsS3Service awsS3Service;
+    private final AwsS3ImageUploader s3ImageUploader;
 
     @Transactional
     public FranchiseSaveResponse createFranchise(FranchiseSaveRequest request) {
         String franchiseImageUrl = null;
 
         if (Objects.nonNull(request.multipartFile())) {
-            franchiseImageUrl = awsS3Service.uploadFranchiseImage(request.multipartFile());
+            franchiseImageUrl = s3ImageUploader.uploadFranchiseImage(request.multipartFile());
         }
         Franchise franchise = franchiseConverter.toFranchise(request, franchiseImageUrl);
         Franchise savedFranchise = franchiseRepository.save(franchise);

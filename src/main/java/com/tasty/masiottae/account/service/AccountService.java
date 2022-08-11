@@ -19,7 +19,7 @@ import com.tasty.masiottae.account.dto.AccountSnsUpdateResponse;
 import com.tasty.masiottae.account.repository.AccountRepository;
 import com.tasty.masiottae.account.repository.TimerUtils;
 import com.tasty.masiottae.account.repository.TokenCache;
-import com.tasty.masiottae.common.util.AwsS3Service;
+import com.tasty.masiottae.common.aws.AwsS3ImageUploader;
 import com.tasty.masiottae.security.auth.AccountDetail;
 import com.tasty.masiottae.security.jwt.JwtAccessToken;
 import com.tasty.masiottae.security.jwt.JwtRefreshToken;
@@ -42,7 +42,7 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountEntityService accountEntityService;
-    private final AwsS3Service awsS3Service;
+    private final AwsS3ImageUploader s3ImageUploader;
 
     private final TokenCache tokenCache;
     private final JwtTokenProvider jwtTokenProvider;
@@ -56,7 +56,7 @@ public class AccountService {
         object.encryptPassword(object.getPassword(), passwordEncoder);
 
         if (Objects.nonNull(image)) {
-            object.updateImage(awsS3Service.uploadAccountImage(image));
+            object.updateImage(s3ImageUploader.uploadAccountImage(image));
         }
 
         Account entity = accountRepository.save(object);
@@ -101,7 +101,7 @@ public class AccountService {
     @Transactional
     public AccountImageUpdateResponse updateImage(Long id, MultipartFile image) {
         Account entity = accountEntityService.findById(id);
-        String imageUrl = awsS3Service.uploadAccountImage(image);
+        String imageUrl = s3ImageUploader.uploadAccountImage(image);
         entity.updateImage(imageUrl);
         return new AccountImageUpdateResponse(imageUrl);
     }

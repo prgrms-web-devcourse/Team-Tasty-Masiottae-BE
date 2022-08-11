@@ -12,6 +12,9 @@ import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.MenuTaste;
 import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.*;
+import com.tasty.masiottae.menu.dto.MenuFindResponse;
+import com.tasty.masiottae.menu.dto.MenuSaveResponse;
+import com.tasty.masiottae.menu.dto.TasteFindResponse;
 import com.tasty.masiottae.menu.repository.TasteRepository;
 import com.tasty.masiottae.option.OptionConverter;
 
@@ -115,7 +118,7 @@ public class MenuConverter {
                 menu.getOptionList().stream()
                         .map(option -> new OptionConverter().toOptionFindResponse(option)).collect(
                                 Collectors.toList()),
-                menu.getMenuTasteSet().stream()
+                menu.getMenuTasteList().stream()
                         .map(menuTaste -> new TasteFindResponse(menuTaste.getTaste().getId(),
                                 menuTaste.getTaste().getTasteName(),
                                 menuTaste.getTaste().getTasteColor()))
