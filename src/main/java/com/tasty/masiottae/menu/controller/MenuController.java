@@ -1,6 +1,7 @@
 package com.tasty.masiottae.menu.controller;
 
 
+import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
@@ -8,6 +9,7 @@ import com.tasty.masiottae.menu.dto.SearchMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuResponse;
 import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
 import com.tasty.masiottae.menu.service.MenuService;
+import com.tasty.masiottae.security.annotation.LoginAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -53,10 +55,10 @@ public class MenuController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/accounts/{accountId}/menu", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/my-menu", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SearchMenuResponse> searchMyMenu(
-            @ModelAttribute @Validated SearchMyMenuRequest request, @PathVariable Long accountId) {
-        return ResponseEntity.ok(menuService.searchMyMenu(accountId, request));
+            @ModelAttribute @Validated SearchMyMenuRequest request, @LoginAccount Account account) {
+        return ResponseEntity.ok(menuService.searchMyMenu(account, request));
     }
 
     @GetMapping(value = "/menu", produces = MediaType.APPLICATION_JSON_VALUE)
