@@ -77,12 +77,8 @@ class LikeMenuServiceTest {
 
     @BeforeEach
     void init() {
-        account = Account.createAccount("test@gmail.com", "password", "nickname", "imageUrl");
-
-        franchise = Franchise.createFranchise("starbucks", "logo");
-
-        accountRepository.save(account);
-        franchiseRepository.save(franchise);
+        account = accountRepository.save(Account.createAccount("test@gmail.com", "password", "nickname", "imageUrl"));
+        franchise = franchiseRepository.save(Franchise.createFranchise("starbucks", "logo"));
 
         // Given
         List<OptionSaveRequest> optionSaveRequests = List.of(new OptionSaveRequest("옵션1", "설명1"),
@@ -95,12 +91,12 @@ class LikeMenuServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "image.png", "img/png",
                 "Hello".getBytes());
 
-        MenuSaveRequest request = new MenuSaveRequest(account.getId(),
-                franchise.getId(), "커스텀 이름", "맛있습니다", "원래 메뉴 이름", 15000, optionSaveRequests,
+        MenuSaveRequest request = new MenuSaveRequest(this.franchise.getId(), "커스텀 이름", "맛있습니다",
+                "원래 메뉴 이름", 15000, optionSaveRequests,
                 List.of(tastes.get(0).getId(), tastes.get(1).getId(), tastes.get(2).getId()));
 
         // When
-        MenuSaveResponse menuSaveResponse = menuService.createMenu(request, multipartFile);
+        MenuSaveResponse menuSaveResponse = menuService.createMenu(account, request, multipartFile);
 
         // Then
         Menu menu = menuRepository.findById(menuSaveResponse.menuId()).get();

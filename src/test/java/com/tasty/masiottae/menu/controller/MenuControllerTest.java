@@ -28,18 +28,24 @@ import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.config.RestDocsConfiguration;
 import com.tasty.masiottae.config.WithMockAccount;
 import com.tasty.masiottae.franchise.dto.FranchiseFindResponse;
-import com.tasty.masiottae.menu.dto.*;
+import com.tasty.masiottae.menu.dto.MenuFindResponse;
+import com.tasty.masiottae.menu.dto.MenuSaveRequest;
+import com.tasty.masiottae.menu.dto.MenuSaveResponse;
+import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
+import com.tasty.masiottae.menu.dto.SearchMenuRequest;
+import com.tasty.masiottae.menu.dto.SearchMenuResponse;
+import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
+import com.tasty.masiottae.menu.dto.TasteFindResponse;
 import com.tasty.masiottae.menu.service.MenuService;
 import com.tasty.masiottae.option.dto.OptionFindResponse;
 import com.tasty.masiottae.option.dto.OptionSaveRequest;
 import com.tasty.masiottae.security.config.SecurityConfig;
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
+import com.tasty.masiottae.security.jwt.JwtAccessToken;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-
-import com.tasty.masiottae.security.jwt.JwtAccessToken;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +59,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(controllers = MenuController.class, excludeFilters = {
@@ -72,6 +77,13 @@ class MenuControllerTest {
     MenuService menuService;
     @Autowired
     private MockMvc mockMvc;
+
+    JwtAccessToken token = new JwtAccessToken(
+            "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+                    + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
+                    + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
+                    + "-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
+            new Date());
 
     @Test
     @DisplayName("메뉴 단건 조회")
@@ -148,7 +160,7 @@ class MenuControllerTest {
 
         List<Long> tasteIds = List.of(1L, 2L, 3L);
 
-        MenuSaveRequest menuSaveRequest = new MenuSaveRequest(1L, 1L, "슈렉 프라푸치노",
+        MenuSaveRequest menuSaveRequest = new MenuSaveRequest(1L, "슈렉 프라푸치노",
                 "맛있습니다.",
                 "그린티 프라푸치노", 10000, optionSaveRequests, tasteIds);
 
@@ -158,15 +170,15 @@ class MenuControllerTest {
         MockMultipartFile imageFile = new MockMultipartFile("image", "image.png", "image/png",
                 "sample image".getBytes());
 
-        given(menuService.createMenu(menuSaveRequest, imageFile)).willReturn(
+        given(menuService.createMenu(any(), any(), any())).willReturn(
                 new MenuSaveResponse(1L));
-
-
 
         // When // Then
         mockMvc.perform(multipart("/menu").file(data).file(imageFile)
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                        .accept(MediaType.APPLICATION_JSON_VALUE).with(csrf().asHeader())).andDo(print())
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .with(csrf().asHeader())
+                        .header("Authorization", token))
                 .andExpect(status().isCreated()).andDo(document("create-menu", requestHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description(
                                         MediaType.MULTIPART_FORM_DATA_VALUE),
@@ -176,7 +188,6 @@ class MenuControllerTest {
                                 partWithName("data").description("메뉴 정보")
 
                         ), requestPartFields("data",
-                                fieldWithPath("userId").type(JsonFieldType.NUMBER).description("회원 ID"),
                                 fieldWithPath("franchiseId").type(JsonFieldType.NUMBER)
                                         .description("프렌차이즈 ID"),
                                 fieldWithPath("title").type(JsonFieldType.STRING).description("메뉴명"),
@@ -198,7 +209,7 @@ class MenuControllerTest {
                                 fieldWithPath("menuId").type(JsonFieldType.NUMBER)
                                         .description("생성된 메뉴 ID"))));
 
-        then(menuService).should().createMenu(menuSaveRequest, imageFile);
+        then(menuService).should().createMenu(any(), any(), any());
     }
 
     @Test
@@ -225,14 +236,7 @@ class MenuControllerTest {
         MockMultipartFile imageFile = new MockMultipartFile("image", "image.png",
                 "image/png", "sample image".getBytes());
 
-        JwtAccessToken token = new JwtAccessToken(
-                "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
-                        + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
-                        + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
-                        + "-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
-                new Date());
-
-        given(menuService.createMenu(any(), any()))
+        given(menuService.createMenu(any(), any(), any()))
                 .willReturn(new MenuSaveResponse(1L));
 
         mockMvc.perform(multipart("/menu/{menuId}", 1)
@@ -279,7 +283,8 @@ class MenuControllerTest {
                                         .description("옵션 설명"),
                                 fieldWithPath("tasteIdList[]").type(JsonFieldType.ARRAY)
                                         .description("맛 ID 목록"),
-                                fieldWithPath("isRemoveImage").type(JsonFieldType.BOOLEAN).description("이미지가 제거 유무.")
+                                fieldWithPath("isRemoveImage").type(JsonFieldType.BOOLEAN)
+                                        .description("이미지가 제거 유무.")
                         )
                 ));
     }
@@ -287,12 +292,6 @@ class MenuControllerTest {
     @Test
     @DisplayName("메뉴를 삭제한다.")
     public void deleteMenuTest() throws Exception {
-        JwtAccessToken token = new JwtAccessToken(
-                "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
-                        + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
-                        + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
-                        + "-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
-                new Date());
         Long menuId = 1L;
         mockMvc.perform(delete("/menu/{menuId}", menuId)
                         .with(csrf().asHeader())

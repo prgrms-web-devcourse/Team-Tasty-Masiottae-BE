@@ -45,12 +45,10 @@ public class MenuService {
     private final FranchiseService franchiseService;
 
     @Transactional
-    public MenuSaveResponse createMenu(MenuSaveRequest request, MultipartFile image) {
+    public MenuSaveResponse createMenu(Account account, MenuSaveRequest request,
+            MultipartFile image) {
         String menuImageUrl = getImageUrl(null, image, false);
-
-        Menu menu = menuConverter.toMenu(request, menuImageUrl);
-        menuRepository.save(menu);
-
+        Menu menu = menuConverter.toMenu(account, request, menuImageUrl);
         return menuConverter
                 .toMenuSaveResponse(menuRepository.save(menu));
     }
@@ -76,14 +74,16 @@ public class MenuService {
     }
 
     @Transactional
-    public void updateMenu(Long menuId, MenuUpdateRequest request, MultipartFile image, Account account) {
+    public void updateMenu(Long menuId, MenuUpdateRequest request, MultipartFile image,
+            Account account) {
         Menu originMenu = findEntity(menuId);
 
         if (!originMenu.getAccount().getId().equals(account.getId())) {
             throw new ForbiddenException(ErrorMessage.NOT_ACCESS_ANOTHER_ACCOUNT.getMessage());
         }
 
-        String menuImageUrl = getImageUrl(originMenu.getPictureUrl(), image, request.isRemoveImage());
+        String menuImageUrl = getImageUrl(originMenu.getPictureUrl(), image,
+                request.isRemoveImage());
         Menu menu = menuConverter.toMenu(menuId, request, account, menuImageUrl);
         menuTasteRepository.deleteAll(menu.getMenuTasteList());
 
@@ -120,7 +120,8 @@ public class MenuService {
                         request.franchiseId());
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
-        SearchCond searchCond = new SearchCond(null, request.keyword(), sortCond, franchise, findTasteByIds);
+        SearchCond searchCond = new SearchCond(null, request.keyword(), sortCond, franchise,
+                findTasteByIds);
         return searchMenu(searchCond, new PageInfo(request.offset(), request.limit()));
     }
 
@@ -128,7 +129,8 @@ public class MenuService {
         Account account = accountEntityService.findById(accountId);
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
-        SearchCond searchCond = new SearchCond(account, request.keyword(), sortCond, null, findTasteByIds);
+        SearchCond searchCond = new SearchCond(account, request.keyword(), sortCond, null,
+                findTasteByIds);
         return searchMenu(searchCond, new PageInfo(request.offset(), request.limit()));
     }
 
