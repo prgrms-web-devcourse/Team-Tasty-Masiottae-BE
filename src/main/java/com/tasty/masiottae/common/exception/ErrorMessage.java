@@ -37,7 +37,10 @@ public enum ErrorMessage {
     // comment
     NO_COMMENT_CONTENT("댓글 내용을 입력해주세요."),
     NOT_FOUND_COMMENT("존재하지 않는 댓글입니다."),
-    COMMENT_ACCESS_DENIED("접근 권한이 없는 댓글입니다.");
+    COMMENT_ACCESS_DENIED("접근 권한이 없는 댓글입니다."),
+
+    //FORBIDDEN
+    NOT_ACCESS_ANOTHER_ACCOUNT("다른 유저의 정보에는 접근할 수 없습니다.");
 
 
     private final String message;

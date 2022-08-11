@@ -287,18 +287,31 @@ class MenuControllerTest {
     @Test
     @DisplayName("메뉴를 삭제한다.")
     public void deleteMenuTest() throws Exception {
+        JwtAccessToken token = new JwtAccessToken(
+                "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+                        + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
+                        + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
+                        + "-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
+                new Date());
         Long menuId = 1L;
         mockMvc.perform(delete("/menu/{menuId}", menuId)
                         .with(csrf().asHeader())
+                        .header("Authorization", token)
+                        .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("delete-menu",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.ACCEPT).description(
+                                        MediaType.APPLICATION_JSON_VALUE),
+                                headerWithName("Authorization").description("JWT Access 토큰")
+                        ),
                         pathParameters(
                                 parameterWithName("menuId").description("삭제할 메뉴 ID")
                         )
                 ));
 
-        then(menuService).should().delete(menuId);
+        then(menuService).should().delete(any(), any());
     }
 
     @Test

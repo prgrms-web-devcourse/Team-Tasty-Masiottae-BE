@@ -4,6 +4,8 @@ import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU;
 
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.service.AccountEntityService;
+import com.tasty.masiottae.common.exception.ErrorMessage;
+import com.tasty.masiottae.common.exception.custom.ForbiddenException;
 import com.tasty.masiottae.common.util.AwsS3Service;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.service.FranchiseService;
@@ -74,6 +76,9 @@ public class MenuService {
     @Transactional
     public void updateMenu(Long menuId, MenuUpdateRequest request, MultipartFile image, Account account) {
         Menu originMenu = findEntity(menuId);
+        if (!originMenu.getAccount().getId().equals(account.getId())) {
+            throw new ForbiddenException(ErrorMessage.NOT_ACCESS_ANOTHER_ACCOUNT.getMessage());
+        }
 
         String menuImageUrl = getImageUrl(originMenu.getPictureUrl(), image, request.isRemoveImage());
         Menu menu = menuConverter.toMenu(menuId, request, account, menuImageUrl);
@@ -96,7 +101,12 @@ public class MenuService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Account account, Long id) {
+        Menu menu = findEntity(id);
+        boolean isUseAccount = menu.getAccount().getId().equals(account.getId());
+        if (!isUseAccount) {
+            throw new ForbiddenException(ErrorMessage.NOT_ACCESS_ANOTHER_ACCOUNT.getMessage());
+        }
         menuRepository.deleteById(id);
     }
 

@@ -286,7 +286,7 @@ class MenuServiceTest {
     @Test
     @DisplayName("메뉴 삭제")
     void testDelete() {
-        menuService.delete(menuSaveResponse.menuId());
+        menuService.delete(account, menuSaveResponse.menuId());
         assertThrows(EntityNotFoundException.class, () -> menuService.findOneMenu(menuSaveResponse.menuId()));
     }
 
