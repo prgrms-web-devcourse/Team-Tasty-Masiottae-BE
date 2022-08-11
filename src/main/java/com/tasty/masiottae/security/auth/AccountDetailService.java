@@ -1,6 +1,5 @@
 package com.tasty.masiottae.security.auth;
 
-import com.tasty.masiottae.account.converter.AccountConverter;
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.service.AccountEntityService;
 import lombok.RequiredArgsConstructor;
