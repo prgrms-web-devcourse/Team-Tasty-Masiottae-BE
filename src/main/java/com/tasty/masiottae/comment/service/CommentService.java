@@ -83,15 +83,16 @@ public class CommentService {
         if (!findComment.getAccount().getId().equals(account.getId())) {
             throw new IllegalArgumentException(COMMENT_ACCESS_DENIED.getMessage());
         }
+        Long menuId = findComment.getMenu().getId();
+        removeCommentWithRelated(findComment);
+        commentRepository.deleteById(findComment.getId());
+        return menuId;
+    }
 
-        Long menuId;
-        menuId = findComment.getMenu().getId();
+    private void removeCommentWithRelated(Comment findComment) {
         findComment.getMenu().removeComment(findComment);
         findComment.getAccount().getCommentList().remove(findComment);
         findComment.setMenu(null);
         findComment.setAccount(null);
-        commentRepository.deleteById(findComment.getId());
-
-        return menuId;
     }
 }
