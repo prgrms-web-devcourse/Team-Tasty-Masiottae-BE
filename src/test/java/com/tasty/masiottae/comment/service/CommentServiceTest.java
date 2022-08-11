@@ -14,6 +14,7 @@ import com.tasty.masiottae.comment.dto.CommentSaveRequest;
 import com.tasty.masiottae.comment.dto.CommentSaveResponse;
 import com.tasty.masiottae.comment.dto.CommentUpdateRequest;
 import com.tasty.masiottae.comment.repository.CommentRepository;
+import com.tasty.masiottae.common.exception.custom.NotFoundException;
 import com.tasty.masiottae.config.QuerydslConfig;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.repository.FranchiseRepository;
@@ -93,7 +94,7 @@ class CommentServiceTest {
         // expected
         assertThatThrownBy(
             () -> commentService.createComment(request))
-            .isInstanceOf(EntityNotFoundException.class)
+            .isInstanceOf(NotFoundException.class)
             .hasMessageContaining("존재하지 않는 메뉴입니다.");
     }
 
