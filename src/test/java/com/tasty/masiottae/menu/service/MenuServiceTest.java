@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.repository.AccountRepository;
+import com.tasty.masiottae.common.exception.custom.ForbiddenException;
 import com.tasty.masiottae.config.S3TestConfig;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.repository.FranchiseRepository;
@@ -284,10 +285,18 @@ class MenuServiceTest {
     }
 
     @Test
-    @DisplayName("메뉴 삭제")
+    @DisplayName("메뉴 삭제(성공)")
     void testDelete() {
         menuService.delete(account, menuSaveResponse.menuId());
         assertThrows(EntityNotFoundException.class, () -> menuService.findOneMenu(menuSaveResponse.menuId()));
+    }
+
+    @Test
+    @DisplayName("메뉴 삭제(실패)")
+    void testDeleteFail() {
+        Account newAccount = Account.createAccount("new@gmail.com", "password", "new", "imageUrl2");
+        accountRepository.save(newAccount);
+        assertThrows(ForbiddenException.class, () -> menuService.delete(newAccount, menuSaveResponse.menuId()));
     }
 
     @Test
