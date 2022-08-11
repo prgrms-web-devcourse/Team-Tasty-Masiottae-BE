@@ -14,4 +14,4 @@ operation::comment-update[snippets='http-request,path-parameters,request-headers
 
 === 댓글 삭제
 
-operation::comment-delete[snippets='http-request,path-parameters,request-headers,http-response']
+operation::comment-delete[snippets='http-request,path-parameters,request-headers,http-response,response-body']
