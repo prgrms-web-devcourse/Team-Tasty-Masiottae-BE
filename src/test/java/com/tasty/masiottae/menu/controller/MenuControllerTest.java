@@ -1,5 +1,6 @@
 package com.tasty.masiottae.menu.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -25,14 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.config.RestDocsConfiguration;
+import com.tasty.masiottae.config.WithMockAccount;
 import com.tasty.masiottae.franchise.dto.FranchiseFindResponse;
-import com.tasty.masiottae.menu.dto.MenuFindResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
-import com.tasty.masiottae.menu.dto.SearchMenuRequest;
-import com.tasty.masiottae.menu.dto.SearchMenuResponse;
-import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
-import com.tasty.masiottae.menu.dto.TasteFindResponse;
+import com.tasty.masiottae.menu.dto.*;
 import com.tasty.masiottae.menu.service.MenuService;
 import com.tasty.masiottae.option.dto.OptionFindResponse;
 import com.tasty.masiottae.option.dto.OptionSaveRequest;
@@ -40,7 +36,10 @@ import com.tasty.masiottae.security.config.SecurityConfig;
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+
+import com.tasty.masiottae.security.jwt.JwtAccessToken;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +62,7 @@ import org.springframework.test.web.servlet.MockMvc;
     @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = JwtAuthenticationFilter.class)}
 )
 @AutoConfigureRestDocs
-@WithMockUser
+@WithMockAccount
 @Import(RestDocsConfiguration.class)
 class MenuControllerTest {
 
@@ -149,18 +148,20 @@ class MenuControllerTest {
 
         List<Long> tasteIds = List.of(1L, 2L, 3L);
 
-        MenuSaveUpdateRequest menuSaveUpdateRequest = new MenuSaveUpdateRequest(1L, 1L, "슈렉 프라푸치노",
+        MenuSaveRequest menuSaveRequest = new MenuSaveRequest(1L, 1L, "슈렉 프라푸치노",
                 "맛있습니다.",
                 "그린티 프라푸치노", 10000, optionSaveRequests, tasteIds);
 
         MockMultipartFile data = new MockMultipartFile("data", "", "application/json",
-                objectMapper.writeValueAsBytes(menuSaveUpdateRequest));
+                objectMapper.writeValueAsBytes(menuSaveRequest));
 
         MockMultipartFile imageFile = new MockMultipartFile("image", "image.png", "image/png",
                 "sample image".getBytes());
 
-        given(menuService.createMenu(menuSaveUpdateRequest, imageFile)).willReturn(
+        given(menuService.createMenu(menuSaveRequest, imageFile)).willReturn(
                 new MenuSaveResponse(1L));
+
+
 
         // When // Then
         mockMvc.perform(multipart("/menu").file(data).file(imageFile)
@@ -169,7 +170,8 @@ class MenuControllerTest {
                 .andExpect(status().isCreated()).andDo(document("create-menu", requestHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description(
                                         MediaType.MULTIPART_FORM_DATA_VALUE),
-                                headerWithName(HttpHeaders.ACCEPT).description(MediaType.APPLICATION_JSON_VALUE)),
+                                headerWithName(HttpHeaders.ACCEPT).description(MediaType.APPLICATION_JSON_VALUE)
+                        ),
                         requestParts(partWithName("image").description("메뉴 이미지"),
                                 partWithName("data").description("메뉴 정보")
 
@@ -189,13 +191,14 @@ class MenuControllerTest {
                                 fieldWithPath("optionList[].description").type(JsonFieldType.STRING)
                                         .description("옵션 설명"),
                                 fieldWithPath("tasteIdList[]").type(JsonFieldType.ARRAY)
-                                        .description("맛 ID 목록")), responseHeaders(
+                                        .description("맛 ID 목록")
+                        ), responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description(
                                         MediaType.APPLICATION_JSON_VALUE)), responseFields(
                                 fieldWithPath("menuId").type(JsonFieldType.NUMBER)
                                         .description("생성된 메뉴 ID"))));
 
-        then(menuService).should().createMenu(menuSaveUpdateRequest, imageFile);
+        then(menuService).should().createMenu(menuSaveRequest, imageFile);
     }
 
     @Test
@@ -211,18 +214,25 @@ class MenuControllerTest {
 
         List<Long> tasteIds = List.of(1L, 2L, 3L);
 
-        MenuSaveUpdateRequest menuSaveUpdateRequest = new MenuSaveUpdateRequest(1L, 1L, "슈렉 프라푸치노",
+        MenuUpdateRequest menuUpdateRequest = new MenuUpdateRequest(1L, "슈렉 프라푸치노",
                 "맛있습니다.",
                 "그린티 프라푸치노", 10000, optionSaveRequests,
-                tasteIds);
+                tasteIds, false);
 
         MockMultipartFile data = new MockMultipartFile("data", "", "application/json",
-                objectMapper.writeValueAsBytes(menuSaveUpdateRequest));
+                objectMapper.writeValueAsBytes(menuUpdateRequest));
 
         MockMultipartFile imageFile = new MockMultipartFile("image", "image.png",
                 "image/png", "sample image".getBytes());
 
-        given(menuService.createMenu(menuSaveUpdateRequest, imageFile))
+        JwtAccessToken token = new JwtAccessToken(
+                "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
+                        + ".eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiO"
+                        + "lsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0."
+                        + "-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
+                new Date());
+
+        given(menuService.createMenu(any(), any()))
                 .willReturn(new MenuSaveResponse(1L));
 
         mockMvc.perform(multipart("/menu/{menuId}", 1)
@@ -230,6 +240,7 @@ class MenuControllerTest {
                         .file(imageFile)
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization", token)
                         .with(csrf().asHeader())
                 ).andExpect(status().isOk())
                 .andDo(print())
@@ -238,7 +249,8 @@ class MenuControllerTest {
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description(
                                         MediaType.MULTIPART_FORM_DATA_VALUE),
                                 headerWithName(HttpHeaders.ACCEPT).description(
-                                        MediaType.APPLICATION_JSON_VALUE)
+                                        MediaType.APPLICATION_JSON_VALUE),
+                                headerWithName("Authorization").description("JWT Access 토큰")
                         ),
                         pathParameters(
                                 parameterWithName("menuId").description("수정할 메뉴 ID")
@@ -249,8 +261,6 @@ class MenuControllerTest {
 
                         ),
                         requestPartFields("data",
-                                fieldWithPath("userId").type(JsonFieldType.NUMBER)
-                                        .description("회원 ID"),
                                 fieldWithPath("franchiseId").type(JsonFieldType.NUMBER)
                                         .description("프렌차이즈 ID"),
                                 fieldWithPath("title").type(JsonFieldType.STRING)
@@ -268,7 +278,8 @@ class MenuControllerTest {
                                 fieldWithPath("optionList[].description").type(JsonFieldType.STRING)
                                         .description("옵션 설명"),
                                 fieldWithPath("tasteIdList[]").type(JsonFieldType.ARRAY)
-                                        .description("맛 ID 목록")
+                                        .description("맛 ID 목록"),
+                                fieldWithPath("isRemoveImage").type(JsonFieldType.BOOLEAN).description("이미지가 제거 유무.")
                         )
                 ));
     }
