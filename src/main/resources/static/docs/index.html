@@ -966,7 +966,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 18
+Content-Length: 20
 
 {
   "menuId" : 1
@@ -1110,6 +1110,7 @@ Content-Length: 906
     "name" : "파란맛",
     "color" : "파란색"
   } ],
+
   "createdAt" : "2022-08-11T16:54:24.117517",
   "updatedAt" : "2022-08-11T16:54:24.117517"
 }</code></pre>
@@ -1270,14 +1271,15 @@ Content-Length: 906
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /menu/1 HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-X-CSRF-TOKEN: 658eb9c6-8162-48f8-844d-a5026e20942a
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@7fd7c0d4
+X-CSRF-TOKEN: 8c59e2ba-e624-4506-836b-2cfa08267164
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Content-Disposition: form-data; name=data
 Content-Type: application/json
 
-{"userId":1,"franchiseId":1,"title":"슈렉 프라푸치노","content":"맛있습니다.","originalTitle":"그린티 프라푸치노","expectedPrice":10000,"optionList":[{"name":"에스프레소 샷","description":"1샷"},{"name":"간 자바칩","description":"1개"},{"name":"통 자바칩","description":"1개"},{"name":"카라멜드리즐","description":"1개"}],"tasteIdList":[1,2,3]}
+{"franchiseId":1,"title":"슈렉 프라푸치노","content":"맛있습니다.","originalTitle":"그린티 프라푸치노","expectedPrice":10000,"optionList":[{"name":"에스프레소 샷","description":"1샷"},{"name":"간 자바칩","description":"1개"},{"name":"통 자바칩","description":"1개"},{"name":"카라멜드리즐","description":"1개"}],"tasteIdList":[1,2,3],"isRemoveImage":false}
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Content-Disposition: form-data; name=image; filename=image.png
 Content-Type: image/png
@@ -1308,6 +1310,10 @@ sample image
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">application/json</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Access 토큰</p></td>
 </tr>
 </tbody>
 </table>
@@ -1354,11 +1360,6 @@ sample image
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 ID</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>franchiseId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">프렌차이즈 ID</p></td>
@@ -1403,6 +1404,11 @@ sample image
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">맛 ID 목록</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isRemoveImage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지가 제거 유무.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1431,7 +1437,9 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /menu/1 HTTP/1.1
-X-CSRF-TOKEN: a02b79da-4652-4ea3-87fd-4a8b313d25b0
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@18c14edd
+Accept: application/json
+X-CSRF-TOKEN: 0dc759ec-6091-4fc3-8f69-01d757fe1705
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1541,7 +1549,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2374
+Content-Length: 2478
 
 {
   "menu" : [ {
@@ -1904,7 +1912,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2374
+Content-Length: 2478
 
 {
   "menu" : [ {
@@ -2252,7 +2260,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 184
+Content-Length: 196
 
 [ {
   "id" : 1,
@@ -2415,7 +2423,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 19
+Content-Length: 21
 
 {
   "tasteId" : 1
@@ -2607,7 +2615,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 537
+Content-Length: 546
 
 {
   "accessToken" : {
@@ -2990,7 +2998,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 679
+Content-Length: 715
 
 {
   "content" : [ {
@@ -3015,8 +3023,8 @@ Content-Length: 679
     "unpaged" : false
   },
   "totalPages" : 1,
-  "totalElements" : 1,
   "last" : true,
+  "totalElements" : 1,
   "size" : 10,
   "number" : 0,
   "sort" : {
@@ -3280,7 +3288,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 188
+Content-Length: 197
 
 {
   "id" : 1,
@@ -3516,7 +3524,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 47
+Content-Length: 49
 
 {
   "updatedNickName" : "변경된 닉네임"
@@ -3652,7 +3660,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 53
+Content-Length: 55
 
 {
   "updatedSnsAccount" : "변경된 SNS 닉네임"
@@ -3791,7 +3799,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 48
+Content-Length: 50
 
 {
   "image" : "https://localhost/abcdefg.jpeg"
@@ -3921,7 +3929,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 53
+Content-Length: 56
 
 {
   "isDuplicated" : false,
@@ -4079,7 +4087,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 242
+Content-Length: 245
 
 {
   "token" : "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTExQG5hdmVyLmNvbSIsInJvbGVzIjpbIlJPTEVfQUNDT1VOVCJdLCJleHAiOjE2NjAwMzg0NzN9.DZDkCcMNAtfxmv-GWL9mxE0dncwxbHBQQ9kXmvG2AMA",
@@ -4469,8 +4477,8 @@ Content-Length: 1464
     "unpaged" : false
   },
   "totalPages" : 1,
-  "totalElements" : 1,
   "last" : true,
+  "totalElements" : 1,
   "size" : 10,
   "number" : 0,
   "sort" : {
@@ -4770,6 +4778,7 @@ Content-Length: 1464
 Content-Type: application/json;charset=UTF-8
 Content-Length: 48
 X-CSRF-TOKEN: 43657a81-9e16-4fa1-9b09-4c4a8abbce5e
+
 Host: localhost:8080
 
 {"userId":1,"menuId":1,"comment":"댓글내용"}</code></pre>
@@ -4843,7 +4852,7 @@ Content-Length: 51
 <h4 id="_댓글_작성_response_body"><a class="link" href="#_댓글_작성_response_body">Response body</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"menuId":1,"commentId":1,"comment":"댓글내용"}</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"menuId":1,"commentId":1,"comment":"�뙎湲��궡�슜"}</code></pre>
 </div>
 </div>
 </div>
@@ -4931,7 +4940,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2894
+Content-Length: 2927
 
 [{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-11T16:53:54.964044","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-11T16:53:54.96441","updatedAt":"2022-08-11T16:53:54.964419"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-11T16:53:54.964075","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-11T16:53:54.964477","updatedAt":"2022-08-11T16:53:54.964483"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-11T16:53:54.96409","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-11T16:53:54.96449","updatedAt":"2022-08-11T16:53:54.964494"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-11T16:53:54.964103","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-11T16:53:54.964499","updatedAt":"2022-08-11T16:53:54.964504"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-11T16:53:54.964123","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-11T16:53:54.964508","updatedAt":"2022-08-11T16:53:54.964513"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-11T16:53:54.964135","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-11T16:53:54.964517","updatedAt":"2022-08-11T16:53:54.964521"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-11T16:53:54.964146","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-11T16:53:54.964526","updatedAt":"2022-08-11T16:53:54.964538"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-11T16:53:54.964157","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-11T16:53:54.964544","updatedAt":"2022-08-11T16:53:54.964548"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-11T16:53:54.964168","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-11T16:53:54.964552","updatedAt":"2022-08-11T16:53:54.964557"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-11T16:53:54.964179","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-11T16:53:54.964561","updatedAt":"2022-08-11T16:53:54.964565"}]</code></pre>
 </div>
@@ -5217,7 +5226,7 @@ X-Frame-Options: DENY</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-09 14:42:08 +0900
+Last updated 2022-08-10 17:36:48 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

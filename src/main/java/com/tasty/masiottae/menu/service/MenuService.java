@@ -4,6 +4,8 @@ import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU;
 
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.service.AccountEntityService;
+import com.tasty.masiottae.common.exception.ErrorMessage;
+import com.tasty.masiottae.common.exception.custom.ForbiddenException;
 import com.tasty.masiottae.common.aws.AwsS3ImageUploader;
 import com.tasty.masiottae.common.util.PageInfo;
 import com.tasty.masiottae.common.util.PageUtil;
@@ -13,21 +15,17 @@ import com.tasty.masiottae.menu.MenuConverter;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.MenuTaste;
 import com.tasty.masiottae.menu.domain.Taste;
-import com.tasty.masiottae.menu.dto.MenuFindResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
-import com.tasty.masiottae.menu.dto.SearchCond;
-import com.tasty.masiottae.menu.dto.SearchMenuRequest;
-import com.tasty.masiottae.menu.dto.SearchMenuResponse;
-import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
+import com.tasty.masiottae.menu.dto.*;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import com.tasty.masiottae.menu.repository.MenuTasteRepository;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,21 +45,23 @@ public class MenuService {
     private final FranchiseService franchiseService;
 
     @Transactional
-    public MenuSaveResponse createMenu(MenuSaveUpdateRequest request, MultipartFile image) {
-        String menuImageUrl = getImageUrl(null, image);
+    public MenuSaveResponse createMenu(MenuSaveRequest request, MultipartFile image) {
+        String menuImageUrl = getImageUrl(null, image, false);
 
         Menu menu = menuConverter.toMenu(request, menuImageUrl);
         menuRepository.save(menu);
 
         return menuConverter
-            .toMenuSaveResponse(menuRepository.save(menu));
+                .toMenuSaveResponse(menuRepository.save(menu));
     }
 
-    private String getImageUrl(String imageUrl, MultipartFile image) {
+    private String getImageUrl(String imageUrl, MultipartFile image, boolean isChange) {
         String menuImageUrl = imageUrl;
 
         if (Objects.nonNull(image)) {
             menuImageUrl = s3ImageUploader.uploadMenuImage(image);
+        } else if (isChange) {
+            menuImageUrl = null;
         }
         return menuImageUrl;
     }
@@ -69,19 +69,24 @@ public class MenuService {
     public MenuFindResponse findOneMenu(Long menuId) {
 
         Menu findMenu = menuRepository.findByIdFetch(menuId).orElseThrow(
-            () -> new EntityNotFoundException(NOT_FOUND_MENU.getMessage())
+                () -> new EntityNotFoundException(NOT_FOUND_MENU.getMessage())
         );
 
         return menuConverter.toMenuFindResponse(findMenu);
     }
 
     @Transactional
-    public void updateMenu(Long menuId, MenuSaveUpdateRequest request, MultipartFile image) {
+    public void updateMenu(Long menuId, MenuUpdateRequest request, MultipartFile image, Account account) {
         Menu originMenu = findEntity(menuId);
-        String menuImageUrl = getImageUrl(originMenu.getPictureUrl(), image);
-        Menu menu = menuConverter.toMenu(request, menuImageUrl);
-        menu.setId(menuId);
+
+        if (!originMenu.getAccount().getId().equals(account.getId())) {
+            throw new ForbiddenException(ErrorMessage.NOT_ACCESS_ANOTHER_ACCOUNT.getMessage());
+        }
+
+        String menuImageUrl = getImageUrl(originMenu.getPictureUrl(), image, request.isRemoveImage());
+        Menu menu = menuConverter.toMenu(menuId, request, account, menuImageUrl);
         menuTasteRepository.deleteAll(menu.getMenuTasteList());
+
         Set<MenuTaste> menuTasteSet = request.tasteIdList().stream().map(tasteId -> {
             Taste taste = Taste.createTaste(tasteId);
             return MenuTaste.createMenuTaste(menu, taste);
@@ -100,7 +105,12 @@ public class MenuService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Account account, Long id) {
+        Menu menu = findEntity(id);
+        boolean isUseAccount = menu.getAccount().getId().equals(account.getId());
+        if (!isUseAccount) {
+            throw new ForbiddenException(ErrorMessage.NOT_ACCESS_ANOTHER_ACCOUNT.getMessage());
+        }
         menuRepository.deleteById(id);
     }
 
@@ -125,7 +135,7 @@ public class MenuService {
         List<Menu> menus = menuRepository.search(searchCond);
 
         if (isNotEmptyTastes(searchCond.tastes())) {
-            menus =  menus.stream()
+            menus = menus.stream()
                     .filter(menu -> menu.getMenuTasteList().stream()
                             .map(MenuTaste::getTaste).collect(Collectors.toSet())
                             .containsAll(searchCond.tastes())).toList();

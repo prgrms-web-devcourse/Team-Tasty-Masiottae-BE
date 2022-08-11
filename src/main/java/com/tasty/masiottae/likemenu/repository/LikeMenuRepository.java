@@ -1,8 +1,6 @@
 package com.tasty.masiottae.likemenu.repository;
 
 
-import java.util.List;
-
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.likemenu.domain.LikeMenuId;
