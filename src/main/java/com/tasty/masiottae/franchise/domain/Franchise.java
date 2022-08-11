@@ -38,7 +38,7 @@ public class Franchise extends BaseTimeEntity {
     private List<Menu> menuList = new ArrayList<>();
 
     @Builder
-    private Franchise(String name, String logoUrl) {
+    private Franchise(Long id, String name, String logoUrl) {
         this.name = name;
         this.logoUrl = logoUrl;
     }
@@ -48,6 +48,12 @@ public class Franchise extends BaseTimeEntity {
             .name(name)
             .logoUrl(logoUrl)
             .build();
+    }
+
+    public static Franchise createIdFranchise(Long id) {
+        return Franchise.builder()
+                .id(id)
+                .build();
     }
 
     public void updateLogoUrl(String logoUrl) {

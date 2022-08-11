@@ -6,14 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.repository.AccountRepository;
+import com.tasty.masiottae.common.exception.custom.ForbiddenException;
 import com.tasty.masiottae.config.S3TestConfig;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.repository.FranchiseRepository;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
+import com.tasty.masiottae.menu.dto.*;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
+
 import com.tasty.masiottae.menu.dto.SearchMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuResponse;
 import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
@@ -23,8 +25,10 @@ import com.tasty.masiottae.menu.repository.TasteRepository;
 import com.tasty.masiottae.option.domain.Option;
 import com.tasty.masiottae.option.dto.OptionSaveRequest;
 import io.findify.s3mock.S3Mock;
+
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -88,7 +92,7 @@ class MenuServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "image.png", "img/png",
                 "Hello".getBytes());
 
-        MenuSaveUpdateRequest request = new MenuSaveUpdateRequest(
+        MenuSaveRequest request = new MenuSaveRequest(
                 account.getId(),
                 franchise.getId(),
                 "커스텀 이름",
@@ -117,7 +121,7 @@ class MenuServiceTest {
                 () -> assertThat(findMenu.getExpectedPrice()).isEqualTo(request.expectedPrice()),
                 () -> assertThat(
                         findMenu.getOptionList().stream().map(Option::getOptionName)).containsAll(
-                       optionSaveRequests.stream().map(OptionSaveRequest::name).toList()),
+                        optionSaveRequests.stream().map(OptionSaveRequest::name).toList()),
                 () -> assertThat(
                         findMenu.getMenuTasteList().stream().map(taste -> taste.getTaste().getId())
                                 .toList().containsAll(request.tasteIdList()))
@@ -137,8 +141,9 @@ class MenuServiceTest {
     }
 
     @Test
-    @DisplayName("메뉴 수정")
+    @DisplayName("메뉴 수정(이미지 수정 o)")
     void testUpdateMenu() {
+        String originPictureUrl = menuService.findByFetchEntity(menuSaveResponse.menuId()).getPictureUrl();
         // Given
         List<OptionSaveRequest> optionSaveRequests = List.of(
                 new OptionSaveRequest("옵션1", "설명1"),
@@ -152,25 +157,75 @@ class MenuServiceTest {
                 tasteRepository.save(Taste.createTaste("신맛", "####"))
         );
 
-        MenuSaveUpdateRequest request = new MenuSaveUpdateRequest(
-                account.getId(),
+        MenuUpdateRequest request = new MenuUpdateRequest(
                 franchise.getId(),
                 "커스텀 이름 변경",
                 "맛없습니다",
                 "수정 메뉴 이름",
                 25000,
                 optionSaveRequests,
-                List.of(tastes.get(0).getId(), tastes.get(1).getId(), tastes.get(2).getId())
+                List.of(tastes.get(0).getId(), tastes.get(1).getId(), tastes.get(2).getId()),
+                true
         );
 
         MockMultipartFile multipartFile = new MockMultipartFile("updateFile", "image.png", "img/png",
                 "update".getBytes());
-        menuService.updateMenu(menuSaveResponse.menuId(), request, multipartFile);
+        menuService.updateMenu(menuSaveResponse.menuId(), request, multipartFile, account);
         Menu findMenu = menuService.findByFetchEntity(menuSaveResponse.menuId());
         assertAll(
                 () -> assertThat(findMenu.getPictureUrl()).startsWith(
                         "http://localhost:8001/masiottae-image-bucket/menu/"),
-                () -> assertThat(findMenu.getAccount().getId()).isEqualTo(request.userId()),
+                () -> assertThat(findMenu.getCustomMenuName())
+                        .isEqualTo(request.title()),
+                () -> assertThat(findMenu.getDescription())
+                        .isEqualTo(request.content()),
+                () -> assertThat(findMenu.getRealMenuName()).isEqualTo(request.originalTitle()),
+                () -> assertThat(findMenu.getExpectedPrice()).isEqualTo(request.expectedPrice()),
+                () -> assertThat(
+                        findMenu.getOptionList().stream().map(Option::getId)).containsAll(
+                        request.tasteIdList()),
+                () -> assertThat(
+
+                        findMenu.getMenuTasteList().stream().map(taste -> taste.getTaste().getId())
+                                .toList().containsAll(request.tasteIdList())),
+                () -> assertThat(findMenu.getPictureUrl()).isNotEqualTo(originPictureUrl)
+        );
+
+    }
+
+    @Test
+    @DisplayName("메뉴 수정(이미지 수정 x)")
+    void testUpdateMenuNoImage() {
+        String originPictureUrl = menuService.findByFetchEntity(menuSaveResponse.menuId()).getPictureUrl();
+        // Given
+        List<OptionSaveRequest> optionSaveRequests = List.of(
+                new OptionSaveRequest("옵션1", "설명1"),
+                new OptionSaveRequest("옵션2", "설명2"),
+                new OptionSaveRequest("옵션3", "설명3")
+        );
+
+        List<Taste> tastes = List.of(
+                tasteRepository.save(Taste.createTaste("단짠", "####")),
+                tasteRepository.save(Taste.createTaste("쓴맛", "####")),
+                tasteRepository.save(Taste.createTaste("신맛", "####"))
+        );
+
+        MenuUpdateRequest request = new MenuUpdateRequest(
+                franchise.getId(),
+                "커스텀 이름 변경",
+                "맛없습니다",
+                "수정 메뉴 이름",
+                25000,
+                optionSaveRequests,
+                List.of(tastes.get(0).getId(), tastes.get(1).getId(), tastes.get(2).getId()),
+                false
+        );
+
+        menuService.updateMenu(menuSaveResponse.menuId(), request, null, account);
+        Menu findMenu = menuService.findByFetchEntity(menuSaveResponse.menuId());
+        assertAll(
+                () -> assertThat(findMenu.getPictureUrl()).startsWith(
+                        "http://localhost:8001/masiottae-image-bucket/menu/"),
                 () -> assertThat(findMenu.getCustomMenuName())
                         .isEqualTo(request.title()),
                 () -> assertThat(findMenu.getDescription())
@@ -182,16 +237,73 @@ class MenuServiceTest {
                         request.tasteIdList()),
                 () -> assertThat(
                         findMenu.getMenuTasteList().stream().map(taste -> taste.getTaste().getId())
-                                .toList().containsAll(request.tasteIdList()))
+                                .toList().containsAll(request.tasteIdList())),
+                () -> assertThat(findMenu.getPictureUrl()).isEqualTo(originPictureUrl)
         );
 
     }
 
     @Test
-    @DisplayName("메뉴 삭제")
+    @DisplayName("메뉴 수정(이미지가 있다가 제거.)")
+    void testUpdateMenuImageNull() {
+        String originPictureUrl = menuService.findByFetchEntity(menuSaveResponse.menuId()).getPictureUrl();
+        // Given
+        List<OptionSaveRequest> optionSaveRequests = List.of(
+                new OptionSaveRequest("옵션1", "설명1"),
+                new OptionSaveRequest("옵션2", "설명2"),
+                new OptionSaveRequest("옵션3", "설명3")
+        );
+
+        List<Taste> tastes = List.of(
+                tasteRepository.save(Taste.createTaste("단짠", "####")),
+                tasteRepository.save(Taste.createTaste("쓴맛", "####")),
+                tasteRepository.save(Taste.createTaste("신맛", "####"))
+        );
+
+        MenuUpdateRequest request = new MenuUpdateRequest(
+                franchise.getId(),
+                "커스텀 이름 변경",
+                "맛없습니다",
+                "수정 메뉴 이름",
+                25000,
+                optionSaveRequests,
+                List.of(tastes.get(0).getId(), tastes.get(1).getId(), tastes.get(2).getId()),
+                true
+        );
+
+        menuService.updateMenu(menuSaveResponse.menuId(), request, null, account);
+        Menu findMenu = menuService.findByFetchEntity(menuSaveResponse.menuId());
+        assertAll(
+                () -> assertThat(findMenu.getCustomMenuName())
+                        .isEqualTo(request.title()),
+                () -> assertThat(findMenu.getDescription())
+                        .isEqualTo(request.content()),
+                () -> assertThat(findMenu.getRealMenuName()).isEqualTo(request.originalTitle()),
+                () -> assertThat(findMenu.getExpectedPrice()).isEqualTo(request.expectedPrice()),
+                () -> assertThat(
+                        findMenu.getOptionList().stream().map(Option::getId)).containsAll(
+                        request.tasteIdList()),
+                () -> assertThat(
+                        findMenu.getMenuTasteList().stream().map(taste -> taste.getTaste().getId())
+                                .toList().containsAll(request.tasteIdList())),
+                () -> assertThat(findMenu.getPictureUrl()).isEqualTo(null)
+        );
+
+    }
+
+    @Test
+    @DisplayName("메뉴 삭제(성공)")
     void testDelete() {
-        menuService.delete(menuSaveResponse.menuId());
+        menuService.delete(account, menuSaveResponse.menuId());
         assertThrows(EntityNotFoundException.class, () -> menuService.findOneMenu(menuSaveResponse.menuId()));
+    }
+
+    @Test
+    @DisplayName("메뉴 삭제(실패)")
+    void testDeleteFail() {
+        Account newAccount = Account.createAccount("new@gmail.com", "password", "new", "imageUrl2");
+        accountRepository.save(newAccount);
+        assertThrows(ForbiddenException.class, () -> menuService.delete(newAccount, menuSaveResponse.menuId()));
     }
 
     @Test
@@ -225,7 +337,7 @@ class MenuServiceTest {
     }
 
     private void saveMoreMenus() {
-        menuService.createMenu(new MenuSaveUpdateRequest(
+        menuService.createMenu(new MenuSaveRequest(
                         account.getId(),
                         franchise.getId(),
                         "커스텀 이름",
@@ -237,7 +349,7 @@ class MenuServiceTest {
                 new MockMultipartFile("image", "image.png", "img/png",
                         "image".getBytes()));
 
-        menuService.createMenu(new MenuSaveUpdateRequest(
+        menuService.createMenu(new MenuSaveRequest(
                         account.getId(),
                         franchise.getId(),
                         "커스텀 이름",

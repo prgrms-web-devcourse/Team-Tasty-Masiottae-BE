@@ -11,13 +11,15 @@ import com.tasty.masiottae.franchise.repository.FranchiseRepository;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.MenuTaste;
 import com.tasty.masiottae.menu.domain.Taste;
+import com.tasty.masiottae.menu.dto.*;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
 import com.tasty.masiottae.menu.dto.TasteFindResponse;
 import com.tasty.masiottae.menu.repository.TasteRepository;
 import com.tasty.masiottae.option.OptionConverter;
+
 import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +32,7 @@ public class MenuConverter {
     private final TasteRepository tasteRepository;
     private final OptionConverter optionConverter;
 
-    public Menu toMenu(MenuSaveUpdateRequest request, String menuImageUrl) {
+    public Menu toMenu(MenuSaveRequest request, String menuImageUrl) {
         Account account = findOneAccount(request.userId());
         Franchise franchise = findOneFranchise(request.franchiseId());
 
@@ -48,6 +50,29 @@ public class MenuConverter {
 
         request.tasteIdList().stream()
                 .map(this::findOneTaste)
+                .map(taste -> MenuTaste.createMenuTaste(menu, taste))
+                .forEach(menu::addMenuTaste);
+
+        return menu;
+    }
+
+    public Menu toMenu(Long menuId, MenuUpdateRequest request, Account account, String menuImageUrl) {
+        Franchise franchise = Franchise.createIdFranchise(request.franchiseId());
+
+        Menu menu = Menu.createMenu(
+                menuId,
+                request.originalTitle(),
+                request.title(),
+                menuImageUrl,
+                request.expectedPrice(),
+                account,
+                franchise,
+                request.content()
+        );
+        request.optionList().stream().map(optionConverter::toOption).forEach(menu::addOption);
+
+        request.tasteIdList().stream()
+                .map(Taste::createTaste)
                 .map(taste -> MenuTaste.createMenuTaste(menu, taste))
                 .forEach(menu::addMenuTaste);
 

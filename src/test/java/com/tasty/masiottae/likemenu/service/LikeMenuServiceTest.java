@@ -13,12 +13,13 @@ import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
+import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import com.tasty.masiottae.menu.repository.TasteRepository;
 import com.tasty.masiottae.menu.service.MenuService;
 import com.tasty.masiottae.option.dto.OptionSaveRequest;
 import io.findify.s3mock.S3Mock;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -94,7 +95,7 @@ class LikeMenuServiceTest {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "image.png", "img/png",
                 "Hello".getBytes());
 
-        MenuSaveUpdateRequest request = new MenuSaveUpdateRequest(account.getId(),
+        MenuSaveRequest request = new MenuSaveRequest(account.getId(),
                 franchise.getId(), "커스텀 이름", "맛있습니다", "원래 메뉴 이름", 15000, optionSaveRequests,
                 List.of(tastes.get(0).getId(), tastes.get(1).getId(), tastes.get(2).getId()));
 

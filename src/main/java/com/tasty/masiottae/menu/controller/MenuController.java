@@ -1,13 +1,10 @@
 package com.tasty.masiottae.menu.controller;
 
 
-import com.tasty.masiottae.menu.dto.MenuFindResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveResponse;
-import com.tasty.masiottae.menu.dto.MenuSaveUpdateRequest;
-import com.tasty.masiottae.menu.dto.SearchMenuRequest;
-import com.tasty.masiottae.menu.dto.SearchMenuResponse;
-import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
+import com.tasty.masiottae.account.domain.Account;
+import com.tasty.masiottae.menu.dto.*;
 import com.tasty.masiottae.menu.service.MenuService;
+import com.tasty.masiottae.security.annotation.LoginAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,8 +26,8 @@ public class MenuController {
     private final MenuService menuService;
 
     @PostMapping(value = "/menu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuSaveResponse> saveMenu(@RequestPart MenuSaveUpdateRequest data,
-        @RequestPart(required = false) MultipartFile image) {
+    public ResponseEntity<MenuSaveResponse> saveMenu(@RequestPart MenuSaveRequest data,
+                                                     @RequestPart(required = false) MultipartFile image) {
         return new ResponseEntity<>(menuService.createMenu(data, image), HttpStatus.CREATED);
     }
 
@@ -41,15 +38,16 @@ public class MenuController {
     }
 
     @PostMapping(value = "/menu/{menuId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateMenu(@RequestPart MenuSaveUpdateRequest data,
-        @RequestPart(required = false) MultipartFile image, @PathVariable Long menuId) {
-        menuService.updateMenu(menuId, data, image);
+    public ResponseEntity<Void> updateMenu(@RequestPart MenuUpdateRequest data,
+                                           @RequestPart(required = false) MultipartFile image,
+                                           @PathVariable Long menuId, @LoginAccount Account account) {
+        menuService.updateMenu(menuId, data, image, account);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/menu/{menuId}")
-    public ResponseEntity<Void> deleteMenu(@PathVariable Long menuId) {
-        menuService.delete(menuId);
+    public ResponseEntity<Void> deleteMenu(@PathVariable Long menuId, @LoginAccount Account account) {
+        menuService.delete(account, menuId);
         return ResponseEntity.ok().build();
     }
 
