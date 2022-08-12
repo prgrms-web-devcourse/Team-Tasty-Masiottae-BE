@@ -64,4 +64,10 @@ public class MenuController {
             @ModelAttribute @Validated SearchMenuRequest request) {
         return ResponseEntity.ok(menuService.searchAllMenu(request));
     }
+
+    @GetMapping(value = "/like-menu", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SearchMenuResponse> searchLikeMenu(
+            @ModelAttribute @Validated SearchMenuRequest request, @LoginAccount Account account) {
+        return ResponseEntity.ok(menuService.searchLikeMenu(account, request));
+    }
 }

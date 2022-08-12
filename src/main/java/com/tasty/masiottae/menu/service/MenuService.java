@@ -136,6 +136,14 @@ public class MenuService {
         return buildSearchMenuResponse(request, searchCond);
     }
 
+    public SearchMenuResponse searchLikeMenu(Account account, SearchMenuRequest request) {
+        List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
+        MenuSortCond sortCond = MenuSortCond.find(request.sort());
+        SearchCond searchCond = new SearchCond(SearchType.LIKE_MENU, account, request.keyword(), sortCond, null,
+                findTasteByIds);
+        return buildSearchMenuResponse(request, searchCond);
+    }
+
     private SearchMenuResponse buildSearchMenuResponse(SearchMenuRequest request,
             SearchCond searchCond) {
         try {

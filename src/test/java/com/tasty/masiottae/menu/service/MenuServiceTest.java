@@ -10,6 +10,7 @@ import com.tasty.masiottae.common.exception.custom.ForbiddenException;
 import com.tasty.masiottae.config.S3TestConfig;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.repository.FranchiseRepository;
+import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
@@ -327,6 +328,24 @@ class MenuServiceTest {
 
         // Then
         assertThat(responses.menu().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("좋아요한 메뉴를 검색한다.")
+    void likeMenuSearchTest() {
+        account.getLikeMenuList().add(new LikeMenu(account, findMenu));
+        saveMoreMenus();
+        SearchMenuRequest request = new SearchMenuRequest(0, 3, "이름", "recent", null,
+                tastes.stream().map(Taste::getId).toList());
+
+        // When
+        SearchMenuResponse responses = menuService.searchLikeMenu(account, request);
+
+        // Then
+        assertAll(
+                () -> assertThat(responses.menu().size()).isEqualTo(1),
+                () -> assertThat(responses.menu().get(0).id()).isEqualTo(findMenu.getId())
+        );
     }
 
     private void saveMoreMenus() {
