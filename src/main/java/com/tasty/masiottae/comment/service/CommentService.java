@@ -76,17 +76,23 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Account account, Long commentId) {
-        Comment findComment = commentRepository.findById(commentId)
+    public Long deleteComment(Account account, Long commentId) {
+        Comment findComment = commentRepository.findByIdFetch(commentId)
             .orElseThrow(() -> new NotFoundException(
                 NOT_FOUND_COMMENT.getMessage()));
         if (!findComment.getAccount().getId().equals(account.getId())) {
             throw new IllegalArgumentException(COMMENT_ACCESS_DENIED.getMessage());
         }
-        findComment.getMenu().getCommentList().remove(findComment);
+        Long menuId = findComment.getMenu().getId();
+        removeCommentWithRelated(findComment);
+        commentRepository.deleteById(findComment.getId());
+        return menuId;
+    }
+
+    private void removeCommentWithRelated(Comment findComment) {
+        findComment.getMenu().removeComment(findComment);
         findComment.getAccount().getCommentList().remove(findComment);
         findComment.setMenu(null);
         findComment.setAccount(null);
-        commentRepository.deleteById(findComment.getId());
     }
 }

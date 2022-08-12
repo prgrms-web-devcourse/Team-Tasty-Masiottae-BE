@@ -308,7 +308,7 @@ class MenuServiceTest {
                 MenuSortCond.RECENT.getUrlValue(), tastes.stream().map(Taste::getId).toList());
 
         // When
-        SearchMenuResponse responses = menuService.searchMyMenu(account.getId(), request);
+        SearchMenuResponse responses = menuService.searchMyMenu(account, request);
 
         // Then
         assertThat(responses.menu().size()).isEqualTo(1);

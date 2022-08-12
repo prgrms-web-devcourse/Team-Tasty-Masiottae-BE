@@ -488,7 +488,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_내가_생성한_메뉴_검색">내가 생성한 메뉴 검색</a>
 <ul class="sectlevel3">
 <li><a href="#_내가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></li>
-<li><a href="#_내가_생성한_메뉴_검색_path_parameters">요청 파라미터</a></li>
 <li><a href="#_내가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></li>
 <li><a href="#_내가_생성한_메뉴_검색_http_response">HTTP 응답 예시</a></li>
 <li><a href="#_내가_생성한_메뉴_검색_response_headers">응답 헤더</a></li>
@@ -1107,6 +1106,7 @@ Content-Length: 906
     "name" : "파란맛",
     "color" : "파란색"
   } ],
+
   "createdAt" : "2022-08-12T00:22:04.076645",
   "updatedAt" : "2022-08-12T00:22:04.076646"
 }</code></pre>
@@ -1486,33 +1486,12 @@ X-Frame-Options: DENY</code></pre>
 <h4 id="_내가_생성한_메뉴_검색_http_request"><a class="link" href="#_내가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /accounts/1/menu?keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;offset=0&amp;limit=1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /my-menu?keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;offset=0&amp;limit=1 HTTP/1.1
 Accept: application/json
+X-CSRF-TOKEN: ae98bc67-7a8b-462a-8e5f-4053ba5d9104
 Host: localhost:8080</code></pre>
 </div>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_path_parameters"><a class="link" href="#_내가_생성한_메뉴_검색_path_parameters">요청 파라미터</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /accounts/{accountId}/menu</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>accountId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 ID</p></td>
-</tr>
-</tbody>
-</table>
 </div>
 <div class="sect3">
 <h4 id="_내가_생성한_메뉴_검색_request_parameters"><a class="link" href="#_내가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></h4>
@@ -4795,6 +4774,7 @@ Content-Length: 1463
 Content-Type: application/json;charset=UTF-8
 Content-Length: 48
 X-CSRF-TOKEN: 928b59c2-1ec1-4eef-96ee-52c5a0e7cd0b
+
 Host: localhost:8080
 
 {"userId":1,"menuId":1,"comment":"댓글내용"}</code></pre>

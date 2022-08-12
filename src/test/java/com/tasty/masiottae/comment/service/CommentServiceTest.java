@@ -23,7 +23,6 @@ import com.tasty.masiottae.menu.repository.MenuRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -155,9 +154,14 @@ class CommentServiceTest {
         commentRepository.saveAll(comments);
 
         // when
-        commentService.deleteComment(account, comments.get(0).getId());
+        Long menuId = commentService.deleteComment(account, comments.get(0).getId());
 
         // then
-        assertThat(menu.getCommentList()).hasSize(9);
+        assertAll(
+            () -> assertThat(menuId).isEqualTo(1L),
+            () -> assertThat(menu.getCommentList()).hasSize(9),
+            () -> assertThat(account.getCommentList()).hasSize(9),
+            () -> assertThat(commentRepository.findAll()).hasSize(9)
+        );
     }
 }
