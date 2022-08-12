@@ -15,6 +15,7 @@ import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
 import com.tasty.masiottae.menu.dto.TasteFindResponse;
 import com.tasty.masiottae.menu.service.TasteService;
 import com.tasty.masiottae.option.OptionConverter;
+import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,10 @@ public class MenuConverter {
 
     private final OptionConverter optionConverter;
     private final TasteService tasteService;
+
+    public List<MenuFindResponse> toMenuFindResponseList(List<Menu> menus) {
+        return menus.stream().map(this::toMenuFindResponse).toList();
+    }
 
     public Menu toMenu(Account account, MenuSaveRequest request, String menuImageUrl) {
         Franchise franchise = Franchise.createIdFranchise(request.franchiseId());

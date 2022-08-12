@@ -28,10 +28,27 @@ public class MenuRepositoryImpl implements MenuRepositoryCustom {
         return queryFactory.select(menuTaste.menu)
                 .distinct()
                 .from(menuTaste)
-                .where(containKeyword(searchCond.keyword()), tasteIn(searchCond.tastes()),
-                        accountEq(searchCond.account()), franchiseEq(searchCond.franchise()))
+                .where(searchExpression(searchCond))
                 .orderBy(sortCond(searchCond.menuSortCond()))
                 .fetch();
+    }
+
+    private BooleanExpression searchExpression(SearchCond searchCond) {
+        return switch (searchCond.searchType()) {
+            case ALL_MENU -> allSearchCond(searchCond);
+            case LIKE_MENU -> null;
+            case MY_MENU -> mySearchCond(searchCond);
+        };
+    }
+
+    private BooleanExpression allSearchCond(SearchCond searchCond) {
+        return containKeyword(searchCond.keyword()).and(tasteIn(searchCond.tastes()))
+                .and(franchiseEq(searchCond.franchise()));
+    }
+
+    private BooleanExpression mySearchCond(SearchCond searchCond) {
+        return containKeyword(searchCond.keyword()).and(tasteIn(searchCond.tastes()))
+                .and(accountEq(searchCond.account()));
     }
 
     private BooleanExpression franchiseEq(Franchise franchise) {
