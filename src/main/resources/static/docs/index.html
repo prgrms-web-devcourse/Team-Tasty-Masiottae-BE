@@ -1034,6 +1034,9 @@ Content-Length: 18
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /menu/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@62cdff2b
+X-CSRF-TOKEN: 55c8366d-a599-4184-ad77-f04e0a8895fd
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1055,7 +1058,7 @@ Host: localhost:8080</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menuId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 Id</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 ID</p></td>
 </tr>
 </tbody>
 </table>
@@ -1116,8 +1119,9 @@ Content-Length: 907
     "name" : "파란맛",
     "color" : "파란색"
   } ],
-  "createdAt" : "2022-08-13T05:48:36.448677",
-  "updatedAt" : "2022-08-13T05:48:36.448678"
+  "createdAt" : "2022-08-12T19:36:27.874001",
+  "updatedAt" : "2022-08-12T19:36:27.874016",
+  "isLiked" : false
 }</code></pre>
 </div>
 </div>
@@ -1262,6 +1266,11 @@ Content-Length: 907
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>updatedAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">갱신일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isLiked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 누름 여부</p></td>
 </tr>
 </tbody>
 </table>
@@ -1498,6 +1507,7 @@ X-Frame-Options: DENY</code></pre>
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /my-menu?keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;offset=0&amp;limit=1 HTTP/1.1
 Accept: application/json
 X-CSRF-TOKEN: c155b3d9-b5fe-4d88-94a6-313d4a2ee4b6
+
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1554,7 +1564,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2374
+Content-Length: 2373
 
 {
   "menu" : [ {
@@ -5602,7 +5612,7 @@ Content-Length: 12
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-09 14:42:08 +0900
+Last updated 2022-08-09 14:27:34 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

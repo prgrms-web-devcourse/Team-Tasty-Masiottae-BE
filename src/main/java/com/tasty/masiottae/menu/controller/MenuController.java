@@ -33,8 +33,8 @@ public class MenuController {
     }
 
     @GetMapping(value = "/menu/{menuId}")
-    public ResponseEntity<MenuFindResponse> getOneMenu(@PathVariable Long menuId) {
-        MenuFindResponse menu = menuService.findOneMenu(menuId);
+    public ResponseEntity<MenuFindOneResponse> getOneMenu(@PathVariable Long menuId, @LoginAccount Account account) {
+        MenuFindOneResponse menu = menuService.findOneMenu(menuId, account);
         return ResponseEntity.ok().body(menu);
     }
 

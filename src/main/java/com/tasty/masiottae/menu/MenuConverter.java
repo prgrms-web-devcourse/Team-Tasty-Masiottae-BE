@@ -7,6 +7,7 @@ import com.tasty.masiottae.franchise.dto.FranchiseFindResponse;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.MenuTaste;
 import com.tasty.masiottae.menu.domain.Taste;
+import com.tasty.masiottae.menu.dto.MenuFindOneResponse;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
@@ -101,5 +102,32 @@ public class MenuConverter {
                         .collect(
                                 Collectors.toList()),
                 menu.getCreatedAt(), menu.getUpdatedAt());
+    }
+
+    public MenuFindOneResponse toMenuFindOneResponse(Menu menu, Account account) {
+        return new MenuFindOneResponse(
+            menu.getId(),
+            new FranchiseFindResponse(menu.getFranchise().getId(),
+                menu.getFranchise().getLogoUrl(),
+                menu.getFranchise().getName()),
+            menu.getPictureUrl(), menu.getCustomMenuName(), menu.getRealMenuName(),
+            new AccountFindResponse(menu.getAccount().getId(), menu.getAccount().getImage(),
+                menu.getAccount().getNickName(), menu.getAccount().getEmail(),
+                menu.getAccount().getSnsAccount(), menu.getAccount().getCreatedAt(),
+                menu.getAccount().getMenuList().size()),
+            menu.getDescription(), menu.getLikesCount(),
+            menu.getCommentCount(),
+            menu.getExpectedPrice(),
+            menu.getOptionList().stream()
+                .map(option -> new OptionConverter().toOptionFindResponse(option)).collect(
+                    Collectors.toList()),
+            menu.getMenuTasteList().stream()
+                .map(menuTaste -> new TasteFindResponse(menuTaste.getTaste().getId(),
+                    menuTaste.getTaste().getTasteName(),
+                    menuTaste.getTaste().getTasteColor()))
+                .collect(
+                    Collectors.toList()),
+            menu.getCreatedAt(), menu.getUpdatedAt(),
+            menu.getLikeMenuList().contains(account.getId()));
     }
 }

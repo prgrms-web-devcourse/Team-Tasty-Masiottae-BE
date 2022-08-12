@@ -66,13 +66,13 @@ public class MenuService {
         return menuImageUrl;
     }
 
-    public MenuFindResponse findOneMenu(Long menuId) {
+    public MenuFindOneResponse findOneMenu(Long menuId, Account account) {
 
         Menu findMenu = menuRepository.findByIdFetch(menuId).orElseThrow(
                 () -> new EntityNotFoundException(NOT_FOUND_MENU.getMessage())
         );
 
-        return menuConverter.toMenuFindResponse(findMenu);
+        return menuConverter.toMenuFindOneResponse(findMenu, account);
     }
 
     @Transactional
