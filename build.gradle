@@ -69,6 +69,9 @@ dependencies {
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.19.1'
     implementation 'com.github.maricn:logback-slack-appender:1.6.1'
 
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
+    implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.7.2'
+
     testImplementation 'io.findify:s3mock_2.13:0.2.6'
 }
 
