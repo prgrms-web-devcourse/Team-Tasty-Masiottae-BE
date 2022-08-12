@@ -8,6 +8,8 @@ import com.tasty.masiottae.account.repository.AccountRepository;
 import com.tasty.masiottae.config.QuerydslConfig;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.repository.FranchiseRepository;
+import com.tasty.masiottae.likemenu.domain.LikeMenu;
+import com.tasty.masiottae.likemenu.repository.LikeMenuRepository;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.MenuTaste;
 import com.tasty.masiottae.menu.domain.Taste;
@@ -35,6 +37,8 @@ class MenuRepositoryTest {
     TasteRepository tasteRepository;
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    LikeMenuRepository likeMenuRepository;
 
     List<Taste> tastes;
     Account account;
@@ -63,6 +67,9 @@ class MenuRepositoryTest {
         menu3 = menuRepository.save(
                 Menu.createMenu("원래 이름", "커스텀 이름", "aaa.com", 15000, account, franchise, "설명"));
 
+        account.getLikeMenuList().add(new LikeMenu(account, menu1));
+        account.getLikeMenuList().add(new LikeMenu(account, menu2));
+
         menu1.addMenuTaste(MenuTaste.createMenuTaste(menu1, tastes.get(1)));
 
         menu2.addMenuTaste(MenuTaste.createMenuTaste(menu2, tastes.get(1)));
@@ -86,5 +93,17 @@ class MenuRepositoryTest {
         );
     }
 
+    @Test
+    @DisplayName("좋아요한 메뉴를 검색한다.")
+    void likeMenuSearchTest() {
+        List<Menu> search = menuRepository.search(
+                new SearchCond(SearchType.LIKE_MENU, account, "커스텀", MenuSortCond.RECENT, franchise,
+                        null));
+        assertAll(
+                () -> assertThat(search.size()).isEqualTo(2),
+                () -> assertThat(search).extracting("id")
+                        .containsOnly(menu1.getId(), menu2.getId())
+        );
 
+    }
 }
