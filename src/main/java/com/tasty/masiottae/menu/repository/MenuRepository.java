@@ -14,6 +14,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long>, MenuRepositor
 
     @Query("select m from Menu m left join fetch m.account a "
         + "left join fetch m.franchise f "
+        + "left join fetch m.likeMenuList "
         + "where m.id = :menuId")
     Optional<Menu> findByIdFetch(@Param("menuId") Long menuId);
 

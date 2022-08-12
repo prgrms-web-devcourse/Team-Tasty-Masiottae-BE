@@ -11,6 +11,7 @@ import com.tasty.masiottae.franchise.repository.FranchiseRepository;
 import com.tasty.masiottae.likemenu.repository.LikeMenuRepository;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
+import com.tasty.masiottae.menu.dto.MenuFindOneResponse;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
@@ -117,7 +118,7 @@ class LikeMenuServiceTest {
     @DisplayName("좋아요가 안된 메뉴를 좋아요로 바꿀 수 있다.")
     void changeLike() {
         likeMenuService.changeLike(account, menuId);
-        MenuFindResponse oneMenu = menuService.findOneMenu(menuId);
+        MenuFindOneResponse oneMenu = menuService.findOneMenu(menuId, account);
         PageRequest pageRequest = PageRequest.of(0, 10);
         Page<MenuFindResponse> likeMenuPage = likeMenuService.getPageLikeMenuByAccount(account,
                 pageRequest);
@@ -128,10 +129,10 @@ class LikeMenuServiceTest {
 
     @Test
     @DisplayName("좋아요가 된 메뉴를 좋아요 취소 할 수 있다.")
-    void cancleLike() {
+    void cancelLike() {
         likeMenuService.changeLike(account, menuId);
         likeMenuService.changeLike(account, menuId);
-        MenuFindResponse oneMenu = menuService.findOneMenu(menuId);
+        MenuFindOneResponse oneMenu = menuService.findOneMenu(menuId, account);
         PageRequest pageRequest = PageRequest.of(0, 10);
         Page<MenuFindResponse> likeMenuPage = likeMenuService.getPageLikeMenuByAccount(account,
                 pageRequest);

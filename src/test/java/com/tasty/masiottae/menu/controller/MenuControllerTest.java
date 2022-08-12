@@ -3,6 +3,7 @@ package com.tasty.masiottae.menu.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -24,10 +25,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.config.RestDocsConfiguration;
 import com.tasty.masiottae.config.WithMockAccount;
 import com.tasty.masiottae.franchise.dto.FranchiseFindResponse;
+import com.tasty.masiottae.menu.dto.MenuFindOneResponse;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
@@ -90,22 +93,25 @@ class MenuControllerTest {
     void testGetOneMenu() throws Exception {
         // given
         Long menuId = 1L;
-
-        MenuFindResponse menuFindResponse = new MenuFindResponse(1L,
+        MenuFindOneResponse menuFindResponse = new MenuFindOneResponse(1L,
                 new FranchiseFindResponse(1L, "logo", "스타벅스"), "img.png", "커스텀제목", "원래제목",
                 new AccountFindResponse(1L, "이미지 url", "닉네임", "유저이름", "이메일", LocalDateTime.now(),
                         10), "내용", 100, 0, 5000,
                 List.of(new OptionFindResponse("옵션명1", "설명1"), new OptionFindResponse("옵션명", "설명")),
                 List.of(new TasteFindResponse(1L, "빨간맛", "빨간색"),
                         new TasteFindResponse(2L, "파란맛", "파란색")), LocalDateTime.now(),
-                LocalDateTime.now());
+                LocalDateTime.now(), false);
 
-        given(menuService.findOneMenu(1L)).willReturn(menuFindResponse);
+        given(menuService.findOneMenu(any(), any())).willReturn(menuFindResponse);
 
         // expected
-        mockMvc.perform(get("/menu/{menuId}", menuId).contentType(APPLICATION_JSON))
+        mockMvc.perform(get("/menu/{menuId}", menuId)
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .with(csrf().asHeader())
+                .header("Authorization", token))
                 .andExpect(status().isOk()).andDo(print()).andDo(document("menu-findOne",
-                        pathParameters(parameterWithName("menuId").description("메뉴 Id")),
+                        pathParameters(parameterWithName("menuId").description("메뉴 ID")),
                         responseFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("메뉴 ID"),
                                 fieldWithPath("franchise.id").type(JsonFieldType.NUMBER)
                                         .description("프랜차이즈 id"),
@@ -146,7 +152,8 @@ class MenuControllerTest {
                                 fieldWithPath("tasteList[].color").type(JsonFieldType.STRING)
                                         .description("맛 태그 컬러"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("생성일"),
-                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("갱신일"))));
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("갱신일"),
+                            fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN).description("좋아요 누름 여부"))));
     }
 
     @Test
