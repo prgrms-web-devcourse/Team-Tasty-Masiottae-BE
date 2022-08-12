@@ -39,6 +39,7 @@ public class Franchise extends BaseTimeEntity {
 
     @Builder
     private Franchise(Long id, String name, String logoUrl) {
+        this.id = id;
         this.name = name;
         this.logoUrl = logoUrl;
     }
