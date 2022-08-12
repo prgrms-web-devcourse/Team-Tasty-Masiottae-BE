@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface MenuRepository extends JpaRepository<Menu, Long>, MenuRepositoryCustom {
 
-    @Query("select m from Menu m left join fetch m.account a "
+    @Query("select distinct m from Menu m left join fetch m.account a "
         + "left join fetch m.franchise f "
         + "left join fetch m.likeMenuList "
         + "where m.id = :menuId")
