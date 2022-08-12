@@ -17,12 +17,12 @@ import java.util.Map;
 
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException {
         String message = exception.getMessage();
         setResponse(response, message);
     }
 
-    //한글 출력을 위해 getWriter() 사용
     private void setResponse(HttpServletResponse response, String message) throws IOException {
         response.setHeader("error", message);
         response.setStatus(HttpStatus.FORBIDDEN.value());
