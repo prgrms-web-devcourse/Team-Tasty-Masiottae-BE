@@ -34,7 +34,6 @@ import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuResponse;
-import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
 import com.tasty.masiottae.menu.dto.TasteFindResponse;
 import com.tasty.masiottae.menu.service.MenuService;
 import com.tasty.masiottae.option.dto.OptionFindResponse;
@@ -343,7 +342,7 @@ class MenuControllerTest {
                         LocalDateTime.now(), LocalDateTime.now())
         );
 
-        SearchMyMenuRequest request = new SearchMyMenuRequest(0, 1, "프라푸치노", "recent",
+        SearchMenuRequest request = new SearchMenuRequest(0, 1, "프라푸치노", "recent", null,
                 List.of(1L, 2L, 3L));
 
         given(menuService.searchMyMenu(any(), any())).willReturn(

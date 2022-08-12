@@ -18,7 +18,6 @@ import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuResponse;
-import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import com.tasty.masiottae.menu.repository.TasteRepository;
@@ -61,6 +60,7 @@ class MenuServiceTest {
 
     private Account account;
     private Franchise franchise;
+    private Menu findMenu;
     private MenuSaveResponse menuSaveResponse;
     private List<Taste> tastes;
     private List<OptionSaveRequest> optionSaveRequests;
@@ -101,7 +101,7 @@ class MenuServiceTest {
         menuSaveResponse = menuService.createMenu(account, request, multipartFile);
 
         // Then
-        Menu findMenu = menuRepository.findById(menuSaveResponse.menuId()).get();
+        findMenu = menuRepository.findById(menuSaveResponse.menuId()).get();
 
         assertAll(
                 () -> assertThat(findMenu.getPictureUrl()).startsWith(
@@ -304,8 +304,8 @@ class MenuServiceTest {
     void searchMyMenuTest() {
         // Given
         saveMoreMenus();
-        SearchMyMenuRequest request = new SearchMyMenuRequest(0, 3, "커스텀",
-                MenuSortCond.RECENT.getUrlValue(), tastes.stream().map(Taste::getId).toList());
+        SearchMenuRequest request = new SearchMenuRequest(0, 3, "커스텀",
+                MenuSortCond.RECENT.getUrlValue(), null, tastes.stream().map(Taste::getId).toList());
 
         // When
         SearchMenuResponse responses = menuService.searchMyMenu(account, request);
