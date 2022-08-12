@@ -1,31 +1,34 @@
 package com.tasty.masiottae.menu.service;
 
 import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_MENU;
+import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_NULL_FRANCHISE_ID;
 
 import com.tasty.masiottae.account.domain.Account;
-import com.tasty.masiottae.account.service.AccountEntityService;
+import com.tasty.masiottae.common.aws.AwsS3ImageUploader;
 import com.tasty.masiottae.common.exception.ErrorMessage;
 import com.tasty.masiottae.common.exception.custom.ForbiddenException;
-import com.tasty.masiottae.common.aws.AwsS3ImageUploader;
-import com.tasty.masiottae.common.util.PageInfo;
-import com.tasty.masiottae.common.util.PageUtil;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.service.FranchiseService;
 import com.tasty.masiottae.menu.MenuConverter;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.MenuTaste;
 import com.tasty.masiottae.menu.domain.Taste;
-import com.tasty.masiottae.menu.dto.*;
+import com.tasty.masiottae.menu.dto.MenuFindOneResponse;
+import com.tasty.masiottae.menu.dto.MenuSaveRequest;
+import com.tasty.masiottae.menu.dto.MenuSaveResponse;
+import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
+import com.tasty.masiottae.menu.dto.SearchCond;
+import com.tasty.masiottae.menu.dto.SearchMenuRequest;
+import com.tasty.masiottae.menu.dto.SearchMenuResponse;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
+import com.tasty.masiottae.menu.enums.SearchType;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import com.tasty.masiottae.menu.repository.MenuTasteRepository;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +44,6 @@ public class MenuService {
     private final MenuConverter menuConverter;
     private final MenuTasteRepository menuTasteRepository;
     private final TasteService tasteService;
-    private final AccountEntityService accountEntityService;
     private final FranchiseService franchiseService;
 
     @Transactional
@@ -115,46 +117,42 @@ public class MenuService {
     }
 
     public SearchMenuResponse searchAllMenu(SearchMenuRequest request) {
+        validateFranchiseIdIsNotNull(request.franchiseId());
         Franchise franchise =
                 request.franchiseId() == 0 ? null : franchiseService.findOneFranchiseEntity(
                         request.franchiseId());
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
-        SearchCond searchCond = new SearchCond(null, request.keyword(), sortCond, franchise,
+        SearchCond searchCond = new SearchCond(SearchType.ALL_MENU, null, request.keyword(), sortCond, franchise,
                 findTasteByIds);
-        return searchMenu(searchCond, new PageInfo(request.offset(), request.limit()));
+        return buildSearchMenuResponse(request, searchCond);
     }
 
-    public SearchMenuResponse searchMyMenu(Account account, SearchMyMenuRequest request) {
+    public SearchMenuResponse searchMyMenu(Account account, SearchMenuRequest request) {
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
-        SearchCond searchCond = new SearchCond(account, request.keyword(), sortCond, null,
+        SearchCond searchCond = new SearchCond(SearchType.MY_MENU, account, request.keyword(), sortCond, null,
                 findTasteByIds);
-        return searchMenu(searchCond, new PageInfo(request.offset(), request.limit()));
+        return buildSearchMenuResponse(request, searchCond);
     }
 
-    private SearchMenuResponse searchMenu(SearchCond searchCond, PageInfo pageInfo) {
-        List<Menu> menus = menuRepository.search(searchCond);
-
-        if (isNotEmptyTastes(searchCond.tastes())) {
-            menus = menus.stream()
-                    .filter(menu -> menu.getMenuTasteList().stream()
-                            .map(MenuTaste::getTaste).collect(Collectors.toSet())
-                            .containsAll(searchCond.tastes())).toList();
-        }
-
+    private SearchMenuResponse buildSearchMenuResponse(SearchMenuRequest request,
+            SearchCond searchCond) {
         try {
-            return new SearchMenuResponse(PageUtil.page(pageInfo, menus).stream()
-                    .map(menuConverter::toMenuFindResponse)
-                    .toList());
+            List<Menu> menus = MenuSearchList.of(menuRepository.search(searchCond))
+                    .filterByTaste(searchCond.tastes())
+                    .paging(request.offset(), request.limit())
+                    .getMenus();
+
+            return new SearchMenuResponse(menuConverter.toMenuFindResponseList(menus));
         } catch (IllegalArgumentException e) {
-            return null;
+            return new SearchMenuResponse(null);
         }
     }
 
-    private static boolean isNotEmptyTastes(List<Taste> findTasteByIds) {
-        return !findTasteByIds.isEmpty();
+    private void validateFranchiseIdIsNotNull(Long franchiseId) {
+        if (Objects.isNull(franchiseId)) {
+            throw new IllegalArgumentException(NOT_NULL_FRANCHISE_ID.getMessage());
+        }
     }
-
-
 }

@@ -3,7 +3,6 @@ package com.tasty.masiottae.menu.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.mock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -25,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.config.RestDocsConfiguration;
 import com.tasty.masiottae.config.WithMockAccount;
@@ -37,7 +35,6 @@ import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuResponse;
-import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
 import com.tasty.masiottae.menu.dto.TasteFindResponse;
 import com.tasty.masiottae.menu.service.MenuService;
 import com.tasty.masiottae.option.dto.OptionFindResponse;
@@ -350,7 +347,7 @@ class MenuControllerTest {
                         LocalDateTime.now(), LocalDateTime.now())
         );
 
-        SearchMyMenuRequest request = new SearchMyMenuRequest(0, 1, "프라푸치노", "recent",
+        SearchMenuRequest request = new SearchMenuRequest(0, 1, "프라푸치노", "recent", null,
                 List.of(1L, 2L, 3L));
 
         given(menuService.searchMyMenu(any(), any())).willReturn(

@@ -13,6 +13,7 @@ import com.tasty.masiottae.menu.domain.MenuTaste;
 import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.SearchCond;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
+import com.tasty.masiottae.menu.enums.SearchType;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,7 +76,7 @@ class MenuRepositoryTest {
     void searchTest() {
         // When
         List<Menu> search = menuRepository.search(
-                new SearchCond(account, "커스텀", MenuSortCond.RECENT, franchise,
+                new SearchCond(SearchType.ALL_MENU, account, "커스텀", MenuSortCond.RECENT, franchise,
                         Collections.singletonList(tastes.get(0))));
 
         // Then

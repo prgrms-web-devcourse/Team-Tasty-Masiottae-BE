@@ -26,6 +26,7 @@ public enum ErrorMessage {
 
     // franchise
     NOT_FOUND_FRANCHISE("존재하지 않는 프랜차이즈입니다."),
+    NOT_NULL_FRANCHISE_ID("franchiseId는 null이 허용되지 않습니다."),
 
     // account
     NOT_FOUND_ACCOUNT("존재하지 하지 않는 유저입니다."),
