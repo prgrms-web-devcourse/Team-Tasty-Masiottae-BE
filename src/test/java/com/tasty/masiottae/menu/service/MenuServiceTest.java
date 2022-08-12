@@ -12,6 +12,7 @@ import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.repository.FranchiseRepository;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
+import com.tasty.masiottae.menu.dto.MenuFindOneResponse;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
@@ -127,7 +128,7 @@ class MenuServiceTest {
     void testFindOneMenu() {
 
         // when
-        MenuFindResponse findMenu = menuService.findOneMenu(menuSaveResponse.menuId());
+        MenuFindOneResponse findMenu = menuService.findOneMenu(menuSaveResponse.menuId(), account);
 
         // then
         assertThat(findMenu).isNotNull();
@@ -288,7 +289,7 @@ class MenuServiceTest {
     @DisplayName("메뉴 삭제(성공)")
     void testDelete() {
         menuService.delete(account, menuSaveResponse.menuId());
-        assertThrows(EntityNotFoundException.class, () -> menuService.findOneMenu(menuSaveResponse.menuId()));
+        assertThrows(EntityNotFoundException.class, () -> menuService.findOneMenu(menuSaveResponse.menuId(), account));
     }
 
     @Test
