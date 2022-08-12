@@ -12,10 +12,10 @@ import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.repository.FranchiseRepository;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
-import com.tasty.masiottae.menu.dto.*;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
+import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
-
+import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuResponse;
 import com.tasty.masiottae.menu.dto.SearchMyMenuRequest;
@@ -25,10 +25,8 @@ import com.tasty.masiottae.menu.repository.TasteRepository;
 import com.tasty.masiottae.option.domain.Option;
 import com.tasty.masiottae.option.dto.OptionSaveRequest;
 import io.findify.s3mock.S3Mock;
-
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,12 +67,9 @@ class MenuServiceTest {
 
     @BeforeEach
     void initMenuSave() {
-        account = Account.createAccount("test@gmail.com", "password", "nickname", "imageUrl");
-
-        franchise = Franchise.createFranchise("starbucks", "logo");
-
-        accountRepository.save(account);
-        franchiseRepository.save(franchise);
+        account = accountRepository.save(
+                Account.createAccount("test@gmail.com", "password", "nickname", "imageUrl"));
+        franchise = franchiseRepository.save(Franchise.createFranchise("starbucks", "logo"));
 
         // Given
         optionSaveRequests = List.of(
@@ -93,7 +88,6 @@ class MenuServiceTest {
                 "Hello".getBytes());
 
         MenuSaveRequest request = new MenuSaveRequest(
-                account.getId(),
                 franchise.getId(),
                 "커스텀 이름",
                 "맛있습니다",
@@ -104,7 +98,7 @@ class MenuServiceTest {
         );
 
         // When
-        menuSaveResponse = menuService.createMenu(request, multipartFile);
+        menuSaveResponse = menuService.createMenu(account, request, multipartFile);
 
         // Then
         Menu findMenu = menuRepository.findById(menuSaveResponse.menuId()).get();
@@ -112,7 +106,7 @@ class MenuServiceTest {
         assertAll(
                 () -> assertThat(findMenu.getPictureUrl()).startsWith(
                         "http://localhost:8001/masiottae-image-bucket/menu/"),
-                () -> assertThat(findMenu.getAccount().getId()).isEqualTo(request.userId()),
+                () -> assertThat(findMenu.getAccount().getId()).isEqualTo(account.getId()),
                 () -> assertThat(findMenu.getCustomMenuName())
                         .isEqualTo(request.title()),
                 () -> assertThat(findMenu.getDescription())
@@ -127,7 +121,6 @@ class MenuServiceTest {
                                 .toList().containsAll(request.tasteIdList()))
         );
     }
-
 
     @Test
     @DisplayName("메뉴 단건 조회")
@@ -337,8 +330,7 @@ class MenuServiceTest {
     }
 
     private void saveMoreMenus() {
-        menuService.createMenu(new MenuSaveRequest(
-                        account.getId(),
+        menuService.createMenu(account, new MenuSaveRequest(
                         franchise.getId(),
                         "커스텀 이름",
                         "맛있습니다",
@@ -349,8 +341,7 @@ class MenuServiceTest {
                 new MockMultipartFile("image", "image.png", "img/png",
                         "image".getBytes()));
 
-        menuService.createMenu(new MenuSaveRequest(
-                        account.getId(),
+        menuService.createMenu(account, new MenuSaveRequest(
                         franchise.getId(),
                         "커스텀 이름",
                         "맛있습니다",

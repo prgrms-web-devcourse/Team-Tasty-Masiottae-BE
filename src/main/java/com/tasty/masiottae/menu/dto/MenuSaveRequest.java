@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
-public record MenuSaveRequest(@NotNull Long userId, @NotNull Long franchiseId,
+public record MenuSaveRequest(@NotNull Long franchiseId,
                               @NotBlank String title, @NotNull String content,
                               @NotBlank String originalTitle, @PositiveOrZero Integer expectedPrice,
                               @NotNull @Size(min = 1, max = 20) List<OptionSaveRequest> optionList,
