@@ -13,6 +13,7 @@ import com.tasty.masiottae.menu.dto.TasteSaveRequest;
 import com.tasty.masiottae.menu.dto.TasteSaveResponse;
 import com.tasty.masiottae.menu.repository.TasteRepository;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -122,6 +123,20 @@ class TasteServiceTest {
                         .containsAll(savedTastes)
         );
         then(tasteRepository).should().findAllByIdIn(tasteIds);
+    }
+
+    @Test
+    @DisplayName("null 또는 비어있는 tasteId 리스트를 전달하여 Taste들을 조회하면 빈 리스트가 반환 된다.")
+    void findTasteByIdsEmptyTest() {
+        // Given
+        List<Long> emptyTasteIds = Collections.emptyList();
+
+        // When
+        List<Taste> tasteByIds = tasteService.findTasteByIds(emptyTasteIds);
+
+        // Then
+        assertThat(tasteByIds).isEmpty();
+        then(tasteRepository).shouldHaveNoInteractions();
     }
 
     @Test
