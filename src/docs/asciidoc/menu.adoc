@@ -16,5 +16,8 @@ operation::delete-menu[snippets='http-request,path-parameters,http-response']
 === 내가 생성한 메뉴 검색
 operation::search-my-menu[snippets='http-request,request-parameters,http-response,response-headers,response-fields']
 
-=== 홈 화면 메뉴 검색
+=== 좋아요한 메뉴 검색
+operation::search-like-menu[snippets='http-request,request-parameters,http-response,response-headers,response-fields']
+
+=== 전체 메뉴 검색
 operation::search-menu[snippets='http-request,request-parameters,http-response,response-headers,response-fields']
