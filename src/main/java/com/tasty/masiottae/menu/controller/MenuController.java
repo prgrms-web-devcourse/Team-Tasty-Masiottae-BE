@@ -57,7 +57,7 @@ public class MenuController {
 
     @GetMapping(value = "/my-menu", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SearchMenuResponse> searchMyMenu(
-            @ModelAttribute @Validated SearchMyMenuRequest request, @LoginAccount Account account) {
+            @ModelAttribute @Validated SearchMenuRequest request, @LoginAccount Account account) {
         return ResponseEntity.ok(menuService.searchMyMenu(account, request));
     }
 
@@ -65,5 +65,11 @@ public class MenuController {
     public ResponseEntity<SearchMenuResponse> searchMenu(
             @ModelAttribute @Validated SearchMenuRequest request) {
         return ResponseEntity.ok(menuService.searchAllMenu(request));
+    }
+
+    @GetMapping(value = "/like-menu", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SearchMenuResponse> searchLikeMenu(
+            @ModelAttribute @Validated SearchMenuRequest request, @LoginAccount Account account) {
+        return ResponseEntity.ok(menuService.searchLikeMenu(account, request));
     }
 }
