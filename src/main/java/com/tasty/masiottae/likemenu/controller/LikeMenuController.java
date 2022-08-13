@@ -3,6 +3,7 @@ package com.tasty.masiottae.likemenu.controller;
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.likemenu.service.LikeMenuService;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
+import com.tasty.masiottae.security.annotation.AccountSecured;
 import com.tasty.masiottae.security.annotation.LoginAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ public class LikeMenuController {
     private final LikeMenuService likeMenuService;
 
     @PostMapping(value = "/menu/{menuId}/like", produces = MediaType.APPLICATION_JSON_VALUE)
+    @AccountSecured
     public ResponseEntity<Void> changeLike(@PathVariable Long menuId,
             @LoginAccount Account account) {
         likeMenuService.changeLike(account, menuId);
@@ -29,6 +31,7 @@ public class LikeMenuController {
     }
 
     @GetMapping(value = "/accounts/like", produces = MediaType.APPLICATION_JSON_VALUE)
+    @AccountSecured
     public ResponseEntity<Page<MenuFindResponse>> getMenuByAccountLike(
             @LoginAccount Account account, @PageableDefault
             Pageable pageable) {
