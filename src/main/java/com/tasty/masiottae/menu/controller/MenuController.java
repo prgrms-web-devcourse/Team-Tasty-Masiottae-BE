@@ -4,6 +4,7 @@ package com.tasty.masiottae.menu.controller;
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.menu.dto.*;
 import com.tasty.masiottae.menu.service.MenuService;
+import com.tasty.masiottae.security.annotation.AccountSecured;
 import com.tasty.masiottae.security.annotation.LoginAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,7 @@ public class MenuController {
         return ResponseEntity.ok().body(menu);
     }
 
+    @AccountSecured
     @PostMapping(value = "/menu/{menuId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateMenu(@RequestPart MenuUpdateRequest data,
             @RequestPart(required = false) MultipartFile image,

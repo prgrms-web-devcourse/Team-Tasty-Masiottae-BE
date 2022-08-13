@@ -3,6 +3,7 @@ package com.tasty.masiottae.security.config;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 import com.tasty.masiottae.account.repository.TokenCache;
+import com.tasty.masiottae.security.exception.CustomAuthenticationFailureHandler;
 import com.tasty.masiottae.security.filter.JwtAuthenticationFilter;
 import com.tasty.masiottae.security.filter.JwtAuthorizationFilter;
 import com.tasty.masiottae.security.jwt.JwtTokenProvider;
@@ -32,6 +33,11 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
+    public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -46,6 +52,7 @@ public class SecurityConfig {
         JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter(
             tokenCache, jwtTokenProvider);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+        jwtAuthenticationFilter.setAuthenticationFailureHandler(customAuthenticationFailureHandler());
 
         http
             .csrf().disable()
