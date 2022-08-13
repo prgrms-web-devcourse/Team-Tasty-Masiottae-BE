@@ -26,6 +26,7 @@ public class MenuController {
 
     private final MenuService menuService;
 
+    @AccountSecured
     @PostMapping(value = "/menu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MenuSaveResponse> saveMenu(@RequestPart MenuSaveRequest data,
             @RequestPart(required = false) MultipartFile image, @LoginAccount Account account) {
@@ -55,6 +56,7 @@ public class MenuController {
         return ResponseEntity.ok().build();
     }
 
+    @AccountSecured
     @GetMapping(value = "/my-menu", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SearchMenuResponse> searchMyMenu(
             @ModelAttribute @Validated SearchMenuRequest request, @LoginAccount Account account) {
@@ -67,6 +69,7 @@ public class MenuController {
         return ResponseEntity.ok(menuService.searchAllMenu(request));
     }
 
+    @AccountSecured
     @GetMapping(value = "/like-menu", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SearchMenuResponse> searchLikeMenu(
             @ModelAttribute @Validated SearchMenuRequest request, @LoginAccount Account account) {
