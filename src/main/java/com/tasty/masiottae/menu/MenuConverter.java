@@ -34,42 +34,43 @@ public class MenuConverter {
     public Menu toMenu(Account account, MenuSaveRequest request, String menuImageUrl) {
         Franchise franchise = Franchise.createIdFranchise(request.franchiseId());
         Menu menu = Menu.createMenu(
-                request.originalTitle(),
-                request.title(),
-                menuImageUrl,
-                request.expectedPrice(),
-                account,
-                franchise,
-                request.content()
+            request.originalTitle(),
+            request.title(),
+            menuImageUrl,
+            request.expectedPrice(),
+            account,
+            franchise,
+            request.content()
         );
 
         tasteService.findTasteByIds(request.tasteIdList())
-                .forEach(t -> menu.addMenuTaste(MenuTaste.createMenuTaste(menu, t)));
+            .forEach(t -> menu.addMenuTaste(MenuTaste.createMenuTaste(menu, t)));
 
         request.optionList().stream().map(optionConverter::toOption).forEach(menu::addOption);
 
         return menu;
     }
 
-    public Menu toMenu(Long menuId, MenuUpdateRequest request, Account account, String menuImageUrl) {
+    public Menu toMenu(Long menuId, MenuUpdateRequest request, Account account,
+        String menuImageUrl) {
         Franchise franchise = Franchise.createIdFranchise(request.franchiseId());
 
         Menu menu = Menu.createMenu(
-                menuId,
-                request.originalTitle(),
-                request.title(),
-                menuImageUrl,
-                request.expectedPrice(),
-                account,
-                franchise,
-                request.content()
+            menuId,
+            request.originalTitle(),
+            request.title(),
+            menuImageUrl,
+            request.expectedPrice(),
+            account,
+            franchise,
+            request.content()
         );
         request.optionList().stream().map(optionConverter::toOption).forEach(menu::addOption);
 
         request.tasteIdList().stream()
-                .map(Taste::createTaste)
-                .map(taste -> MenuTaste.createMenuTaste(menu, taste))
-                .forEach(menu::addMenuTaste);
+            .map(Taste::createTaste)
+            .map(taste -> MenuTaste.createMenuTaste(menu, taste))
+            .forEach(menu::addMenuTaste);
 
         return menu;
     }
@@ -80,28 +81,28 @@ public class MenuConverter {
 
     public MenuFindResponse toMenuFindResponse(Menu menu) {
         return new MenuFindResponse(
-                menu.getId(),
-                new FranchiseFindResponse(menu.getFranchise().getId(),
-                        menu.getFranchise().getLogoUrl(),
-                        menu.getFranchise().getName()),
-                menu.getPictureUrl(), menu.getCustomMenuName(), menu.getRealMenuName(),
-                new AccountFindResponse(menu.getAccount().getId(), menu.getAccount().getImage(),
-                        menu.getAccount().getNickName(), menu.getAccount().getEmail(),
-                        menu.getAccount().getSnsAccount(), menu.getAccount().getCreatedAt(),
-                        menu.getAccount().getMenuList().size()),
-                menu.getDescription(), menu.getLikesCount(),
-                menu.getCommentCount(),
-                menu.getExpectedPrice(),
-                menu.getOptionList().stream()
-                        .map(option -> new OptionConverter().toOptionFindResponse(option)).collect(
-                                Collectors.toList()),
-                menu.getMenuTasteList().stream()
-                        .map(menuTaste -> new TasteFindResponse(menuTaste.getTaste().getId(),
-                                menuTaste.getTaste().getTasteName(),
-                                menuTaste.getTaste().getTasteColor()))
-                        .collect(
-                                Collectors.toList()),
-                menu.getCreatedAt(), menu.getUpdatedAt());
+            menu.getId(),
+            new FranchiseFindResponse(menu.getFranchise().getId(),
+                menu.getFranchise().getLogoUrl(),
+                menu.getFranchise().getName()),
+            menu.getPictureUrl(), menu.getCustomMenuName(), menu.getRealMenuName(),
+            new AccountFindResponse(menu.getAccount().getId(), menu.getAccount().getImage(),
+                menu.getAccount().getNickName(), menu.getAccount().getEmail(),
+                menu.getAccount().getSnsAccount(), menu.getAccount().getCreatedAt(),
+                menu.getAccount().getMenuList().size()),
+            menu.getDescription(), menu.getLikesCount(),
+            menu.getCommentCount(),
+            menu.getExpectedPrice(),
+            menu.getOptionList().stream()
+                .map(option -> new OptionConverter().toOptionFindResponse(option)).collect(
+                    Collectors.toList()),
+            menu.getMenuTasteList().stream()
+                .map(menuTaste -> new TasteFindResponse(menuTaste.getTaste().getId(),
+                    menuTaste.getTaste().getTasteName(),
+                    menuTaste.getTaste().getTasteColor()))
+                .collect(
+                    Collectors.toList()),
+            menu.getCreatedAt(), menu.getUpdatedAt());
     }
 
     public MenuFindOneResponse toMenuFindOneResponse(Menu menu, Account account) {
@@ -128,6 +129,8 @@ public class MenuConverter {
                 .collect(
                     Collectors.toList()),
             menu.getCreatedAt(), menu.getUpdatedAt(),
-            menu.getLikeMenuList().contains(account.getId()));
+            !menu.getLikeMenuList().stream()
+                .filter(likeMenu -> likeMenu.getAccount().getId().equals(account.getId())).collect(
+                    Collectors.toSet()).isEmpty());
     }
 }
