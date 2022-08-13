@@ -36,8 +36,8 @@ public class MenuRepositoryImpl implements MenuRepositoryCustom {
     private BooleanExpression[] searchExpression(SearchCond searchCond) {
         return switch (searchCond.searchType()) {
             case ALL_MENU -> allSearchCond(searchCond);
-            case LIKE_MENU -> mySearchCond(searchCond);
-            case MY_MENU -> likeSearchCond(searchCond);
+            case LIKE_MENU -> likeSearchCond(searchCond);
+            case MY_MENU -> mySearchCond(searchCond);
         };
     }
 
