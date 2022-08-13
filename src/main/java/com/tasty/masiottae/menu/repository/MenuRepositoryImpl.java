@@ -33,7 +33,7 @@ public class MenuRepositoryImpl implements MenuRepositoryCustom {
                 .fetch();
     }
 
-    private BooleanExpression searchExpression(SearchCond searchCond) {
+    private BooleanExpression[] searchExpression(SearchCond searchCond) {
         return switch (searchCond.searchType()) {
             case ALL_MENU -> allSearchCond(searchCond);
             case LIKE_MENU -> likeSearchCond(searchCond);
@@ -41,19 +41,28 @@ public class MenuRepositoryImpl implements MenuRepositoryCustom {
         };
     }
 
-    private BooleanExpression allSearchCond(SearchCond searchCond) {
-        return containKeyword(searchCond.keyword()).and(tasteIn(searchCond.tastes()))
-                .and(franchiseEq(searchCond.franchise()));
+    private BooleanExpression[] allSearchCond(SearchCond searchCond) {
+        return new BooleanExpression[]{
+                containKeyword(searchCond.keyword()),
+                tasteIn(searchCond.tastes()),
+                franchiseEq(searchCond.franchise())
+        };
     }
 
-    private BooleanExpression mySearchCond(SearchCond searchCond) {
-        return containKeyword(searchCond.keyword()).and(tasteIn(searchCond.tastes()))
-                .and(accountEq(searchCond.account()));
+    private BooleanExpression[] mySearchCond(SearchCond searchCond) {
+        return new BooleanExpression[]{
+                containKeyword(searchCond.keyword()),
+                tasteIn(searchCond.tastes()),
+                accountEq(searchCond.account())
+        };
     }
 
-    private BooleanExpression likeSearchCond(SearchCond searchCond) {
-        return containKeyword(searchCond.keyword()).and(tasteIn(searchCond.tastes()))
-                .and(likeMenuAccountContain(searchCond.account()));
+    private BooleanExpression[] likeSearchCond(SearchCond searchCond) {
+        return new BooleanExpression[]{
+                containKeyword(searchCond.keyword()),
+                tasteIn(searchCond.tastes()),
+                likeMenuAccountContain(searchCond.account())
+        };
     }
 
     private BooleanExpression likeMenuAccountContain(Account account) {
