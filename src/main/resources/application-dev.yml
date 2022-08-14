@@ -2,7 +2,8 @@ spring:
   config:
     activate:
       on-profile: dev
-    import: aws.yml
+    import: aws.yml, jwt.yml
+    
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/masiottae
@@ -21,4 +22,5 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL8Dialect
+        default_batch_fetch_size: 500
 

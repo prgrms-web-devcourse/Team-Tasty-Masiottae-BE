@@ -1,0 +1,9 @@
+== 맛
+
+=== 전체 맛 조회
+
+operation::find-all-taste[snippets='http-request,request-headers,http-response,response-headers,response-fields']
+
+=== 맛 생성
+
+operation::create-taste[snippets='http-request,request-headers,request-fields,http-response,response-headers,response-fields']

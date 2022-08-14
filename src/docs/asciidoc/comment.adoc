@@ -1,0 +1,17 @@
+== 댓글
+
+=== 댓글 작성
+
+operation::comment-save[snippets='http-request,http-response,request-body,request-fields,response-body,response-fields']
+
+=== 특정 메뉴에 달려있는 댓글 조회
+
+operation::comment-get-all[snippets='http-request,path-parameters,http-response,response-body,response-fields']
+
+=== 댓글 수정
+
+operation::comment-update[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
+
+=== 댓글 삭제
+
+operation::comment-delete[snippets='http-request,path-parameters,request-headers,http-response,response-body']

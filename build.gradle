@@ -1,9 +1,14 @@
 plugins {
     id 'org.springframework.boot' version '2.7.2'
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
-    id 'org.asciidoctor.convert' version '1.5.8'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
     id 'java'
     id 'checkstyle'
+    id 'jacoco'
+}
+
+jacoco {
+    toolVersion = '0.8.7'
 }
 
 checkstyle {
@@ -20,6 +25,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExtensions
 }
 
 repositories {
@@ -27,29 +33,92 @@ repositories {
 }
 
 ext {
-    set('snippetsDir', file("build/generated-snippets"))
+    snippetsDir = file('build/generated-snippets')
 }
 
+
 dependencies {
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
-    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'io.findify:s3mock_2.13:0.2.6'
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    implementation "com.querydsl:querydsl-core"
+    implementation "com.querydsl:querydsl-jpa"
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
+    // querydsl JPAAnnotationProcessor 사용 지정
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    // https://mvnrepository.com/artifact/com.auth0/java-jwt
+    implementation group: 'com.auth0', name: 'java-jwt', version: '3.19.1'
+    implementation 'com.github.maricn:logback-slack-appender:1.6.1'
+
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
+    implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.7.2'
+
+    testImplementation 'io.findify:s3mock_2.13:0.2.6'
 }
 
-tasks.named('test') {
-    outputs.dir snippetsDir
+bootJar {
+    dependsOn asciidoctor
+    copy {
+        from "${asciidoctor.outputDir}"
+        into 'BOOT-INF/classes/static/docs'
+    }
+}
+
+test {
     useJUnitPlatform()
+    outputs.dir snippetsDir
+    finalizedBy 'jacocoTestReport'
 }
 
-tasks.named('asciidoctor') {
+asciidoctor {
+    configurations 'asciidoctorExtensions'
+    sources {
+        include("**/index.adoc", "**/common/*.adoc")
+    }
     inputs.dir snippetsDir
     dependsOn test
+    baseDirFollowsSourceFile()
 }
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled(true)
+        xml.enabled(false)
+        csv.enabled(false)
+    }
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
+
+build {
+    dependsOn copyDocument
+}
+

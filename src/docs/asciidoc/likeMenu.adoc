@@ -1,0 +1,7 @@
+== 좋아요
+
+=== 좋아요 변환
+operation::likeMenu-update[snippets = 'http-request,http-response,path-parameters,request-headers']
+
+=== 유저가 좋아요한 게시글 보기
+operation::get-Menu-AccountLike(paging)[snippets = 'http-request,http-response,request-headers,response-fields']
