@@ -30,9 +30,9 @@
 <img src="https://img.shields.io/badge/IntelliJ-000000?style=flat-square&logo=IntelliJ%20IDEA&logoColor=white">
 <img src="https://img.shields.io/badge/slack-FF880F?style=flat-square&logo=slack&logoColor=FFFFFF">
 <img src="https://img.shields.io/badge/Discord-207BEA?style=flat-square&logo=discord&logoColor=FFFFFF">
-<img src="https://img.shields.io/badge/GitHub-207BEA?style=flat-square&logo=GitHub&logoColor=FFFFFF">
-<img src="https://img.shields.io/badge/Git-207BEA?style=flat-square&logo=Git&logoColor=FFFFFF">
-<img src="https://img.shields.io/badge/Notion-207BEA?style=flat-square&logo=Notion&logoColor=FFFFFF">
+<img src="https://img.shields.io/badge/GitHub-111111?style=flat-square&logo=GitHub&logoColor=FFFFFF">
+<img src="https://img.shields.io/badge/Git-111111?style=flat-square&logo=Git&logoColor=FFFFFF">
+<img src="https://img.shields.io/badge/Notion-yellow?style=flat-square&logo=Notion&logoColor=FFFFFF">
 
 
 ### Branch
