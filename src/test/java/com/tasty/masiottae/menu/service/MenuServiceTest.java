@@ -1,6 +1,7 @@
 package com.tasty.masiottae.menu.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -316,7 +317,22 @@ class MenuServiceTest {
     }
 
     @Test
-    @DisplayName("메뉴를 검색한다.")
+    @DisplayName("나만의 메뉴 검색시 size보다 큰 offset값을 전달하면 null이 반환된다.")
+    void searchMyMenuFailByOffsetTest() {
+        // Given
+        SearchMenuRequest request = new SearchMenuRequest(Integer.MAX_VALUE, 3, "커스텀",
+                MenuSortCond.RECENT.getUrlValue(), null, tastes.stream().map(Taste::getId).toList());
+
+        // When
+        SearchMenuResponse responses = menuService.searchMyMenu(account, request);
+
+        // Then
+        assertThat(responses.menu()).isNull();
+    }
+
+
+    @Test
+    @DisplayName("전체 메뉴를 검색한다.")
     void searchMenuTest() {
         // Given
         saveMoreMenus();
@@ -328,6 +344,33 @@ class MenuServiceTest {
 
         // Then
         assertThat(responses.menu().size()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("전체 메뉴 조회시 frachiseId에 null을 전달하면 예외가 발생한다.")
+    void searchAllMenuFailByNullFranchiseTest() {
+        // Given
+        SearchMenuRequest request = new SearchMenuRequest(0, 1, "이름", "recent", null,
+                tastes.stream().map(Taste::getId).toList());
+
+        // When // Then
+        assertThatThrownBy(() -> menuService.searchAllMenu(request))
+                .isExactlyInstanceOf(IllegalArgumentException.class);
+
+    }
+
+    @Test
+    @DisplayName("전체 메뉴 조회시 size보다 큰 offset값을 전달하면 null이 반환된다.")
+    void searchAllMenuFailByOffsetTest() {
+        // Given
+        SearchMenuRequest request = new SearchMenuRequest(Integer.MAX_VALUE, 10, "이름", "recent", franchise.getId(),
+                tastes.stream().map(Taste::getId).toList());
+
+        // When
+        SearchMenuResponse responses = menuService.searchAllMenu(request);
+
+        // Then
+        assertThat(responses.menu()).isNull();
     }
 
     @Test
@@ -346,6 +389,20 @@ class MenuServiceTest {
                 () -> assertThat(responses.menu().size()).isEqualTo(1),
                 () -> assertThat(responses.menu().get(0).id()).isEqualTo(findMenu.getId())
         );
+    }
+
+    @Test
+    @DisplayName("좋아요한 메뉴 검색시 size보다 큰 offset값을 전달하면 null이 반환된다.")
+    void searchLikeMenuFailByOffsetTest() {
+        // Given
+        SearchMenuRequest request = new SearchMenuRequest(Integer.MAX_VALUE, 10, "이름", "recent", franchise.getId(),
+                tastes.stream().map(Taste::getId).toList());
+
+        // When
+        SearchMenuResponse responses = menuService.searchAllMenu(request);
+
+        // Then
+        assertThat(responses.menu()).isNull();
     }
 
     private void saveMoreMenus() {

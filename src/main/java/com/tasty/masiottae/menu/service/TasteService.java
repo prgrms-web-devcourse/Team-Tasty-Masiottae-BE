@@ -46,10 +46,6 @@ public class TasteService {
         return tastes;
     }
 
-    public List<Taste> saveAll(List<Taste> tasteList) {
-        return tasteRepository.saveAll(tasteList);
-    }
-
     private void validateTastesSize(List<Long> tasteIds, List<Taste> tastes) {
         if (tasteIds.size() != tastes.size()) {
             throw new NotFoundException(NOT_FOUND_SOME_TASTE.getMessage());
