@@ -7,12 +7,12 @@
 | 역할                                                                                                                                 | ㅁㅁ                                                                                                                                 | ㅁㅁ                                                                                                                                 | ㅁㅁ                                                                                                                                 |
 | [wisehero](https://github.com/wisehero)                                                                                                                       | [haemin-jeong](https://github.com/haemin-jeong)                                                                                                | [chlwlgns524](https://github.com/chlwlgns524)                                                                                                 | [choi1204](https://github.com/choi1204)                                                                                                    |   
 
-## 기획서 및 와이어프레임
+## Proposal and Wireframe
 
 [맛이어때 Notion 기획서](https://backend-devcourse.notion.site/938a431ee41a4c358f5826673cfbea88)<br>
 [맛이어때 와이어프레임](https://www.figma.com/file/giZ2QkrKQT8uZ0K23HoNUI/%EB%82%98%EB%A7%8C%EC%9D%98-%EB%A9%94%EB%89%B4)
 
-## Skills
+## Skill Set
 ![Java](https://img.shields.io/badge/Java-17-green.svg)
 ![Spring Boot](https://img.shields.io/badge/Spring&nbsp;Boot-2.7.2-green.svg)
 ![Spring Security](https://img.shields.io/badge/Spring&nbsp;Security-5.7.2-green.svg)
@@ -26,7 +26,7 @@
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-20.04-green.svg)
 ![Docker](https://img.shields.io/badge/Docker-20.10.14-green.svg)
 
-### Collaborate And Tools
+### Collaborate and Tools
 ![Intellij](https://img.shields.io/badge/IntelliJ-000000?style=flat-square&logo=IntelliJ%20IDEA&logoColor=white)
 ![Slack](https://img.shields.io/badge/slack-FF880F?style=flat-square&logo=slack&logoColor=FFFFFF)
 ![Discord](https://img.shields.io/badge/Discord-207BEA?style=flat-square&logo=discord&logoColor=FFFFFF)
@@ -51,10 +51,10 @@
 
 <img src="src/images/de.png" alt="development environment">
 
-## API 문서
+## API Document
 
 [맛이어때 API 문서](http://13.125.177.126:8080/docs/index.html)
 
-## 클라이언트 GitHub Repository
+## Frontend GitHub Repository
 [맛이어때 FE Repository](https://github.com/prgrms-web-devcourse/Team-Tasty-Masiottae-FE)
 
