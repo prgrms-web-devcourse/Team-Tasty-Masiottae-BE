@@ -45,7 +45,7 @@
 
 ### CI/CD
 
-<img src="src/images/ci:cd.png" alt="cicd">
+<img src="src/images/cicd.png" alt="cicd">
 
 ### Development Environment
 
