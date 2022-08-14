@@ -27,12 +27,12 @@
 ![Docker](https://img.shields.io/badge/Docker-20.10.14-green.svg)
 
 ### Collaborate And Tools
-<img src="https://img.shields.io/badge/IntelliJ-000000?style=flat-square&logo=IntelliJ%20IDEA&logoColor=white">
-<img src="https://img.shields.io/badge/slack-FF880F?style=flat-square&logo=slack&logoColor=FFFFFF">
-<img src="https://img.shields.io/badge/Discord-207BEA?style=flat-square&logo=discord&logoColor=FFFFFF">
-<img src="https://img.shields.io/badge/GitHub-111111?style=flat-square&logo=GitHub&logoColor=FFFFFF">
-<img src="https://img.shields.io/badge/Git-111111?style=flat-square&logo=Git&logoColor=FFFFFF">
-<img src="https://img.shields.io/badge/Notion-yellow?style=flat-square&logo=Notion&logoColor=FFFFFF">
+![Intellij](https://img.shields.io/badge/IntelliJ-000000?style=flat-square&logo=IntelliJ%20IDEA&logoColor=white)
+![Slack](https://img.shields.io/badge/slack-FF880F?style=flat-square&logo=slack&logoColor=FFFFFF)
+![Discord](https://img.shields.io/badge/Discord-207BEA?style=flat-square&logo=discord&logoColor=FFFFFF)
+![Github](https://img.shields.io/badge/GitHub-111111?style=flat-square&logo=GitHub&logoColor=FFFFFF)
+![Git](https://img.shields.io/badge/Git-111111?style=flat-square&logo=Git&logoColor=FFFFFF)
+![Notion](https://img.shields.io/badge/Notion-yellow?style=flat-square&logo=Notion&logoColor=FFFFFF)
 
 
 ### Branch
