@@ -14,11 +14,12 @@ import com.tasty.masiottae.franchise.repository.FranchiseRepository;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
+import com.tasty.masiottae.menu.dto.MainSearchMenuRequest;
 import com.tasty.masiottae.menu.dto.MenuFindOneResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
-import com.tasty.masiottae.menu.dto.SearchMenuRequest;
+import com.tasty.masiottae.menu.dto.MyInfoSearchMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuResponse;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
 import com.tasty.masiottae.menu.repository.MenuRepository;
@@ -138,7 +139,8 @@ class MenuServiceTest {
     @Test
     @DisplayName("메뉴 수정(이미지 수정 o)")
     void testUpdateMenu() {
-        String originPictureUrl = menuService.findByFetchEntity(menuSaveResponse.menuId()).getPictureUrl();
+        String originPictureUrl = menuService.findByFetchEntity(menuSaveResponse.menuId())
+                .getPictureUrl();
         // Given
         List<OptionSaveRequest> optionSaveRequests = List.of(
                 new OptionSaveRequest("옵션1", "설명1"),
@@ -163,7 +165,8 @@ class MenuServiceTest {
                 true
         );
 
-        MockMultipartFile multipartFile = new MockMultipartFile("updateFile", "image.png", "img/png",
+        MockMultipartFile multipartFile = new MockMultipartFile("updateFile", "image.png",
+                "img/png",
                 "update".getBytes());
         menuService.updateMenu(menuSaveResponse.menuId(), request, multipartFile, account);
         Menu findMenu = menuService.findByFetchEntity(menuSaveResponse.menuId());
@@ -191,7 +194,8 @@ class MenuServiceTest {
     @Test
     @DisplayName("메뉴 수정(이미지 수정 x)")
     void testUpdateMenuNoImage() {
-        String originPictureUrl = menuService.findByFetchEntity(menuSaveResponse.menuId()).getPictureUrl();
+        String originPictureUrl = menuService.findByFetchEntity(menuSaveResponse.menuId())
+                .getPictureUrl();
         // Given
         List<OptionSaveRequest> optionSaveRequests = List.of(
                 new OptionSaveRequest("옵션1", "설명1"),
@@ -241,7 +245,8 @@ class MenuServiceTest {
     @Test
     @DisplayName("메뉴 수정(이미지가 있다가 제거.)")
     void testUpdateMenuImageNull() {
-        String originPictureUrl = menuService.findByFetchEntity(menuSaveResponse.menuId()).getPictureUrl();
+        String originPictureUrl = menuService.findByFetchEntity(menuSaveResponse.menuId())
+                .getPictureUrl();
         // Given
         List<OptionSaveRequest> optionSaveRequests = List.of(
                 new OptionSaveRequest("옵션1", "설명1"),
@@ -290,7 +295,8 @@ class MenuServiceTest {
     @DisplayName("메뉴 삭제(성공)")
     void testDelete() {
         menuService.delete(account, menuSaveResponse.menuId());
-        assertThrows(EntityNotFoundException.class, () -> menuService.findOneMenu(menuSaveResponse.menuId(), account));
+        assertThrows(EntityNotFoundException.class,
+                () -> menuService.findOneMenu(menuSaveResponse.menuId(), account));
     }
 
     @Test
@@ -298,7 +304,8 @@ class MenuServiceTest {
     void testDeleteFail() {
         Account newAccount = Account.createAccount("new@gmail.com", "password", "new", "imageUrl2");
         accountRepository.save(newAccount);
-        assertThrows(ForbiddenException.class, () -> menuService.delete(newAccount, menuSaveResponse.menuId()));
+        assertThrows(ForbiddenException.class,
+                () -> menuService.delete(newAccount, menuSaveResponse.menuId()));
     }
 
     @Test
@@ -306,11 +313,11 @@ class MenuServiceTest {
     void searchMyMenuTest() {
         // Given
         saveMoreMenus();
-        SearchMenuRequest request = new SearchMenuRequest(0, 3, "커스텀",
-                MenuSortCond.RECENT.getUrlValue(), null, tastes.stream().map(Taste::getId).toList());
+        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(), 0, 3, "커스텀",
+                MenuSortCond.RECENT.getUrlValue(), tastes.stream().map(Taste::getId).toList());
 
         // When
-        SearchMenuResponse responses = menuService.searchMyMenu(account, request);
+        SearchMenuResponse responses = menuService.searchMyMenu(request);
 
         // Then
         assertThat(responses.menu().size()).isEqualTo(1);
@@ -320,11 +327,12 @@ class MenuServiceTest {
     @DisplayName("나만의 메뉴 검색시 size보다 큰 offset값을 전달하면 null이 반환된다.")
     void searchMyMenuFailByOffsetTest() {
         // Given
-        SearchMenuRequest request = new SearchMenuRequest(Integer.MAX_VALUE, 3, "커스텀",
-                MenuSortCond.RECENT.getUrlValue(), null, tastes.stream().map(Taste::getId).toList());
+        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(),
+                Integer.MAX_VALUE, 3, "커스텀",
+                MenuSortCond.RECENT.getUrlValue(), tastes.stream().map(Taste::getId).toList());
 
         // When
-        SearchMenuResponse responses = menuService.searchMyMenu(account, request);
+        SearchMenuResponse responses = menuService.searchMyMenu(request);
 
         // Then
         assertThat(responses.menu()).isNull();
@@ -336,7 +344,8 @@ class MenuServiceTest {
     void searchMenuTest() {
         // Given
         saveMoreMenus();
-        SearchMenuRequest request = new SearchMenuRequest(0, 1, "이름", "recent", franchise.getId(),
+        MainSearchMenuRequest request = new MainSearchMenuRequest(0, 1, "이름", "recent",
+                franchise.getId(),
                 tastes.stream().map(Taste::getId).toList());
 
         // When
@@ -350,7 +359,7 @@ class MenuServiceTest {
     @DisplayName("전체 메뉴 조회시 frachiseId에 null을 전달하면 예외가 발생한다.")
     void searchAllMenuFailByNullFranchiseTest() {
         // Given
-        SearchMenuRequest request = new SearchMenuRequest(0, 1, "이름", "recent", null,
+        MainSearchMenuRequest request = new MainSearchMenuRequest(0, 1, "이름", "recent", null,
                 tastes.stream().map(Taste::getId).toList());
 
         // When // Then
@@ -363,7 +372,8 @@ class MenuServiceTest {
     @DisplayName("전체 메뉴 조회시 size보다 큰 offset값을 전달하면 null이 반환된다.")
     void searchAllMenuFailByOffsetTest() {
         // Given
-        SearchMenuRequest request = new SearchMenuRequest(Integer.MAX_VALUE, 10, "이름", "recent", franchise.getId(),
+        MainSearchMenuRequest request = new MainSearchMenuRequest(Integer.MAX_VALUE, 10, "이름",
+                "recent", franchise.getId(),
                 tastes.stream().map(Taste::getId).toList());
 
         // When
@@ -378,11 +388,12 @@ class MenuServiceTest {
     void likeMenuSearchTest() {
         account.getLikeMenuList().add(new LikeMenu(account, findMenu));
         saveMoreMenus();
-        SearchMenuRequest request = new SearchMenuRequest(0, 3, "이름", "recent", null,
+        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(), 0, 3, "이름",
+                "recent",
                 tastes.stream().map(Taste::getId).toList());
 
         // When
-        SearchMenuResponse responses = menuService.searchLikeMenu(account, request);
+        SearchMenuResponse responses = menuService.searchLikeMenu(request);
 
         // Then
         assertAll(
@@ -395,11 +406,12 @@ class MenuServiceTest {
     @DisplayName("좋아요한 메뉴 검색시 size보다 큰 offset값을 전달하면 null이 반환된다.")
     void searchLikeMenuFailByOffsetTest() {
         // Given
-        SearchMenuRequest request = new SearchMenuRequest(Integer.MAX_VALUE, 10, "이름", "recent", franchise.getId(),
+        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(),
+                Integer.MAX_VALUE, 10, "이름", "recent",
                 tastes.stream().map(Taste::getId).toList());
 
         // When
-        SearchMenuResponse responses = menuService.searchAllMenu(request);
+        SearchMenuResponse responses = menuService.searchLikeMenu(request);
 
         // Then
         assertThat(responses.menu()).isNull();
