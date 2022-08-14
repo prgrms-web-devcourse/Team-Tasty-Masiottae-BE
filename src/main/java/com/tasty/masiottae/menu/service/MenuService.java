@@ -17,6 +17,7 @@ import com.tasty.masiottae.menu.domain.MenuTaste;
 import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.MainSearchMenuRequest;
 import com.tasty.masiottae.menu.dto.MenuFindOneResponse;
+import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
@@ -77,6 +78,15 @@ public class MenuService {
         );
 
         return menuConverter.toMenuFindOneResponse(findMenu, account);
+    }
+
+    public MenuFindResponse findOneMenuWithoutToken(Long menuId) {
+
+        Menu findMenu = menuRepository.findByIdFetch(menuId).orElseThrow(
+            () -> new EntityNotFoundException(NOT_FOUND_MENU.getMessage())
+        );
+
+        return menuConverter.toMenuFindResponse(findMenu);
     }
 
     @Transactional

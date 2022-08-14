@@ -129,8 +129,7 @@ public class MenuConverter {
                 .collect(
                     Collectors.toList()),
             menu.getCreatedAt(), menu.getUpdatedAt(),
-            !menu.getLikeMenuList().stream()
-                .filter(likeMenu -> likeMenu.getAccount().getId().equals(account.getId())).collect(
-                    Collectors.toSet()).isEmpty());
+            menu.getLikeMenuList().stream()
+                .anyMatch(likeMenu -> likeMenu.getAccount().getId().equals(account.getId())));
     }
 }

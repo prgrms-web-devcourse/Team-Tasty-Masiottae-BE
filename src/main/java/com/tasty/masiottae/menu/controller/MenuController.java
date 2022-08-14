@@ -35,7 +35,10 @@ public class MenuController {
     }
 
     @GetMapping(value = "/menu/{menuId}")
-    public ResponseEntity<MenuFindOneResponse> getOneMenu(@PathVariable Long menuId, @LoginAccount Account account) {
+    public ResponseEntity<?> getOneMenu(@PathVariable Long menuId, @LoginAccount Account account) {
+        if (account == null) {
+            return ResponseEntity.ok().body(menuService.findOneMenuWithoutToken(menuId));
+        }
         MenuFindOneResponse menu = menuService.findOneMenu(menuId, account);
         return ResponseEntity.ok().body(menu);
     }
