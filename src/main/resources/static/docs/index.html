@@ -485,22 +485,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_메뉴_삭제_http_response">HTTP 응답 예시</a></li>
 </ul>
 </li>
-<li><a href="#_내가_생성한_메뉴_검색">내가 생성한 메뉴 검색</a>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색">특정 사용자가 생성한 메뉴 검색</a>
 <ul class="sectlevel3">
-<li><a href="#_내가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></li>
-<li><a href="#_내가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></li>
-<li><a href="#_내가_생성한_메뉴_검색_http_response">HTTP 응답 예시</a></li>
-<li><a href="#_내가_생성한_메뉴_검색_response_headers">응답 헤더</a></li>
-<li><a href="#_내가_생성한_메뉴_검색_response_fields">응답 필드</a></li>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></li>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></li>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색_http_response">HTTP 응답 예시</a></li>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색_response_headers">응답 헤더</a></li>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색_response_fields">응답 필드</a></li>
 </ul>
 </li>
-<li><a href="#_좋아요한_메뉴_검색">좋아요한 메뉴 검색</a>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색">특정 사용자가 좋아요한 메뉴 검색</a>
 <ul class="sectlevel3">
-<li><a href="#_좋아요한_메뉴_검색_http_request">HTTP 요청 예시</a></li>
-<li><a href="#_좋아요한_메뉴_검색_request_parameters">요청 파라미터</a></li>
-<li><a href="#_좋아요한_메뉴_검색_http_response">HTTP 응답 예시</a></li>
-<li><a href="#_좋아요한_메뉴_검색_response_headers">응답 헤더</a></li>
-<li><a href="#_좋아요한_메뉴_검색_response_fields">응답 필드</a></li>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색_http_request">HTTP 요청 예시</a></li>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색_request_parameters">요청 파라미터</a></li>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색_http_response">HTTP 응답 예시</a></li>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색_response_headers">응답 헤더</a></li>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색_response_fields">응답 필드</a></li>
 </ul>
 </li>
 <li><a href="#_전체_메뉴_검색">전체 메뉴 검색</a>
@@ -825,8 +825,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /menu HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@36f63cee
-X-CSRF-TOKEN: b8cecf81-bd02-4c0f-af79-523c02c2d170
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@36f7679e
+X-CSRF-TOKEN: 9c55cb17-89f2-4f27-ad95-3e28aa074c95
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -1035,8 +1035,8 @@ Content-Length: 18
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /menu/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@3e0e00e2
-X-CSRF-TOKEN: 78cb030f-f97f-45fb-8dd2-4331fe9d9a73
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@3b695b4f
+X-CSRF-TOKEN: 09cb9b13-b1e8-4f85-9870-c1b1584e6772
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1096,7 +1096,7 @@ Content-Length: 928
     "nickName" : "닉네임",
     "email" : "유저이름",
     "snsAccount" : "이메일",
-    "createdAt" : "2022-08-13T07:32:39.612385",
+    "createdAt" : "2022-08-14T16:32:12.485789",
     "menuCount" : 10
   },
   "content" : "내용",
@@ -1119,8 +1119,8 @@ Content-Length: 928
     "name" : "파란맛",
     "color" : "파란색"
   } ],
-  "createdAt" : "2022-08-13T07:32:39.612398",
-  "updatedAt" : "2022-08-13T07:32:39.612398",
+  "createdAt" : "2022-08-14T16:32:12.485806",
+  "updatedAt" : "2022-08-14T16:32:12.485806",
   "isLiked" : false
 }</code></pre>
 </div>
@@ -1285,8 +1285,8 @@ Content-Length: 928
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /menu/1 HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@3911cb95
-X-CSRF-TOKEN: 13c865b1-758d-42e8-a1a6-15796c6a7bc6
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@786576f3
+X-CSRF-TOKEN: 62d8ed5f-f9b5-4d33-87e3-f157ff29ed9f
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -1451,9 +1451,9 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /menu/1 HTTP/1.1
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@163372b3
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@62a38cd9
 Accept: application/json
-X-CSRF-TOKEN: 40bbfe8e-6d34-45ad-88ca-4149fe8a40a4
+X-CSRF-TOKEN: 50c75444-fb8c-4e6d-af0d-35d11b3ab108
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1499,20 +1499,20 @@ X-Frame-Options: DENY</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_내가_생성한_메뉴_검색"><a class="link" href="#_내가_생성한_메뉴_검색">내가 생성한 메뉴 검색</a></h3>
+<h3 id="_특정_사용자가_생성한_메뉴_검색"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색">특정 사용자가 생성한 메뉴 검색</a></h3>
 <div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_http_request"><a class="link" href="#_내가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
+<h4 id="_특정_사용자가_생성한_메뉴_검색_http_request"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /my-menu?keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;offset=0&amp;limit=1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /my-menu?accountId=1&amp;keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;offset=0&amp;limit=1 HTTP/1.1
 Accept: application/json
-X-CSRF-TOKEN: 1bb00914-73d0-45b4-8a74-c4e6d2052082
+X-CSRF-TOKEN: b7ed460c-fe57-4d34-b4fe-69d0b4018059
 Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_request_parameters"><a class="link" href="#_내가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></h4>
+<h4 id="_특정_사용자가_생성한_메뉴_검색_request_parameters"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1525,6 +1525,10 @@ Host: localhost:8080</code></pre>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>accountId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 ID</p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">검색어</p></td>
@@ -1549,7 +1553,7 @@ Host: localhost:8080</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_http_response"><a class="link" href="#_내가_생성한_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
+<h4 id="_특정_사용자가_생성한_메뉴_검색_http_response"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -1563,7 +1567,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2373
+Content-Length: 2374
 
 {
   "menu" : [ {
@@ -1582,7 +1586,7 @@ Content-Length: 2373
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-13T07:32:39.744898",
+      "createdAt" : "2022-08-14T16:32:12.691439",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
@@ -1612,8 +1616,8 @@ Content-Length: 2373
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-13T07:32:39.744909",
-    "updatedAt" : "2022-08-13T07:32:39.74491"
+    "createdAt" : "2022-08-14T16:32:12.691451",
+    "updatedAt" : "2022-08-14T16:32:12.691451"
   }, {
     "id" : 2,
     "franchise" : {
@@ -1630,7 +1634,7 @@ Content-Length: 2373
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-13T07:32:39.744898",
+      "createdAt" : "2022-08-14T16:32:12.691439",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
@@ -1660,15 +1664,15 @@ Content-Length: 2373
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-13T07:32:39.744911",
-    "updatedAt" : "2022-08-13T07:32:39.744911"
+    "createdAt" : "2022-08-14T16:32:12.691453",
+    "updatedAt" : "2022-08-14T16:32:12.691453"
   } ]
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_response_headers"><a class="link" href="#_내가_생성한_메뉴_검색_response_headers">응답 헤더</a></h4>
+<h4 id="_특정_사용자가_생성한_메뉴_검색_response_headers"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색_response_headers">응답 헤더</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1689,7 +1693,7 @@ Content-Length: 2373
 </table>
 </div>
 <div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_response_fields"><a class="link" href="#_내가_생성한_메뉴_검색_response_fields">응답 필드</a></h4>
+<h4 id="_특정_사용자가_생성한_메뉴_검색_response_fields"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색_response_fields">응답 필드</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1859,20 +1863,20 @@ Content-Length: 2373
 </div>
 </div>
 <div class="sect2">
-<h3 id="_좋아요한_메뉴_검색"><a class="link" href="#_좋아요한_메뉴_검색">좋아요한 메뉴 검색</a></h3>
+<h3 id="_특정_사용자가_좋아요한_메뉴_검색"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색">특정 사용자가 좋아요한 메뉴 검색</a></h3>
 <div class="sect3">
-<h4 id="_좋아요한_메뉴_검색_http_request"><a class="link" href="#_좋아요한_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
+<h4 id="_특정_사용자가_좋아요한_메뉴_검색_http_request"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /like-menu?keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;offset=0&amp;limit=1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /like-menu?accountId=1&amp;keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;offset=0&amp;limit=1 HTTP/1.1
 Accept: application/json
-X-CSRF-TOKEN: 77d29e6a-d378-45bd-83c4-1276aaca25fd
+X-CSRF-TOKEN: d5565a63-d084-42f2-9d6c-8fb1872d8135
 Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_좋아요한_메뉴_검색_request_parameters"><a class="link" href="#_좋아요한_메뉴_검색_request_parameters">요청 파라미터</a></h4>
+<h4 id="_특정_사용자가_좋아요한_메뉴_검색_request_parameters"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색_request_parameters">요청 파라미터</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1885,6 +1889,10 @@ Host: localhost:8080</code></pre>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>accountId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 ID</p></td>
+</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">검색어</p></td>
@@ -1909,7 +1917,7 @@ Host: localhost:8080</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_좋아요한_메뉴_검색_http_response"><a class="link" href="#_좋아요한_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
+<h4 id="_특정_사용자가_좋아요한_메뉴_검색_http_response"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -1923,7 +1931,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2375
+Content-Length: 2376
 
 {
   "menu" : [ {
@@ -1942,7 +1950,7 @@ Content-Length: 2375
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-13T07:32:39.552702",
+      "createdAt" : "2022-08-14T16:32:12.410307",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
@@ -1972,8 +1980,8 @@ Content-Length: 2375
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-13T07:32:39.55275",
-    "updatedAt" : "2022-08-13T07:32:39.552751"
+    "createdAt" : "2022-08-14T16:32:12.410346",
+    "updatedAt" : "2022-08-14T16:32:12.410347"
   }, {
     "id" : 2,
     "franchise" : {
@@ -1990,7 +1998,7 @@ Content-Length: 2375
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-13T07:32:39.552702",
+      "createdAt" : "2022-08-14T16:32:12.410307",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
@@ -2020,15 +2028,15 @@ Content-Length: 2375
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-13T07:32:39.552758",
-    "updatedAt" : "2022-08-13T07:32:39.552758"
+    "createdAt" : "2022-08-14T16:32:12.410353",
+    "updatedAt" : "2022-08-14T16:32:12.410353"
   } ]
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_좋아요한_메뉴_검색_response_headers"><a class="link" href="#_좋아요한_메뉴_검색_response_headers">응답 헤더</a></h4>
+<h4 id="_특정_사용자가_좋아요한_메뉴_검색_response_headers"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색_response_headers">응답 헤더</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -2049,7 +2057,7 @@ Content-Length: 2375
 </table>
 </div>
 <div class="sect3">
-<h4 id="_좋아요한_메뉴_검색_response_fields"><a class="link" href="#_좋아요한_메뉴_검색_response_fields">응답 필드</a></h4>
+<h4 id="_특정_사용자가_좋아요한_메뉴_검색_response_fields"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색_response_fields">응답 필드</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2305,7 +2313,7 @@ Content-Length: 2374
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-13T07:32:39.697791",
+      "createdAt" : "2022-08-14T16:32:12.619515",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
@@ -2335,8 +2343,8 @@ Content-Length: 2374
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-13T07:32:39.697805",
-    "updatedAt" : "2022-08-13T07:32:39.697805"
+    "createdAt" : "2022-08-14T16:32:12.619543",
+    "updatedAt" : "2022-08-14T16:32:12.619545"
   }, {
     "id" : 2,
     "franchise" : {
@@ -2353,7 +2361,7 @@ Content-Length: 2374
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-13T07:32:39.697791",
+      "createdAt" : "2022-08-14T16:32:12.619515",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
@@ -2383,8 +2391,8 @@ Content-Length: 2374
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-13T07:32:39.697807",
-    "updatedAt" : "2022-08-13T07:32:39.697807"
+    "createdAt" : "2022-08-14T16:32:12.619548",
+    "updatedAt" : "2022-08-14T16:32:12.619549"
   } ]
 }</code></pre>
 </div>
@@ -2718,7 +2726,7 @@ Content-Length: 184
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 49
-X-CSRF-TOKEN: 5fbe696d-110f-472c-8f01-3cc5247ff8c8
+X-CSRF-TOKEN: 7c8dc0cd-af36-42b8-b8e2-23c4b0ad6858
 Host: localhost:8080
 
 {
@@ -2868,7 +2876,7 @@ Content-Length: 19
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /signup HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-X-CSRF-TOKEN: edd80276-dcc8-43df-95bc-9065cbc57205
+X-CSRF-TOKEN: 441bac72-ff8e-4c3e-adae-b5224beba13d
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2994,11 +3002,11 @@ Content-Length: 537
 {
   "accessToken" : {
     "token" : "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0.-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
-    "expirationDate" : "2022-08-13 07:32:11"
+    "expirationDate" : "2022-08-14 16:31:30"
   },
   "refreshToken" : {
     "token" : "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0.-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
-    "expirationDate" : "2022-08-13 07:32:11"
+    "expirationDate" : "2022-08-14 16:31:30"
   }
 }</code></pre>
 </div>
@@ -3268,7 +3276,7 @@ Content-Length: 260
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /accounts/1 HTTP/1.1
-X-CSRF-TOKEN: a772ffe6-d41a-4722-83a5-675c49fd789b
+X-CSRF-TOKEN: 611164d3-6988-480d-9559-b38031280900
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3381,7 +3389,7 @@ Content-Length: 678
     "nickName" : "nickname",
     "email" : "example@naver.com",
     "snsAccount" : "snsTest",
-    "createdAt" : "2022-08-13T07:32:11.42522",
+    "createdAt" : "2022-08-14T16:31:30.10976",
     "menuCount" : 0
   } ],
   "pageable" : {
@@ -3391,8 +3399,8 @@ Content-Length: 678
       "unsorted" : true
     },
     "offset" : 0,
-    "pageNumber" : 0,
     "pageSize" : 10,
+    "pageNumber" : 0,
     "paged" : true,
     "unpaged" : false
   },
@@ -3670,7 +3678,7 @@ Content-Length: 187
   "nickName" : "nickname",
   "email" : "example@naver.com",
   "snsAccount" : "snsTest",
-  "createdAt" : "2022-08-13T07:32:11.54037",
+  "createdAt" : "2022-08-14T16:31:30.33503",
   "menuCount" : 0
 }</code></pre>
 </div>
@@ -3764,7 +3772,7 @@ Content-Length: 187
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /accounts/1/password HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 33
-X-CSRF-TOKEN: 295a6714-1534-45f0-b34b-e34d4cba88f7
+X-CSRF-TOKEN: f40df6fa-c42f-4e55-a3ab-59878896708c
 Host: localhost:8080
 
 {
@@ -3829,7 +3837,7 @@ Host: localhost:8080
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 40
-X-CSRF-TOKEN: ede83770-2755-483b-8f90-7642b120cfbc
+X-CSRF-TOKEN: edbc5422-eb7c-4bbc-9b5d-7cd71e999756
 Host: localhost:8080
 
 {
@@ -3965,7 +3973,7 @@ Content-Length: 47
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 43
-X-CSRF-TOKEN: 4acc7df8-25bd-449f-9856-40c9cc7e4d35
+X-CSRF-TOKEN: 40a535c5-ef29-48e5-87f9-f44273b39b78
 Host: localhost:8080
 
 {
@@ -4100,7 +4108,7 @@ Content-Length: 53
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /accounts/1/image HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-X-CSRF-TOKEN: 77d34bdb-6fcb-4bad-9dd3-c027b51c8942
+X-CSRF-TOKEN: eeb695bf-b6c3-4c89-9540-a8db71172c82
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -4376,7 +4384,7 @@ Content-Length: 53
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 435
-X-CSRF-TOKEN: 78e3aa95-e2bd-4725-bb48-9da17566632b
+X-CSRF-TOKEN: edd71830-9e2f-4576-97b7-b04b04c109f9
 Host: localhost:8080
 
 {
@@ -4465,7 +4473,7 @@ Content-Length: 242
 
 {
   "token" : "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTExQG5hdmVyLmNvbSIsInJvbGVzIjpbIlJPTEVfQUNDT1VOVCJdLCJleHAiOjE2NjAwMzg0NzN9.DZDkCcMNAtfxmv-GWL9mxE0dncwxbHBQQ9kXmvG2AMA",
-  "expirationDate" : "2022-08-13 07:32:11"
+  "expirationDate" : "2022-08-14 16:31:30"
 }</code></pre>
 </div>
 </div>
@@ -4533,7 +4541,7 @@ Content-Length: 242
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /logout HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 435
-X-CSRF-TOKEN: 711224f1-b473-4722-8c0b-e5efb432e7f2
+X-CSRF-TOKEN: 323fd18f-6f5d-44d3-824c-db1e46735f20
 Host: localhost:8080
 
 {
@@ -4632,9 +4640,9 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 406
+Content-Length: 408
 
-[{"id":5,"image":"logo1","name":"franchise1"},{"id":1,"image":"logo2","name":"franchise2"},{"id":8,"image":"logo3","name":"franchise3"},{"id":3,"image":"logo4","name":"franchise4"},{"id":1,"image":"logo5","name":"franchise5"},{"id":6,"image":"logo6","name":"franchise6"},{"id":5,"image":"logo7","name":"franchise7"},{"id":7,"image":"logo8","name":"franchise8"},{"id":8,"image":"logo9","name":"franchise9"}]</code></pre>
+[{"id":10,"image":"logo1","name":"franchise1"},{"id":9,"image":"logo2","name":"franchise2"},{"id":3,"image":"logo3","name":"franchise3"},{"id":9,"image":"logo4","name":"franchise4"},{"id":2,"image":"logo5","name":"franchise5"},{"id":3,"image":"logo6","name":"franchise6"},{"id":10,"image":"logo7","name":"franchise7"},{"id":3,"image":"logo8","name":"franchise8"},{"id":3,"image":"logo9","name":"franchise9"}]</code></pre>
 </div>
 </div>
 </div>
@@ -4642,7 +4650,7 @@ Content-Length: 406
 <h4 id="_프랜차이즈_전체_조회_response_body"><a class="link" href="#_프랜차이즈_전체_조회_response_body">Response body</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":5,"image":"logo1","name":"franchise1"},{"id":1,"image":"logo2","name":"franchise2"},{"id":8,"image":"logo3","name":"franchise3"},{"id":3,"image":"logo4","name":"franchise4"},{"id":1,"image":"logo5","name":"franchise5"},{"id":6,"image":"logo6","name":"franchise6"},{"id":5,"image":"logo7","name":"franchise7"},{"id":7,"image":"logo8","name":"franchise8"},{"id":8,"image":"logo9","name":"franchise9"}]</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":10,"image":"logo1","name":"franchise1"},{"id":9,"image":"logo2","name":"franchise2"},{"id":3,"image":"logo3","name":"franchise3"},{"id":9,"image":"logo4","name":"franchise4"},{"id":2,"image":"logo5","name":"franchise5"},{"id":3,"image":"logo6","name":"franchise6"},{"id":10,"image":"logo7","name":"franchise7"},{"id":3,"image":"logo8","name":"franchise8"},{"id":3,"image":"logo9","name":"franchise9"}]</code></pre>
 </div>
 </div>
 </div>
@@ -4693,9 +4701,9 @@ Content-Length: 406
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /menu/1/like HTTP/1.1
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@7b6435fc
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@7200661d
 Accept: application/json
-X-CSRF-TOKEN: 2b82f8ea-cc3f-4fdb-a888-364f1d42d69a
+X-CSRF-TOKEN: 73979051-a22d-4ad3-a225-0ac446cfca64
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -4772,7 +4780,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /accounts/like?page=0&amp;size=10 HTTP/1.1
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@38f1788a
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@10e69cb0
 Accept: application/json
 Host: localhost:8080</code></pre>
 </div>
@@ -4812,7 +4820,7 @@ Content-Length: 1464
       "nickName" : "닉네임",
       "email" : "유저이름",
       "snsAccount" : "이메일",
-      "createdAt" : "2022-08-13T07:32:28.727405",
+      "createdAt" : "2022-08-14T16:31:54.222509",
       "menuCount" : 10
     },
     "content" : "내용",
@@ -4835,8 +4843,8 @@ Content-Length: 1464
       "name" : "파란맛",
       "color" : "파란색"
     } ],
-    "createdAt" : "2022-08-13T07:32:28.727652",
-    "updatedAt" : "2022-08-13T07:32:28.727661"
+    "createdAt" : "2022-08-14T16:31:54.222734",
+    "updatedAt" : "2022-08-14T16:31:54.222744"
   } ],
   "pageable" : {
     "sort" : {
@@ -4845,8 +4853,8 @@ Content-Length: 1464
       "unsorted" : true
     },
     "offset" : 0,
-    "pageNumber" : 0,
     "pageSize" : 10,
+    "pageNumber" : 0,
     "paged" : true,
     "unpaged" : false
   },
@@ -5151,7 +5159,7 @@ Content-Length: 1464
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /comments HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 48
-X-CSRF-TOKEN: e701d6cd-7c7d-4a81-80d7-656d54080b00
+X-CSRF-TOKEN: 92a4a9e9-7396-4632-8a74-3562630d379f
 Host: localhost:8080
 
 {"userId":1,"menuId":1,"comment":"댓글내용"}</code></pre>
@@ -5313,9 +5321,9 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2895
+Content-Length: 2890
 
-[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-13T07:32:12.292194","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292639","updatedAt":"2022-08-13T07:32:12.292649"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-13T07:32:12.292229","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292714","updatedAt":"2022-08-13T07:32:12.29272"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-13T07:32:12.292244","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292726","updatedAt":"2022-08-13T07:32:12.29273"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-13T07:32:12.292256","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292735","updatedAt":"2022-08-13T07:32:12.292739"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-13T07:32:12.292268","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292744","updatedAt":"2022-08-13T07:32:12.292748"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-13T07:32:12.292279","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292753","updatedAt":"2022-08-13T07:32:12.292756"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-13T07:32:12.292299","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292761","updatedAt":"2022-08-13T07:32:12.292773"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-13T07:32:12.292311","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292779","updatedAt":"2022-08-13T07:32:12.292783"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-13T07:32:12.292324","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292787","updatedAt":"2022-08-13T07:32:12.292791"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-13T07:32:12.292336","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292795","updatedAt":"2022-08-13T07:32:12.292799"}]</code></pre>
+[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-14T16:31:31.72639","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727222","updatedAt":"2022-08-14T16:31:31.727235"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-14T16:31:31.72643","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.72737","updatedAt":"2022-08-14T16:31:31.727424"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-14T16:31:31.726448","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.72744","updatedAt":"2022-08-14T16:31:31.727446"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-14T16:31:31.726466","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727453","updatedAt":"2022-08-14T16:31:31.727458"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-14T16:31:31.726481","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727464","updatedAt":"2022-08-14T16:31:31.727469"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-14T16:31:31.726494","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727475","updatedAt":"2022-08-14T16:31:31.72748"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-14T16:31:31.726506","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727485","updatedAt":"2022-08-14T16:31:31.727503"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-14T16:31:31.726518","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727509","updatedAt":"2022-08-14T16:31:31.727514"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-14T16:31:31.72653","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727519","updatedAt":"2022-08-14T16:31:31.727525"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-14T16:31:31.726542","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727554","updatedAt":"2022-08-14T16:31:31.72757"}]</code></pre>
 </div>
 </div>
 </div>
@@ -5323,7 +5331,7 @@ Content-Length: 2895
 <h4 id="_특정_메뉴에_달려있는_댓글_조회_response_body"><a class="link" href="#_특정_메뉴에_달려있는_댓글_조회_response_body">Response body</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-13T07:32:12.292194","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292639","updatedAt":"2022-08-13T07:32:12.292649"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-13T07:32:12.292229","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292714","updatedAt":"2022-08-13T07:32:12.29272"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-13T07:32:12.292244","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292726","updatedAt":"2022-08-13T07:32:12.29273"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-13T07:32:12.292256","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292735","updatedAt":"2022-08-13T07:32:12.292739"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-13T07:32:12.292268","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292744","updatedAt":"2022-08-13T07:32:12.292748"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-13T07:32:12.292279","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292753","updatedAt":"2022-08-13T07:32:12.292756"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-13T07:32:12.292299","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292761","updatedAt":"2022-08-13T07:32:12.292773"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-13T07:32:12.292311","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292779","updatedAt":"2022-08-13T07:32:12.292783"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-13T07:32:12.292324","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292787","updatedAt":"2022-08-13T07:32:12.292791"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-13T07:32:12.292336","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-13T07:32:12.292795","updatedAt":"2022-08-13T07:32:12.292799"}]</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-14T16:31:31.72639","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727222","updatedAt":"2022-08-14T16:31:31.727235"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-14T16:31:31.72643","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.72737","updatedAt":"2022-08-14T16:31:31.727424"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-14T16:31:31.726448","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.72744","updatedAt":"2022-08-14T16:31:31.727446"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-14T16:31:31.726466","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727453","updatedAt":"2022-08-14T16:31:31.727458"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-14T16:31:31.726481","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727464","updatedAt":"2022-08-14T16:31:31.727469"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-14T16:31:31.726494","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727475","updatedAt":"2022-08-14T16:31:31.72748"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-14T16:31:31.726506","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727485","updatedAt":"2022-08-14T16:31:31.727503"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-14T16:31:31.726518","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727509","updatedAt":"2022-08-14T16:31:31.727514"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-14T16:31:31.72653","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727519","updatedAt":"2022-08-14T16:31:31.727525"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-14T16:31:31.726542","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-14T16:31:31.727554","updatedAt":"2022-08-14T16:31:31.72757"}]</code></pre>
 </div>
 </div>
 </div>
@@ -5415,10 +5423,10 @@ Content-Length: 2895
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /comments/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@34ceabf1
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@6c430548
 Accept: application/json
 Content-Length: 37
-X-CSRF-TOKEN: 5b2f7bf9-3c20-4089-8769-4edb92a5d2b5
+X-CSRF-TOKEN: f967dbd5-c146-4aa6-81f5-bf6375545f52
 Host: localhost:8080
 
 {"comment":"새로운 댓글 내용"}</code></pre>
@@ -5521,9 +5529,9 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /comments/1 HTTP/1.1
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@4c2f3f41
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@749a3925
 Accept: application/json
-X-CSRF-TOKEN: 17f6a864-f621-4e23-9edb-8a55d1635b93
+X-CSRF-TOKEN: 7b545597-3603-4c7e-a4c0-80590fe772be
 Host: localhost:8080</code></pre>
 </div>
 </div>

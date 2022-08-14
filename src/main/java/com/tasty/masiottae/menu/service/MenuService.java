@@ -15,13 +15,14 @@ import com.tasty.masiottae.menu.MenuSearchList;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.MenuTaste;
 import com.tasty.masiottae.menu.domain.Taste;
+import com.tasty.masiottae.menu.dto.MainSearchMenuRequest;
 import com.tasty.masiottae.menu.dto.MenuFindOneResponse;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
 import com.tasty.masiottae.menu.dto.SearchCond;
-import com.tasty.masiottae.menu.dto.SearchMenuRequest;
+import com.tasty.masiottae.menu.dto.MyInfoSearchMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuResponse;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
 import com.tasty.masiottae.menu.enums.SearchType;
@@ -129,7 +130,7 @@ public class MenuService {
         menuRepository.deleteById(id);
     }
 
-    public SearchMenuResponse searchAllMenu(SearchMenuRequest request) {
+    public SearchMenuResponse searchAllMenu(MainSearchMenuRequest request) {
         validateFranchiseIdIsNotNull(request.franchiseId());
         Franchise franchise =
                 request.franchiseId() == 0 ? null : franchiseService.findOneFranchiseEntity(
@@ -138,31 +139,34 @@ public class MenuService {
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
         SearchCond searchCond = new SearchCond(SearchType.ALL_MENU, null, request.keyword(), sortCond, franchise,
                 findTasteByIds);
-        return buildSearchMenuResponse(request, searchCond);
+        return buildSearchMenuResponse(searchCond, request.offset(), request.limit());
     }
 
-    public SearchMenuResponse searchMyMenu(Account account, SearchMenuRequest request) {
+    public SearchMenuResponse searchMyMenu(MyInfoSearchMenuRequest request) {
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
+        Account account = accountEntityService.findById(request.accountId());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
         SearchCond searchCond = new SearchCond(SearchType.MY_MENU, account, request.keyword(), sortCond, null,
                 findTasteByIds);
-        return buildSearchMenuResponse(request, searchCond);
+        return buildSearchMenuResponse(searchCond, request.offset(), request.limit());
     }
 
-    public SearchMenuResponse searchLikeMenu(Account account, SearchMenuRequest request) {
+    public SearchMenuResponse searchLikeMenu(MyInfoSearchMenuRequest request) {
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
+        Account account = accountEntityService.findById(request.accountId());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
         SearchCond searchCond = new SearchCond(SearchType.LIKE_MENU, account, request.keyword(), sortCond, null,
                 findTasteByIds);
-        return buildSearchMenuResponse(request, searchCond);
+        return buildSearchMenuResponse(searchCond, request.offset(), request.limit());
     }
 
-    private SearchMenuResponse buildSearchMenuResponse(SearchMenuRequest request,
-            SearchCond searchCond) {
+    private SearchMenuResponse buildSearchMenuResponse(SearchCond searchCond, int offset,
+            int limit) {
+
         try {
             List<Menu> menus = MenuSearchList.of(menuRepository.search(searchCond))
                     .filterByTaste(searchCond.tastes())
-                    .paging(request.offset(), request.limit())
+                    .paging(offset, limit)
                     .getMenus();
 
             return new SearchMenuResponse(menuConverter.toMenuFindResponseList(menus));
