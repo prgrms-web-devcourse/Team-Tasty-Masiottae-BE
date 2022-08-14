@@ -28,12 +28,13 @@ import com.tasty.masiottae.account.dto.AccountFindResponse;
 import com.tasty.masiottae.config.RestDocsConfiguration;
 import com.tasty.masiottae.config.WithMockAccount;
 import com.tasty.masiottae.franchise.dto.FranchiseFindResponse;
+import com.tasty.masiottae.menu.dto.MainSearchMenuRequest;
 import com.tasty.masiottae.menu.dto.MenuFindOneResponse;
 import com.tasty.masiottae.menu.dto.MenuFindResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
-import com.tasty.masiottae.menu.dto.SearchMenuRequest;
+import com.tasty.masiottae.menu.dto.MyInfoSearchMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuResponse;
 import com.tasty.masiottae.menu.dto.TasteFindResponse;
 import com.tasty.masiottae.menu.service.MenuService;
@@ -347,15 +348,16 @@ class MenuControllerTest {
                         LocalDateTime.now(), LocalDateTime.now())
         );
 
-        SearchMenuRequest request = new SearchMenuRequest(0, 1, "프라푸치노", "recent", null,
+        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(1L, 0, 1, "프라푸치노", "recent",
                 List.of(1L, 2L, 3L));
 
-        given(menuService.searchMyMenu(any(), any())).willReturn(
+        given(menuService.searchMyMenu(any())).willReturn(
                 new SearchMenuResponse(menuFindResponses));
 
         mockMvc.perform(get("/my-menu")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .with(csrf().asHeader())
+                        .param("accountId", String.valueOf(request.accountId()))
                         .param("keyword", request.keyword())
                         .param("sort", request.sort())
                         .param("tasteIdList", "1,2,3")
@@ -368,6 +370,7 @@ class MenuControllerTest {
                                         MediaType.APPLICATION_JSON_VALUE)
                         ),
                         requestParameters(
+                                parameterWithName("accountId").description("유저 ID"),
                                 parameterWithName("keyword").description("검색어"),
                                 parameterWithName("sort").description(
                                         "정렬 조건(recent, like, comment)"),
@@ -474,7 +477,7 @@ class MenuControllerTest {
                         LocalDateTime.now(), LocalDateTime.now())
         );
 
-        SearchMenuRequest request = new SearchMenuRequest(0, 1, "프라푸치노", "recent", 1L,
+        MainSearchMenuRequest request = new MainSearchMenuRequest(0, 1, "프라푸치노", "recent", 1L,
                 List.of(1L, 2L, 3L));
 
         given(menuService.searchAllMenu(request)).willReturn(
@@ -604,15 +607,16 @@ class MenuControllerTest {
                         LocalDateTime.now(), LocalDateTime.now())
         );
 
-        SearchMenuRequest request = new SearchMenuRequest(0, 1, "프라푸치노", "recent", null,
+        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(1L, 0, 1, "프라푸치노", "recent",
                 List.of(1L, 2L, 3L));
 
-        given(menuService.searchLikeMenu(any(), any())).willReturn(
+        given(menuService.searchLikeMenu(any())).willReturn(
                 new SearchMenuResponse(menuFindResponses));
 
         mockMvc.perform(get("/like-menu")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .with(csrf().asHeader())
+                        .param("accountId", String.valueOf(request.accountId()))
                         .param("keyword", request.keyword())
                         .param("sort", request.sort())
                         .param("tasteIdList", "1,2,3")
@@ -625,6 +629,7 @@ class MenuControllerTest {
                                         MediaType.APPLICATION_JSON_VALUE)
                         ),
                         requestParameters(
+                                parameterWithName("accountId").description("유저 ID"),
                                 parameterWithName("keyword").description("검색어"),
                                 parameterWithName("sort").description(
                                         "정렬 조건(recent, like, comment)"),

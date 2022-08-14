@@ -7,7 +7,7 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
-public record SearchMenuRequest(
+public record MainSearchMenuRequest(
 
         @NotNull(message = "offset 값은 null 이어서는 안됩니다.")
         @PositiveOrZero(message = "offset은 0이상의 값이어야 합니다.")
