@@ -26,7 +26,7 @@
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-20.04-green.svg)
 ![Docker](https://img.shields.io/badge/Docker-20.10.14-green.svg)
 
-### Collaborate and Tools
+## Collaborate and Tools
 ![Intellij](https://img.shields.io/badge/IntelliJ-000000?style=flat-square&logo=IntelliJ%20IDEA&logoColor=white)
 ![Slack](https://img.shields.io/badge/slack-FF880F?style=flat-square&logo=slack&logoColor=FFFFFF)
 ![Discord](https://img.shields.io/badge/Discord-207BEA?style=flat-square&logo=discord&logoColor=FFFFFF)
