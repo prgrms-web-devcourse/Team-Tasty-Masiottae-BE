@@ -1,10 +1,13 @@
 package com.tasty.masiottae.menu.repository;
 
+import static com.tasty.masiottae.likemenu.domain.QLikeMenu.likeMenu;
+import static com.tasty.masiottae.menu.domain.QMenu.menu;
 import static com.tasty.masiottae.menu.domain.QMenuTaste.menuTaste;
 
 import com.amazonaws.util.CollectionUtils;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tasty.masiottae.account.domain.Account;
 import com.tasty.masiottae.franchise.domain.Franchise;
@@ -66,7 +69,10 @@ public class MenuRepositoryImpl implements MenuRepositoryCustom {
     }
 
     private BooleanExpression likeMenuAccountContain(Account account) {
-        return menuTaste.menu.likeMenuList.any().account.eq(account);
+        return JPAExpressions.selectFrom(menu)
+                .innerJoin(menu.likeMenuList, likeMenu)
+                .where(likeMenu.account.eq(account).and(menuTaste.menu.eq(menu)))
+                .exists();
     }
 
     private BooleanExpression franchiseEq(Franchise franchise) {
