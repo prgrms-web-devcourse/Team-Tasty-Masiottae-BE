@@ -1,10 +1,15 @@
 package com.tasty.masiottae.menu.dto;
 
-import javax.validation.constraints.*;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 
-public record MyInfoSearchMenuRequest(
+public record SearchOthersMenuRequest(
 
+        @NotNull(message = "accountId 값은 null 이어서는 안됩니다.") Long accountId,
         @NotNull(message = "offset 값은 null 이어서는 안됩니다.")
         @PositiveOrZero(message = "offset은 0이상의 값이어야 합니다.")
         Integer offset,

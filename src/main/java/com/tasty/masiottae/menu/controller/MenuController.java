@@ -59,11 +59,19 @@ public class MenuController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(value = "/other-menu", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SearchMenuResponse> searchOthersMenu(
+            @ModelAttribute @Validated SearchOthersMenuRequest request) {
+        return ResponseEntity.ok(menuService.searchOthersMenu(request));
+    }
+
+    @AccountSecured
     @GetMapping(value = "/my-menu", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SearchMenuResponse> searchMyMenu(
-            @ModelAttribute @Validated MyInfoSearchMenuRequest request) {
-        return ResponseEntity.ok(menuService.searchMyMenu(request));
+            @ModelAttribute @Validated MyInfoSearchMenuRequest request, @LoginAccount Account account) {
+        return ResponseEntity.ok(menuService.searchMyMenu(request, account));
     }
+
 
     @GetMapping(value = "/menu", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SearchMenuResponse> searchMenu(
@@ -73,7 +81,7 @@ public class MenuController {
 
     @GetMapping(value = "/like-menu", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SearchMenuResponse> searchLikeMenu(
-            @ModelAttribute @Validated MyInfoSearchMenuRequest request) {
+            @ModelAttribute @Validated SearchOthersMenuRequest request) {
         return ResponseEntity.ok(menuService.searchLikeMenu(request));
     }
 }

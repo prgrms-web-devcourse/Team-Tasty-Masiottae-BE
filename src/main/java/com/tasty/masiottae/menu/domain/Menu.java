@@ -62,7 +62,6 @@ public class Menu extends BaseTimeEntity {
     @JoinColumn(name = "franchise_id")
     private Franchise franchise;
 
-    @Lob
     @Column(name = "description")
     private String description;
 

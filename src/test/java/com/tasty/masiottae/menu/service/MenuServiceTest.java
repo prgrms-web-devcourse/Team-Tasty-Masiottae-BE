@@ -19,7 +19,7 @@ import com.tasty.masiottae.menu.dto.MenuFindOneResponse;
 import com.tasty.masiottae.menu.dto.MenuSaveRequest;
 import com.tasty.masiottae.menu.dto.MenuSaveResponse;
 import com.tasty.masiottae.menu.dto.MenuUpdateRequest;
-import com.tasty.masiottae.menu.dto.MyInfoSearchMenuRequest;
+import com.tasty.masiottae.menu.dto.SearchOthersMenuRequest;
 import com.tasty.masiottae.menu.dto.SearchMenuResponse;
 import com.tasty.masiottae.menu.enums.MenuSortCond;
 import com.tasty.masiottae.menu.repository.MenuRepository;
@@ -313,11 +313,11 @@ class MenuServiceTest {
     void searchMyMenuTest() {
         // Given
         saveMoreMenus();
-        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(), 0, 3, "커스텀",
+        SearchOthersMenuRequest request = new SearchOthersMenuRequest(account.getId(), 0, 3, "커스텀",
                 MenuSortCond.RECENT.getUrlValue(), tastes.stream().map(Taste::getId).toList());
 
         // When
-        SearchMenuResponse responses = menuService.searchMyMenu(request);
+        SearchMenuResponse responses = menuService.searchOthersMenu(request);
 
         // Then
         assertThat(responses.menu().size()).isEqualTo(1);
@@ -327,12 +327,12 @@ class MenuServiceTest {
     @DisplayName("나만의 메뉴 검색시 size보다 큰 offset값을 전달하면 null이 반환된다.")
     void searchMyMenuFailByOffsetTest() {
         // Given
-        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(),
+        SearchOthersMenuRequest request = new SearchOthersMenuRequest(account.getId(),
                 Integer.MAX_VALUE, 3, "커스텀",
                 MenuSortCond.RECENT.getUrlValue(), tastes.stream().map(Taste::getId).toList());
 
         // When
-        SearchMenuResponse responses = menuService.searchMyMenu(request);
+        SearchMenuResponse responses = menuService.searchOthersMenu(request);
 
         // Then
         assertThat(responses.menu()).isNull();
@@ -388,7 +388,7 @@ class MenuServiceTest {
     void likeMenuSearchTest() {
         account.getLikeMenuList().add(new LikeMenu(account, findMenu));
         saveMoreMenus();
-        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(), 0, 3, "이름",
+        SearchOthersMenuRequest request = new SearchOthersMenuRequest(account.getId(), 0, 3, "이름",
                 "recent",
                 tastes.stream().map(Taste::getId).toList());
 
@@ -406,7 +406,7 @@ class MenuServiceTest {
     @DisplayName("좋아요한 메뉴 검색시 size보다 큰 offset값을 전달하면 null이 반환된다.")
     void searchLikeMenuFailByOffsetTest() {
         // Given
-        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(),
+        SearchOthersMenuRequest request = new SearchOthersMenuRequest(account.getId(),
                 Integer.MAX_VALUE, 10, "이름", "recent",
                 tastes.stream().map(Taste::getId).toList());
 
