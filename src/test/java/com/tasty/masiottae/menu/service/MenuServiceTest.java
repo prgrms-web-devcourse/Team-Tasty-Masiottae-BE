@@ -12,6 +12,7 @@ import com.tasty.masiottae.config.S3TestConfig;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.repository.FranchiseRepository;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
+import com.tasty.masiottae.likemenu.service.LikeMenuService;
 import com.tasty.masiottae.menu.domain.Menu;
 import com.tasty.masiottae.menu.domain.Taste;
 import com.tasty.masiottae.menu.dto.MainSearchMenuRequest;
@@ -27,8 +28,10 @@ import com.tasty.masiottae.menu.repository.TasteRepository;
 import com.tasty.masiottae.option.domain.Option;
 import com.tasty.masiottae.option.dto.OptionSaveRequest;
 import io.findify.s3mock.S3Mock;
+
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,6 +59,10 @@ class MenuServiceTest {
     FranchiseRepository franchiseRepository;
     @Autowired
     TasteRepository tasteRepository;
+
+    @Autowired
+    LikeMenuService likeMenuService;
+
     @Autowired
     MenuService menuService;
     @Autowired
@@ -288,7 +295,6 @@ class MenuServiceTest {
                                 .toList().containsAll(request.tasteIdList())),
                 () -> assertThat(findMenu.getPictureUrl()).isEqualTo(null)
         );
-
     }
 
     @Test

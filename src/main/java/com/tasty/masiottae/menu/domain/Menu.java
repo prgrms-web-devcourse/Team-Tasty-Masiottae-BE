@@ -148,6 +148,7 @@ public class Menu extends BaseTimeEntity {
         this.description = menu.description;
         this.pictureUrl = menu.pictureUrl;
         this.expectedPrice = menu.expectedPrice;
+        this.franchise = menu.getFranchise();
         menu.optionList.forEach(option -> this.optionList.add(
             Option.createOption(option.getOptionName(), option.getDescription(), this)));
         menu.menuTasteList.addAll(menuTasteSet);

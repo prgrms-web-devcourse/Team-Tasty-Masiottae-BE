@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
@@ -22,6 +24,11 @@ public class LikeMenuService {
     private final LikeMenuRepository likeMenuRepository;
     private final MenuRepository menuRepository;
     private final MenuConverter menuConverter;
+
+
+    public void delete(List<LikeMenu> likeMenuList) {
+        likeMenuRepository.deleteAll(likeMenuList);
+    }
 
     private void addLike(Account account, Menu menu) {
         likeMenuRepository.save(new LikeMenu(account, menu));

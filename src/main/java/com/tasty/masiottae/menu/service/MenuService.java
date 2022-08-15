@@ -10,6 +10,8 @@ import com.tasty.masiottae.common.exception.ErrorMessage;
 import com.tasty.masiottae.common.exception.custom.ForbiddenException;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.service.FranchiseService;
+import com.tasty.masiottae.likemenu.domain.LikeMenu;
+import com.tasty.masiottae.likemenu.service.LikeMenuService;
 import com.tasty.masiottae.menu.MenuConverter;
 import com.tasty.masiottae.menu.MenuSearchList;
 import com.tasty.masiottae.menu.domain.Menu;
@@ -50,6 +52,8 @@ public class MenuService {
     private final TasteService tasteService;
     private final AccountEntityService accountEntityService;
     private final FranchiseService franchiseService;
+
+    private final LikeMenuService likeMenuService;
 
     @Transactional
     public MenuSaveResponse createMenu(Account account, MenuSaveRequest request,
@@ -127,6 +131,8 @@ public class MenuService {
         if (!isUseAccount) {
             throw new ForbiddenException(ErrorMessage.NOT_ACCESS_ANOTHER_ACCOUNT.getMessage());
         }
+        List<LikeMenu> likeMenuList = menu.getLikeMenuList();
+        likeMenuService.delete(likeMenuList);
         menuRepository.deleteById(id);
     }
 
