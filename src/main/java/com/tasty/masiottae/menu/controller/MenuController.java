@@ -28,7 +28,7 @@ public class MenuController {
 
     @AccountSecured
     @PostMapping(value = "/menu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuSaveResponse> saveMenu(@RequestPart MenuSaveRequest data,
+    public ResponseEntity<MenuSaveResponse> saveMenu(@RequestPart @Validated MenuSaveRequest data,
             @RequestPart(required = false) MultipartFile image, @LoginAccount Account account) {
         return new ResponseEntity<>(menuService.createMenu(account, data, image),
                 HttpStatus.CREATED);
@@ -45,7 +45,7 @@ public class MenuController {
 
     @AccountSecured
     @PostMapping(value = "/menu/{menuId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateMenu(@RequestPart MenuUpdateRequest data,
+    public ResponseEntity<Void> updateMenu(@RequestPart @Validated MenuUpdateRequest data,
             @RequestPart(required = false) MultipartFile image,
             @PathVariable Long menuId, @LoginAccount Account account) {
         menuService.updateMenu(menuId, data, image, account);
