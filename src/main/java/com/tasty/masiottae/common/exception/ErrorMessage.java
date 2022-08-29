@@ -34,6 +34,7 @@ public enum ErrorMessage {
     // menu
     INVALID_MENU_ORDER_COND("존재하지 않는 메뉴 정렬 조건입니다."),
     NOT_FOUND_MENU("존재하지 않는 메뉴입니다."),
+    PAGE_GREATER_THAN_TOTAL_PAGE("요청 page 값이 전체 페이지 수보다 큽니다."),
 
     // comment
     NO_COMMENT_CONTENT("댓글 내용을 입력해주세요."),
