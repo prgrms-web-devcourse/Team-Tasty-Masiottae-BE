@@ -485,23 +485,31 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_메뉴_삭제_http_response">HTTP 응답 예시</a></li>
 </ul>
 </li>
-<li><a href="#_내가_생성한_메뉴_검색">내가 생성한 메뉴 검색</a>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색">특정 사용자가 생성한 메뉴 검색</a>
 <ul class="sectlevel3">
-<li><a href="#_내가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></li>
-<li><a href="#_내가_생성한_메뉴_검색_path_parameters">요청 파라미터</a></li>
-<li><a href="#_내가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></li>
-<li><a href="#_내가_생성한_메뉴_검색_http_response">HTTP 응답 예시</a></li>
-<li><a href="#_내가_생성한_메뉴_검색_response_headers">응답 헤더</a></li>
-<li><a href="#_내가_생성한_메뉴_검색_response_fields">응답 필드</a></li>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></li>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></li>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색_http_response">HTTP 응답 예시</a></li>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색_response_headers">응답 헤더</a></li>
+<li><a href="#_특정_사용자가_생성한_메뉴_검색_response_fields">응답 필드</a></li>
 </ul>
 </li>
-<li><a href="#_홈_화면_메뉴_검색">홈 화면 메뉴 검색</a>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색">특정 사용자가 좋아요한 메뉴 검색</a>
 <ul class="sectlevel3">
-<li><a href="#_홈_화면_메뉴_검색_http_request">HTTP 요청 예시</a></li>
-<li><a href="#_홈_화면_메뉴_검색_request_parameters">요청 파라미터</a></li>
-<li><a href="#_홈_화면_메뉴_검색_http_response">HTTP 응답 예시</a></li>
-<li><a href="#_홈_화면_메뉴_검색_response_headers">응답 헤더</a></li>
-<li><a href="#_홈_화면_메뉴_검색_response_fields">응답 필드</a></li>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색_http_request">HTTP 요청 예시</a></li>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색_request_parameters">요청 파라미터</a></li>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색_http_response">HTTP 응답 예시</a></li>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색_response_headers">응답 헤더</a></li>
+<li><a href="#_특정_사용자가_좋아요한_메뉴_검색_response_fields">응답 필드</a></li>
+</ul>
+</li>
+<li><a href="#_전체_메뉴_검색">전체 메뉴 검색</a>
+<ul class="sectlevel3">
+<li><a href="#_전체_메뉴_검색_http_request">HTTP 요청 예시</a></li>
+<li><a href="#_전체_메뉴_검색_request_parameters">요청 파라미터</a></li>
+<li><a href="#_전체_메뉴_검색_http_response">HTTP 응답 예시</a></li>
+<li><a href="#_전체_메뉴_검색_response_headers">응답 헤더</a></li>
+<li><a href="#_전체_메뉴_검색_response_fields">응답 필드</a></li>
 </ul>
 </li>
 </ul>
@@ -712,6 +720,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_댓글_삭제_path_parameters">요청 파라미터</a></li>
 <li><a href="#_댓글_삭제_request_headers">요청 헤더</a></li>
 <li><a href="#_댓글_삭제_http_response">HTTP 응답 예시</a></li>
+<li><a href="#_댓글_삭제_response_body">Response body</a></li>
 </ul>
 </li>
 </ul>
@@ -816,14 +825,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /menu HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-X-CSRF-TOKEN: dd698bfc-ff39-43d9-a331-1e215693ff54
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@4eb645a0
+X-CSRF-TOKEN: 6226e0e8-5c7d-476a-89da-069963877b20
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Content-Disposition: form-data; name=data
 Content-Type: application/json
 
-{"userId":1,"franchiseId":1,"title":"슈렉 프라푸치노","content":"맛있습니다.","originalTitle":"그린티 프라푸치노","expectedPrice":10000,"optionList":[{"name":"에스프레소 샷","description":"1샷"},{"name":"간 자바칩","description":"1개"},{"name":"통 자바칩","description":"1개"},{"name":"카라멜드리즐","description":"1개"}],"tasteIdList":[1,2,3]}
+{"franchiseId":1,"title":"슈렉 프라푸치노","content":"맛있습니다.","originalTitle":"그린티 프라푸치노","expectedPrice":10000,"optionList":[{"name":"에스프레소 샷","description":"1샷"},{"name":"간 자바칩","description":"1개"},{"name":"통 자바칩","description":"1개"},{"name":"카라멜드리즐","description":"1개"}],"tasteIdList":[1,2,3]}
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Content-Disposition: form-data; name=image; filename=image.png
 Content-Type: image/png
@@ -899,11 +909,6 @@ sample image
 </tr>
 </thead>
 <tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 ID</p></td>
-</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>franchiseId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
@@ -1029,6 +1034,9 @@ Content-Length: 18
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /menu/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@4784763c
+X-CSRF-TOKEN: 45632d0b-33c4-4587-894b-ef4f00a9446a
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1050,7 +1058,7 @@ Host: localhost:8080</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menuId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 Id</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 ID</p></td>
 </tr>
 </tbody>
 </table>
@@ -1070,7 +1078,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 907
+Content-Length: 928
 
 {
   "id" : 1,
@@ -1088,7 +1096,7 @@ Content-Length: 907
     "nickName" : "닉네임",
     "email" : "유저이름",
     "snsAccount" : "이메일",
-    "createdAt" : "2022-08-10T17:35:46.516487",
+    "createdAt" : "2022-08-29T20:13:36.150243",
     "menuCount" : 10
   },
   "content" : "내용",
@@ -1111,8 +1119,9 @@ Content-Length: 907
     "name" : "파란맛",
     "color" : "파란색"
   } ],
-  "createdAt" : "2022-08-10T17:35:46.516512",
-  "updatedAt" : "2022-08-10T17:35:46.516513"
+  "createdAt" : "2022-08-29T20:13:36.150254",
+  "updatedAt" : "2022-08-29T20:13:36.150255",
+  "isLiked" : false
 }</code></pre>
 </div>
 </div>
@@ -1258,6 +1267,11 @@ Content-Length: 907
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">갱신일</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isLiked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 누름 여부</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1271,14 +1285,15 @@ Content-Length: 907
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /menu/1 HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-X-CSRF-TOKEN: cb4f0419-cb50-4695-b8d4-0eaa0b30551b
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@305bcac8
+X-CSRF-TOKEN: 4366689c-566f-4174-a5f2-0e666fc0b15e
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Content-Disposition: form-data; name=data
 Content-Type: application/json
 
-{"userId":1,"franchiseId":1,"title":"슈렉 프라푸치노","content":"맛있습니다.","originalTitle":"그린티 프라푸치노","expectedPrice":10000,"optionList":[{"name":"에스프레소 샷","description":"1샷"},{"name":"간 자바칩","description":"1개"},{"name":"통 자바칩","description":"1개"},{"name":"카라멜드리즐","description":"1개"}],"tasteIdList":[1,2,3]}
+{"franchiseId":1,"title":"슈렉 프라푸치노","content":"맛있습니다.","originalTitle":"그린티 프라푸치노","expectedPrice":10000,"optionList":[{"name":"에스프레소 샷","description":"1샷"},{"name":"간 자바칩","description":"1개"},{"name":"통 자바칩","description":"1개"},{"name":"카라멜드리즐","description":"1개"}],"tasteIdList":[1,2,3],"isRemoveImage":false}
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Content-Disposition: form-data; name=image; filename=image.png
 Content-Type: image/png
@@ -1309,6 +1324,10 @@ sample image
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Accept</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">application/json</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JWT Access 토큰</p></td>
 </tr>
 </tbody>
 </table>
@@ -1355,11 +1374,6 @@ sample image
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 ID</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>franchiseId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">프렌차이즈 ID</p></td>
@@ -1404,6 +1418,11 @@ sample image
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">맛 ID 목록</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isRemoveImage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지가 제거 유무.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1432,7 +1451,9 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /menu/1 HTTP/1.1
-X-CSRF-TOKEN: 8944352d-0b9b-4346-8bfd-7e4cbe61b708
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@6a3f834e
+Accept: application/json
+X-CSRF-TOKEN: 01de75a3-087d-42dc-9b29-9dab5732446b
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1478,21 +1499,21 @@ X-Frame-Options: DENY</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_내가_생성한_메뉴_검색"><a class="link" href="#_내가_생성한_메뉴_검색">내가 생성한 메뉴 검색</a></h3>
+<h3 id="_특정_사용자가_생성한_메뉴_검색"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색">특정 사용자가 생성한 메뉴 검색</a></h3>
 <div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_http_request"><a class="link" href="#_내가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
+<h4 id="_특정_사용자가_생성한_메뉴_검색_http_request"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /accounts/1/menu?keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;offset=0&amp;limit=1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /my-menu?accountId=1&amp;keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;page=1&amp;size=1 HTTP/1.1
 Accept: application/json
+X-CSRF-TOKEN: 588df4cf-0d8b-44c5-81b3-b6e3bc0e0533
 Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_path_parameters"><a class="link" href="#_내가_생성한_메뉴_검색_path_parameters">요청 파라미터</a></h4>
+<h4 id="_특정_사용자가_생성한_메뉴_검색_request_parameters"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></h4>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /accounts/{accountId}/menu</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -1506,25 +1527,8 @@ Host: localhost:8080</code></pre>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>accountId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">회원 ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 ID</p></td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_request_parameters"><a class="link" href="#_내가_생성한_메뉴_검색_request_parameters">요청 파라미터</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">검색어</p></td>
@@ -1538,18 +1542,18 @@ Host: localhost:8080</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">맛 ID 조건(예: 1,2,3)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>offset</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 offset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>limit</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">패이징 limit</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">한 페이지당 메뉴 개수</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_http_response"><a class="link" href="#_내가_생성한_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
+<h4 id="_특정_사용자가_생성한_메뉴_검색_http_response"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -1563,7 +1567,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2374
+Content-Length: 2394
 
 {
   "menu" : [ {
@@ -1582,7 +1586,7 @@ Content-Length: 2374
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-10T17:35:46.653919",
+      "createdAt" : "2022-08-29T20:13:36.315872",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
@@ -1612,8 +1616,8 @@ Content-Length: 2374
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-10T17:35:46.653927",
-    "updatedAt" : "2022-08-10T17:35:46.653928"
+    "createdAt" : "2022-08-29T20:13:36.315882",
+    "updatedAt" : "2022-08-29T20:13:36.315883"
   }, {
     "id" : 2,
     "franchise" : {
@@ -1630,7 +1634,7 @@ Content-Length: 2374
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-10T17:35:46.653919",
+      "createdAt" : "2022-08-29T20:13:36.315872",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
@@ -1660,15 +1664,16 @@ Content-Length: 2374
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-10T17:35:46.653929",
-    "updatedAt" : "2022-08-10T17:35:46.653929"
-  } ]
+    "createdAt" : "2022-08-29T20:13:36.315884",
+    "updatedAt" : "2022-08-29T20:13:36.315884"
+  } ],
+  "isLast" : false
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_response_headers"><a class="link" href="#_내가_생성한_메뉴_검색_response_headers">응답 헤더</a></h4>
+<h4 id="_특정_사용자가_생성한_메뉴_검색_response_headers"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색_response_headers">응답 헤더</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1689,7 +1694,7 @@ Content-Length: 2374
 </table>
 </div>
 <div class="sect3">
-<h4 id="_내가_생성한_메뉴_검색_response_fields"><a class="link" href="#_내가_생성한_메뉴_검색_response_fields">응답 필드</a></h4>
+<h4 id="_특정_사용자가_생성한_메뉴_검색_response_fields"><a class="link" href="#_특정_사용자가_생성한_메뉴_검색_response_fields">응답 필드</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1853,25 +1858,31 @@ Content-Length: 2374
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].tasteList[].color</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">맛 색상 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isLast</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">마지막 페이지 여부</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_홈_화면_메뉴_검색"><a class="link" href="#_홈_화면_메뉴_검색">홈 화면 메뉴 검색</a></h3>
+<h3 id="_특정_사용자가_좋아요한_메뉴_검색"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색">특정 사용자가 좋아요한 메뉴 검색</a></h3>
 <div class="sect3">
-<h4 id="_홈_화면_메뉴_검색_http_request"><a class="link" href="#_홈_화면_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
+<h4 id="_특정_사용자가_좋아요한_메뉴_검색_http_request"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /menu?keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;franchiseId=1&amp;offset=0&amp;limit=1 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /like-menu?accountId=1&amp;keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;page=1&amp;size=1 HTTP/1.1
 Accept: application/json
+X-CSRF-TOKEN: 008ee4fa-fa13-49d1-9b36-5320984e4382
 Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_홈_화면_메뉴_검색_request_parameters"><a class="link" href="#_홈_화면_메뉴_검색_request_parameters">요청 파라미터</a></h4>
+<h4 id="_특정_사용자가_좋아요한_메뉴_검색_request_parameters"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색_request_parameters">요청 파라미터</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1885,6 +1896,10 @@ Host: localhost:8080</code></pre>
 </thead>
 <tbody>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>accountId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 ID</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">검색어</p></td>
 </tr>
@@ -1897,22 +1912,18 @@ Host: localhost:8080</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">맛 ID 조건(예: 1,2,3)</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>offset</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 offset</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>limit</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">패이징 limit</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>franchiseId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">프랜차이즈 ID(null 전달시 전체 프렌차이즈 조회)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">한 페이지당 메뉴 개수</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_홈_화면_메뉴_검색_http_response"><a class="link" href="#_홈_화면_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
+<h4 id="_특정_사용자가_좋아요한_메뉴_검색_http_response"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -1926,7 +1937,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2372
+Content-Length: 2396
 
 {
   "menu" : [ {
@@ -1945,11 +1956,11 @@ Content-Length: 2372
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-10T17:35:46.596577",
+      "createdAt" : "2022-08-29T20:13:36.102212",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
-    "likes" : 0,
+    "likes" : 10,
     "comments" : 0,
     "expectedPrice" : 8000,
     "optionList" : [ {
@@ -1975,8 +1986,8 @@ Content-Length: 2372
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-10T17:35:46.596595",
-    "updatedAt" : "2022-08-10T17:35:46.596596"
+    "createdAt" : "2022-08-29T20:13:36.102254",
+    "updatedAt" : "2022-08-29T20:13:36.102255"
   }, {
     "id" : 2,
     "franchise" : {
@@ -1993,11 +2004,11 @@ Content-Length: 2372
       "nickName" : "programmers",
       "email" : "prgrms@gmail.com",
       "snsAccount" : "prgrms123",
-      "createdAt" : "2022-08-10T17:35:46.596577",
+      "createdAt" : "2022-08-29T20:13:36.102212",
       "menuCount" : 1
     },
     "content" : "맛있습니다.",
-    "likes" : 0,
+    "likes" : 10,
     "comments" : 0,
     "expectedPrice" : 8000,
     "optionList" : [ {
@@ -2023,15 +2034,16 @@ Content-Length: 2372
       "name" : "쓴맛",
       "color" : "#000000"
     } ],
-    "createdAt" : "2022-08-10T17:35:46.596599",
-    "updatedAt" : "2022-08-10T17:35:46.5966"
-  } ]
+    "createdAt" : "2022-08-29T20:13:36.102261",
+    "updatedAt" : "2022-08-29T20:13:36.102262"
+  } ],
+  "isLast" : false
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_홈_화면_메뉴_검색_response_headers"><a class="link" href="#_홈_화면_메뉴_검색_response_headers">응답 헤더</a></h4>
+<h4 id="_특정_사용자가_좋아요한_메뉴_검색_response_headers"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색_response_headers">응답 헤더</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -2052,7 +2064,7 @@ Content-Length: 2372
 </table>
 </div>
 <div class="sect3">
-<h4 id="_홈_화면_메뉴_검색_response_fields"><a class="link" href="#_홈_화면_메뉴_검색_response_fields">응답 필드</a></h4>
+<h4 id="_특정_사용자가_좋아요한_메뉴_검색_response_fields"><a class="link" href="#_특정_사용자가_좋아요한_메뉴_검색_response_fields">응답 필드</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2216,6 +2228,380 @@ Content-Length: 2372
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].tasteList[].color</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">맛 색상 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isLast</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">마지막 페이지 여부</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_전체_메뉴_검색"><a class="link" href="#_전체_메뉴_검색">전체 메뉴 검색</a></h3>
+<div class="sect3">
+<h4 id="_전체_메뉴_검색_http_request"><a class="link" href="#_전체_메뉴_검색_http_request">HTTP 요청 예시</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /menu?keyword=%ED%94%84%EB%9D%BC%ED%91%B8%EC%B9%98%EB%85%B8&amp;sort=recent&amp;tasteIdList=1%2C2%2C3&amp;franchiseId=1&amp;page=1&amp;size=1 HTTP/1.1
+Accept: application/json
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_전체_메뉴_검색_request_parameters"><a class="link" href="#_전체_메뉴_검색_request_parameters">요청 파라미터</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">검색어</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">정렬 조건(recent, like, comment)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>tasteIdList</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">맛 ID 조건(예: 1,2,3)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">한 페이지당 메뉴 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>franchiseId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프랜차이즈 ID(0 전달시 전체 프렌차이즈 조회)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_전체_메뉴_검색_http_response"><a class="link" href="#_전체_메뉴_검색_http_response">HTTP 응답 예시</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 2394
+
+{
+  "menu" : [ {
+    "id" : 1,
+    "franchise" : {
+      "id" : 1,
+      "image" : "starbucks.com",
+      "name" : "스타벅스"
+    },
+    "image" : "menu1.com",
+    "title" : "슈렉 프라푸치노",
+    "originalTitle" : "그린티 프라푸치노",
+    "author" : {
+      "id" : 1,
+      "image" : "user1.com",
+      "nickName" : "programmers",
+      "email" : "prgrms@gmail.com",
+      "snsAccount" : "prgrms123",
+      "createdAt" : "2022-08-29T20:13:36.248154",
+      "menuCount" : 1
+    },
+    "content" : "맛있습니다.",
+    "likes" : 0,
+    "comments" : 0,
+    "expectedPrice" : 8000,
+    "optionList" : [ {
+      "name" : "간 자바칩",
+      "description" : "1개"
+    }, {
+      "name" : "통 자바칩",
+      "description" : "1개"
+    }, {
+      "name" : "카라멜드리즐",
+      "description" : "1개"
+    } ],
+    "tasteList" : [ {
+      "id" : 1,
+      "name" : "단맛",
+      "color" : "#000000"
+    }, {
+      "id" : 2,
+      "name" : "매운맛",
+      "color" : "#000000"
+    }, {
+      "id" : 3,
+      "name" : "쓴맛",
+      "color" : "#000000"
+    } ],
+    "createdAt" : "2022-08-29T20:13:36.248174",
+    "updatedAt" : "2022-08-29T20:13:36.248175"
+  }, {
+    "id" : 2,
+    "franchise" : {
+      "id" : 1,
+      "image" : "starbucks.com",
+      "name" : "스타벅스"
+    },
+    "image" : "menu1.com",
+    "title" : "몬스터 프라푸치노",
+    "originalTitle" : "자바칩 프라푸치노",
+    "author" : {
+      "id" : 1,
+      "image" : "user1.com",
+      "nickName" : "programmers",
+      "email" : "prgrms@gmail.com",
+      "snsAccount" : "prgrms123",
+      "createdAt" : "2022-08-29T20:13:36.248154",
+      "menuCount" : 1
+    },
+    "content" : "맛있습니다.",
+    "likes" : 0,
+    "comments" : 0,
+    "expectedPrice" : 8000,
+    "optionList" : [ {
+      "name" : "간 자바칩",
+      "description" : "1개"
+    }, {
+      "name" : "통 자바칩",
+      "description" : "1개"
+    }, {
+      "name" : "카라멜드리즐",
+      "description" : "1개"
+    } ],
+    "tasteList" : [ {
+      "id" : 1,
+      "name" : "단맛",
+      "color" : "#000000"
+    }, {
+      "id" : 2,
+      "name" : "매운맛",
+      "color" : "#000000"
+    }, {
+      "id" : 3,
+      "name" : "쓴맛",
+      "color" : "#000000"
+    } ],
+    "createdAt" : "2022-08-29T20:13:36.248178",
+    "updatedAt" : "2022-08-29T20:13:36.248178"
+  } ],
+  "isLast" : false
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_전체_메뉴_검색_response_headers"><a class="link" href="#_전체_메뉴_검색_response_headers">응답 헤더</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">application/json</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_전체_메뉴_검색_response_fields"><a class="link" href="#_전체_메뉴_검색_response_fields">응답 필드</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 배열</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이미지 URL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].originalTitle</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">기존 메뉴명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].likes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 좋아요 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].comments</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 댓글 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].expectedPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 가격</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 생성 일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].updatedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">최종 메뉴 수정 일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].franchise</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프렌차이즈 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].franchise.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프렌차이즈 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].franchise.image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프렌차이즈 이미지 URL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].franchise.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">프렌차이즈명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 이미지 URL</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.nickName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 이메일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.snsAccount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 SNS 계정</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.createdAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">회원 생성 일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].author.menuCount</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당 회원이 생성한 메뉴 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].optionList[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 옵션 배열</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].optionList[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 옵션명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].optionList[].description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 옵션 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].tasteList[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메뉴 맛 배열</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].tasteList[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">맛 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].tasteList[].name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">맛 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>menu[].tasteList[].color</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">맛 색상 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isLast</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">마지막 페이지 여부</p></td>
 </tr>
 </tbody>
 </table>
@@ -2358,7 +2744,7 @@ Content-Length: 184
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 49
-X-CSRF-TOKEN: 0dbc21ee-b193-44d2-9564-4eae044d5b22
+X-CSRF-TOKEN: 56ec9378-a19d-45a6-8da0-73d20cf2e89d
 Host: localhost:8080
 
 {
@@ -2508,7 +2894,7 @@ Content-Length: 19
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /signup HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-X-CSRF-TOKEN: 8679bbb2-a5e0-4d90-89b9-a8d342c82a56
+X-CSRF-TOKEN: f268e4ed-04d2-49d2-9810-5e160f846d40
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -2634,11 +3020,11 @@ Content-Length: 537
 {
   "accessToken" : {
     "token" : "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0.-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
-    "expirationDate" : "2022-08-10 17:35:32"
+    "expirationDate" : "2022-08-29 20:13:05"
   },
   "refreshToken" : {
     "token" : "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MjBAbmF2ZXIuY29tIiwicm9sZXMiOlsiUk9MRV9BQ0NPVU5UIl0sImV4cCI6MTY1OTQzMTI5Nn0.-cEvT2fbrz5mMpa_3Z0x4TASOEQFgk1-sT0lWU3IPR4",
-    "expirationDate" : "2022-08-10 17:35:32"
+    "expirationDate" : "2022-08-29 20:13:05"
   }
 }</code></pre>
 </div>
@@ -2908,7 +3294,7 @@ Content-Length: 260
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /accounts/1 HTTP/1.1
-X-CSRF-TOKEN: 9f18215c-3d63-49b3-b087-79501c9a54a6
+X-CSRF-TOKEN: 20ba4cea-710e-4ef1-ab3a-1af19091ae26
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3021,7 +3407,7 @@ Content-Length: 679
     "nickName" : "nickname",
     "email" : "example@naver.com",
     "snsAccount" : "snsTest",
-    "createdAt" : "2022-08-10T17:35:32.811902",
+    "createdAt" : "2022-08-29T20:13:05.716098",
     "menuCount" : 0
   } ],
   "pageable" : {
@@ -3302,7 +3688,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 187
+Content-Length: 188
 
 {
   "id" : 1,
@@ -3310,7 +3696,7 @@ Content-Length: 187
   "nickName" : "nickname",
   "email" : "example@naver.com",
   "snsAccount" : "snsTest",
-  "createdAt" : "2022-08-10T17:35:32.90972",
+  "createdAt" : "2022-08-29T20:13:05.836429",
   "menuCount" : 0
 }</code></pre>
 </div>
@@ -3404,7 +3790,7 @@ Content-Length: 187
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /accounts/1/password HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 33
-X-CSRF-TOKEN: 11fe04f8-45c7-4716-8965-8cec9471e9ac
+X-CSRF-TOKEN: ad469db1-c763-495a-84d8-7562ea839fac
 Host: localhost:8080
 
 {
@@ -3469,7 +3855,7 @@ Host: localhost:8080
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 40
-X-CSRF-TOKEN: 8b8bc691-1362-4f33-86ef-0036de69faf4
+X-CSRF-TOKEN: ceda6f0c-16ca-4360-96f5-501009dce233
 Host: localhost:8080
 
 {
@@ -3605,7 +3991,7 @@ Content-Length: 47
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 43
-X-CSRF-TOKEN: ad501da9-9aaa-4eab-8318-ea41901c6330
+X-CSRF-TOKEN: d20136be-363a-4d90-b431-7272184ddd7c
 Host: localhost:8080
 
 {
@@ -3740,7 +4126,7 @@ Content-Length: 53
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /accounts/1/image HTTP/1.1
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 Accept: application/json
-X-CSRF-TOKEN: 004cfbb2-7184-4a1b-828e-3fad961cd27d
+X-CSRF-TOKEN: 5b25896f-70ef-49d1-8e4b-afd339e3cf71
 Host: localhost:8080
 
 --6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
@@ -4016,7 +4402,7 @@ Content-Length: 53
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Content-Length: 435
-X-CSRF-TOKEN: e3452161-4252-4650-836e-4ac0d9e13f46
+X-CSRF-TOKEN: 8e6a54ff-8d5e-4431-9399-828bab86d393
 Host: localhost:8080
 
 {
@@ -4105,7 +4491,7 @@ Content-Length: 242
 
 {
   "token" : "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTExQG5hdmVyLmNvbSIsInJvbGVzIjpbIlJPTEVfQUNDT1VOVCJdLCJleHAiOjE2NjAwMzg0NzN9.DZDkCcMNAtfxmv-GWL9mxE0dncwxbHBQQ9kXmvG2AMA",
-  "expirationDate" : "2022-08-10 17:35:32"
+  "expirationDate" : "2022-08-29 20:13:05"
 }</code></pre>
 </div>
 </div>
@@ -4173,7 +4559,7 @@ Content-Length: 242
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /logout HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 435
-X-CSRF-TOKEN: e25143dd-e6d6-4140-bb5c-acc30c02a3dd
+X-CSRF-TOKEN: 1aa19eb1-a722-4c85-8a18-c03c425f8553
 Host: localhost:8080
 
 {
@@ -4272,9 +4658,9 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 406
+Content-Length: 408
 
-[{"id":6,"image":"logo1","name":"franchise1"},{"id":2,"image":"logo2","name":"franchise2"},{"id":3,"image":"logo3","name":"franchise3"},{"id":3,"image":"logo4","name":"franchise4"},{"id":7,"image":"logo5","name":"franchise5"},{"id":7,"image":"logo6","name":"franchise6"},{"id":8,"image":"logo7","name":"franchise7"},{"id":8,"image":"logo8","name":"franchise8"},{"id":3,"image":"logo9","name":"franchise9"}]</code></pre>
+[{"id":10,"image":"logo1","name":"franchise1"},{"id":2,"image":"logo2","name":"franchise2"},{"id":4,"image":"logo3","name":"franchise3"},{"id":2,"image":"logo4","name":"franchise4"},{"id":9,"image":"logo5","name":"franchise5"},{"id":7,"image":"logo6","name":"franchise6"},{"id":10,"image":"logo7","name":"franchise7"},{"id":8,"image":"logo8","name":"franchise8"},{"id":8,"image":"logo9","name":"franchise9"}]</code></pre>
 </div>
 </div>
 </div>
@@ -4282,7 +4668,7 @@ Content-Length: 406
 <h4 id="_프랜차이즈_전체_조회_response_body"><a class="link" href="#_프랜차이즈_전체_조회_response_body">Response body</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":6,"image":"logo1","name":"franchise1"},{"id":2,"image":"logo2","name":"franchise2"},{"id":3,"image":"logo3","name":"franchise3"},{"id":3,"image":"logo4","name":"franchise4"},{"id":7,"image":"logo5","name":"franchise5"},{"id":7,"image":"logo6","name":"franchise6"},{"id":8,"image":"logo7","name":"franchise7"},{"id":8,"image":"logo8","name":"franchise8"},{"id":3,"image":"logo9","name":"franchise9"}]</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":10,"image":"logo1","name":"franchise1"},{"id":2,"image":"logo2","name":"franchise2"},{"id":4,"image":"logo3","name":"franchise3"},{"id":2,"image":"logo4","name":"franchise4"},{"id":9,"image":"logo5","name":"franchise5"},{"id":7,"image":"logo6","name":"franchise6"},{"id":10,"image":"logo7","name":"franchise7"},{"id":8,"image":"logo8","name":"franchise8"},{"id":8,"image":"logo9","name":"franchise9"}]</code></pre>
 </div>
 </div>
 </div>
@@ -4333,9 +4719,9 @@ Content-Length: 406
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /menu/1/like HTTP/1.1
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@3b74df22
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@789bc562
 Accept: application/json
-X-CSRF-TOKEN: 99a03454-15cb-43ba-93f2-30041625e993
+X-CSRF-TOKEN: 2768e70f-aeb5-4329-a267-dd7e164d484a
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -4412,7 +4798,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /accounts/like?page=0&amp;size=10 HTTP/1.1
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@47b92c7c
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@52c0890b
 Accept: application/json
 Host: localhost:8080</code></pre>
 </div>
@@ -4452,7 +4838,7 @@ Content-Length: 1463
       "nickName" : "닉네임",
       "email" : "유저이름",
       "snsAccount" : "이메일",
-      "createdAt" : "2022-08-10T17:35:35.759566",
+      "createdAt" : "2022-08-29T20:13:25.156761",
       "menuCount" : 10
     },
     "content" : "내용",
@@ -4475,8 +4861,8 @@ Content-Length: 1463
       "name" : "파란맛",
       "color" : "파란색"
     } ],
-    "createdAt" : "2022-08-10T17:35:35.759604",
-    "updatedAt" : "2022-08-10T17:35:35.75961"
+    "createdAt" : "2022-08-29T20:13:25.15696",
+    "updatedAt" : "2022-08-29T20:13:25.156968"
   } ],
   "pageable" : {
     "sort" : {
@@ -4791,7 +5177,7 @@ Content-Length: 1463
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /comments HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 48
-X-CSRF-TOKEN: db3074c1-4d36-436e-a7d9-32232e74c588
+X-CSRF-TOKEN: 8f0e1891-e3ee-4c4a-ba00-e05de4d5f592
 Host: localhost:8080
 
 {"userId":1,"menuId":1,"comment":"댓글내용"}</code></pre>
@@ -4955,7 +5341,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Length: 2893
 
-[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-10T17:35:33.60774","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608154","updatedAt":"2022-08-10T17:35:33.608162"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-10T17:35:33.607775","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608228","updatedAt":"2022-08-10T17:35:33.608234"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-10T17:35:33.607789","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608239","updatedAt":"2022-08-10T17:35:33.608242"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-10T17:35:33.607799","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608246","updatedAt":"2022-08-10T17:35:33.608253"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-10T17:35:33.607808","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608267","updatedAt":"2022-08-10T17:35:33.608271"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-10T17:35:33.607817","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608278","updatedAt":"2022-08-10T17:35:33.608282"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-10T17:35:33.607826","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608285","updatedAt":"2022-08-10T17:35:33.608288"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-10T17:35:33.607834","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608293","updatedAt":"2022-08-10T17:35:33.608296"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-10T17:35:33.607846","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.6083","updatedAt":"2022-08-10T17:35:33.608303"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-10T17:35:33.607855","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608307","updatedAt":"2022-08-10T17:35:33.60831"}]</code></pre>
+[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-29T20:13:06.754988","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755403","updatedAt":"2022-08-29T20:13:06.755414"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-29T20:13:06.75502","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755483","updatedAt":"2022-08-29T20:13:06.75549"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-29T20:13:06.755036","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755496","updatedAt":"2022-08-29T20:13:06.755501"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-29T20:13:06.755049","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755507","updatedAt":"2022-08-29T20:13:06.755511"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-29T20:13:06.755061","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755517","updatedAt":"2022-08-29T20:13:06.755521"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-29T20:13:06.755073","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755526","updatedAt":"2022-08-29T20:13:06.75553"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-29T20:13:06.755085","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755535","updatedAt":"2022-08-29T20:13:06.755551"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-29T20:13:06.755096","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755557","updatedAt":"2022-08-29T20:13:06.755561"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-29T20:13:06.755107","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755566","updatedAt":"2022-08-29T20:13:06.755571"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-29T20:13:06.755118","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755576","updatedAt":"2022-08-29T20:13:06.75558"}]</code></pre>
 </div>
 </div>
 </div>
@@ -4963,7 +5349,7 @@ Content-Length: 2893
 <h4 id="_특정_메뉴에_달려있는_댓글_조회_response_body"><a class="link" href="#_특정_메뉴에_달려있는_댓글_조회_response_body">Response body</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-10T17:35:33.60774","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608154","updatedAt":"2022-08-10T17:35:33.608162"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-10T17:35:33.607775","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608228","updatedAt":"2022-08-10T17:35:33.608234"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-10T17:35:33.607789","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608239","updatedAt":"2022-08-10T17:35:33.608242"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-10T17:35:33.607799","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608246","updatedAt":"2022-08-10T17:35:33.608253"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-10T17:35:33.607808","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608267","updatedAt":"2022-08-10T17:35:33.608271"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-10T17:35:33.607817","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608278","updatedAt":"2022-08-10T17:35:33.608282"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-10T17:35:33.607826","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608285","updatedAt":"2022-08-10T17:35:33.608288"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-10T17:35:33.607834","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608293","updatedAt":"2022-08-10T17:35:33.608296"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-10T17:35:33.607846","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.6083","updatedAt":"2022-08-10T17:35:33.608303"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-10T17:35:33.607855","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-10T17:35:33.608307","updatedAt":"2022-08-10T17:35:33.60831"}]</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">[{"id":1,"menuId":1,"author":{"id":1,"image":"profile1","nickName":"nickname1","email":"test1@gmail.com","snsAccount":"sns1","createdAt":"2022-08-29T20:13:06.754988","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755403","updatedAt":"2022-08-29T20:13:06.755414"},{"id":2,"menuId":1,"author":{"id":2,"image":"profile2","nickName":"nickname2","email":"test2@gmail.com","snsAccount":"sns2","createdAt":"2022-08-29T20:13:06.75502","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755483","updatedAt":"2022-08-29T20:13:06.75549"},{"id":3,"menuId":1,"author":{"id":3,"image":"profile3","nickName":"nickname3","email":"test3@gmail.com","snsAccount":"sns3","createdAt":"2022-08-29T20:13:06.755036","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755496","updatedAt":"2022-08-29T20:13:06.755501"},{"id":4,"menuId":1,"author":{"id":4,"image":"profile4","nickName":"nickname4","email":"test4@gmail.com","snsAccount":"sns4","createdAt":"2022-08-29T20:13:06.755049","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755507","updatedAt":"2022-08-29T20:13:06.755511"},{"id":5,"menuId":1,"author":{"id":5,"image":"profile5","nickName":"nickname5","email":"test5@gmail.com","snsAccount":"sns5","createdAt":"2022-08-29T20:13:06.755061","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755517","updatedAt":"2022-08-29T20:13:06.755521"},{"id":6,"menuId":1,"author":{"id":6,"image":"profile6","nickName":"nickname6","email":"test6@gmail.com","snsAccount":"sns6","createdAt":"2022-08-29T20:13:06.755073","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755526","updatedAt":"2022-08-29T20:13:06.75553"},{"id":7,"menuId":1,"author":{"id":7,"image":"profile7","nickName":"nickname7","email":"test7@gmail.com","snsAccount":"sns7","createdAt":"2022-08-29T20:13:06.755085","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755535","updatedAt":"2022-08-29T20:13:06.755551"},{"id":8,"menuId":1,"author":{"id":8,"image":"profile8","nickName":"nickname8","email":"test8@gmail.com","snsAccount":"sns8","createdAt":"2022-08-29T20:13:06.755096","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755557","updatedAt":"2022-08-29T20:13:06.755561"},{"id":9,"menuId":1,"author":{"id":9,"image":"profile9","nickName":"nickname9","email":"test9@gmail.com","snsAccount":"sns9","createdAt":"2022-08-29T20:13:06.755107","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755566","updatedAt":"2022-08-29T20:13:06.755571"},{"id":10,"menuId":1,"author":{"id":10,"image":"profile10","nickName":"nickname10","email":"test10@gmail.com","snsAccount":"sns10","createdAt":"2022-08-29T20:13:06.755118","menuCount":10},"comment":"댓글내용","createdAt":"2022-08-29T20:13:06.755576","updatedAt":"2022-08-29T20:13:06.75558"}]</code></pre>
 </div>
 </div>
 </div>
@@ -5055,10 +5441,10 @@ Content-Length: 2893
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /comments/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@1c19281d
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@48a5ef5c
 Accept: application/json
 Content-Length: 37
-X-CSRF-TOKEN: 8a81b82c-3289-49ab-bbae-1a369cbab09d
+X-CSRF-TOKEN: a60bf6ed-d4f0-4d42-bd1c-891582f54f05
 Host: localhost:8080
 
 {"comment":"새로운 댓글 내용"}</code></pre>
@@ -5161,9 +5547,9 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /comments/1 HTTP/1.1
-Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@162312db
+Authorization: com.tasty.masiottae.security.jwt.JwtAccessToken@749a3925
 Accept: application/json
-X-CSRF-TOKEN: 448345d4-0c68-4205-902c-8dfa1715a6bb
+X-CSRF-TOKEN: 135b83d4-75ad-4ac6-9a6a-967a84e6b9b9
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -5219,16 +5605,28 @@ Host: localhost:8080</code></pre>
 <h4 id="_댓글_삭제_http_response"><a class="link" href="#_댓글_삭제_http_response">HTTP 응답 예시</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
+Content-Type: application/json
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-X-Frame-Options: DENY</code></pre>
+X-Frame-Options: DENY
+Content-Length: 12
+
+{"menuId":0}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_댓글_삭제_response_body"><a class="link" href="#_댓글_삭제_response_body">Response body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{"menuId":0}</code></pre>
 </div>
 </div>
 </div>

@@ -348,11 +348,11 @@ class MenuControllerTest {
                         LocalDateTime.now(), LocalDateTime.now())
         );
 
-        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(1L, 0, 1, "프라푸치노", "recent",
+        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(1L, 1, 1, "프라푸치노", "recent",
                 List.of(1L, 2L, 3L));
 
         given(menuService.searchMyMenu(any())).willReturn(
-                new SearchMenuResponse(menuFindResponses));
+                new SearchMenuResponse(menuFindResponses, false));
 
         mockMvc.perform(get("/my-menu")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -361,8 +361,8 @@ class MenuControllerTest {
                         .param("keyword", request.keyword())
                         .param("sort", request.sort())
                         .param("tasteIdList", "1,2,3")
-                        .param("offset", String.valueOf(request.offset()))
-                        .param("limit", String.valueOf(request.limit())))
+                        .param("page", String.valueOf(request.page()))
+                        .param("size", String.valueOf(request.size())))
                 .andExpect(status().isOk())
                 .andDo(document("search-my-menu",
                         requestHeaders(
@@ -375,8 +375,8 @@ class MenuControllerTest {
                                 parameterWithName("sort").description(
                                         "정렬 조건(recent, like, comment)"),
                                 parameterWithName("tasteIdList").description("맛 ID 조건(예: 1,2,3)"),
-                                parameterWithName("offset").description("페이징 offset"),
-                                parameterWithName("limit").description("패이징 limit")
+                                parameterWithName("page").description("페이지 번호"),
+                                parameterWithName("size").description("한 페이지당 메뉴 개수")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description(
@@ -442,7 +442,8 @@ class MenuControllerTest {
                                 fieldWithPath("menu[].tasteList[].name").type(JsonFieldType.STRING)
                                         .description("맛 이름"),
                                 fieldWithPath("menu[].tasteList[].color").type(JsonFieldType.STRING)
-                                        .description("맛 색상 코드")
+                                        .description("맛 색상 코드"),
+                                fieldWithPath("isLast").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부")
                         )
                 ));
     }
@@ -477,11 +478,11 @@ class MenuControllerTest {
                         LocalDateTime.now(), LocalDateTime.now())
         );
 
-        MainSearchMenuRequest request = new MainSearchMenuRequest(0, 1, "프라푸치노", "recent", 1L,
+        MainSearchMenuRequest request = new MainSearchMenuRequest(1, 1, "프라푸치노", "recent", 1L,
                 List.of(1L, 2L, 3L));
 
         given(menuService.searchAllMenu(request)).willReturn(
-                new SearchMenuResponse(menuFindResponses));
+                new SearchMenuResponse(menuFindResponses, false));
 
         mockMvc.perform(get("/menu")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -489,8 +490,8 @@ class MenuControllerTest {
                         .param("sort", request.sort())
                         .param("tasteIdList", "1,2,3")
                         .param("franchiseId", "1")
-                        .param("offset", String.valueOf(request.offset()))
-                        .param("limit", String.valueOf(request.limit())))
+                        .param("page", String.valueOf(request.page()))
+                        .param("size", String.valueOf(request.size())))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("search-menu",
@@ -503,8 +504,8 @@ class MenuControllerTest {
                                 parameterWithName("sort").description(
                                         "정렬 조건(recent, like, comment)"),
                                 parameterWithName("tasteIdList").description("맛 ID 조건(예: 1,2,3)"),
-                                parameterWithName("offset").description("페이징 offset"),
-                                parameterWithName("limit").description("패이징 limit"),
+                                parameterWithName("page").description("페이지 번호"),
+                                parameterWithName("size").description("한 페이지당 메뉴 개수"),
                                 parameterWithName("franchiseId").description(
                                         "프랜차이즈 ID(0 전달시 전체 프렌차이즈 조회)")
                         ),
@@ -572,7 +573,8 @@ class MenuControllerTest {
                                 fieldWithPath("menu[].tasteList[].name").type(JsonFieldType.STRING)
                                         .description("맛 이름"),
                                 fieldWithPath("menu[].tasteList[].color").type(JsonFieldType.STRING)
-                                        .description("맛 색상 코드")
+                                        .description("맛 색상 코드"),
+                                fieldWithPath("isLast").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부")
                         )
                 ));
     }
@@ -607,11 +609,11 @@ class MenuControllerTest {
                         LocalDateTime.now(), LocalDateTime.now())
         );
 
-        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(1L, 0, 1, "프라푸치노", "recent",
+        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(1L, 1, 1, "프라푸치노", "recent",
                 List.of(1L, 2L, 3L));
 
         given(menuService.searchLikeMenu(any())).willReturn(
-                new SearchMenuResponse(menuFindResponses));
+                new SearchMenuResponse(menuFindResponses, false));
 
         mockMvc.perform(get("/like-menu")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -620,8 +622,8 @@ class MenuControllerTest {
                         .param("keyword", request.keyword())
                         .param("sort", request.sort())
                         .param("tasteIdList", "1,2,3")
-                        .param("offset", String.valueOf(request.offset()))
-                        .param("limit", String.valueOf(request.limit())))
+                        .param("page", String.valueOf(request.page()))
+                        .param("size", String.valueOf(request.size())))
                 .andExpect(status().isOk())
                 .andDo(document("search-like-menu",
                         requestHeaders(
@@ -634,8 +636,8 @@ class MenuControllerTest {
                                 parameterWithName("sort").description(
                                         "정렬 조건(recent, like, comment)"),
                                 parameterWithName("tasteIdList").description("맛 ID 조건(예: 1,2,3)"),
-                                parameterWithName("offset").description("페이징 offset"),
-                                parameterWithName("limit").description("패이징 limit")
+                                parameterWithName("page").description("페이지 번호"),
+                                parameterWithName("size").description("한 페이지당 메뉴 개수")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description(
@@ -701,7 +703,8 @@ class MenuControllerTest {
                                 fieldWithPath("menu[].tasteList[].name").type(JsonFieldType.STRING)
                                         .description("맛 이름"),
                                 fieldWithPath("menu[].tasteList[].color").type(JsonFieldType.STRING)
-                                        .description("맛 색상 코드")
+                                        .description("맛 색상 코드"),
+                                fieldWithPath("isLast").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부")
                         )
                 ));
     }

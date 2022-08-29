@@ -319,7 +319,7 @@ class MenuServiceTest {
     void searchMyMenuTest() {
         // Given
         saveMoreMenus();
-        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(), 0, 3, "커스텀",
+        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(), 1, 3, "커스텀",
                 MenuSortCond.RECENT.getUrlValue(), tastes.stream().map(Taste::getId).toList());
 
         // When
@@ -330,18 +330,16 @@ class MenuServiceTest {
     }
 
     @Test
-    @DisplayName("나만의 메뉴 검색시 size보다 큰 offset값을 전달하면 null이 반환된다.")
+    @DisplayName("나만의 메뉴 검색시 전체 페이지 수보다 큰 페이지 번호를 전달하면 예외가 발생한다.")
     void searchMyMenuFailByOffsetTest() {
         // Given
         MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(),
                 Integer.MAX_VALUE, 3, "커스텀",
                 MenuSortCond.RECENT.getUrlValue(), tastes.stream().map(Taste::getId).toList());
 
-        // When
-        SearchMenuResponse responses = menuService.searchMyMenu(request);
-
-        // Then
-        assertThat(responses.menu()).isNull();
+        // When // Then
+        assertThatThrownBy(() -> menuService.searchMyMenu(request))
+                .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
 
@@ -350,7 +348,7 @@ class MenuServiceTest {
     void searchMenuTest() {
         // Given
         saveMoreMenus();
-        MainSearchMenuRequest request = new MainSearchMenuRequest(0, 1, "이름", "recent",
+        MainSearchMenuRequest request = new MainSearchMenuRequest(1, 1, "이름", "recent",
                 franchise.getId(),
                 tastes.stream().map(Taste::getId).toList());
 
@@ -375,18 +373,16 @@ class MenuServiceTest {
     }
 
     @Test
-    @DisplayName("전체 메뉴 조회시 size보다 큰 offset값을 전달하면 null이 반환된다.")
+    @DisplayName("전체 메뉴 조회시 전체 페이지 수보다 큰 페이지 번호를 전달하면 예외가 발생한다.")
     void searchAllMenuFailByOffsetTest() {
         // Given
         MainSearchMenuRequest request = new MainSearchMenuRequest(Integer.MAX_VALUE, 10, "이름",
                 "recent", franchise.getId(),
                 tastes.stream().map(Taste::getId).toList());
 
-        // When
-        SearchMenuResponse responses = menuService.searchAllMenu(request);
-
-        // Then
-        assertThat(responses.menu()).isNull();
+        // When // Then
+        assertThatThrownBy(() -> menuService.searchAllMenu(request))
+                .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -394,7 +390,7 @@ class MenuServiceTest {
     void likeMenuSearchTest() {
         account.getLikeMenuList().add(new LikeMenu(account, findMenu));
         saveMoreMenus();
-        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(), 0, 3, "이름",
+        MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(), 1, 3, "이름",
                 "recent",
                 tastes.stream().map(Taste::getId).toList());
 
@@ -409,18 +405,16 @@ class MenuServiceTest {
     }
 
     @Test
-    @DisplayName("좋아요한 메뉴 검색시 size보다 큰 offset값을 전달하면 null이 반환된다.")
+    @DisplayName("좋아요한 메뉴 검색시 전체 페이지 수보다 큰 페이지 번호를 전달하면 예외가 발생한다.")
     void searchLikeMenuFailByOffsetTest() {
         // Given
         MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(),
                 Integer.MAX_VALUE, 10, "이름", "recent",
                 tastes.stream().map(Taste::getId).toList());
 
-        // When
-        SearchMenuResponse responses = menuService.searchLikeMenu(request);
-
-        // Then
-        assertThat(responses.menu()).isNull();
+        // When // Then
+        assertThatThrownBy(() -> menuService.searchLikeMenu(request))
+                .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
     private void saveMoreMenus() {
