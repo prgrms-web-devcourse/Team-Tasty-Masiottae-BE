@@ -31,6 +31,7 @@ import com.tasty.masiottae.menu.enums.MenuSortCond;
 import com.tasty.masiottae.menu.enums.SearchType;
 import com.tasty.masiottae.menu.repository.MenuRepository;
 import com.tasty.masiottae.menu.repository.MenuTasteRepository;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -182,11 +183,19 @@ public class MenuService {
                             .containsAll(tastes)).toList();
         }
 
+        if (isNotFoundMenuForCondition(menus)) {
+            return new SearchMenuResponse(Collections.emptyList(), true);
+        }
+
         PageResponse<Menu> pageResponse = PageUtil.page(menus, size, page);
 
         return new SearchMenuResponse(
                 menuConverter.toMenuFindResponseList(pageResponse.list()),
                 pageResponse.isLast());
+    }
+
+    private boolean isNotFoundMenuForCondition(List<Menu> menus) {
+        return menus.isEmpty();
     }
 
     private void validateFranchiseIdIsNotNull(Long franchiseId) {

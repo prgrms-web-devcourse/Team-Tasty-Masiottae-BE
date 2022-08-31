@@ -408,6 +408,7 @@ class MenuServiceTest {
     @DisplayName("좋아요한 메뉴 검색시 전체 페이지 수보다 큰 페이지 번호를 전달하면 예외가 발생한다.")
     void searchLikeMenuFailByOffsetTest() {
         // Given
+        account.getLikeMenuList().add(new LikeMenu(account, findMenu));
         MyInfoSearchMenuRequest request = new MyInfoSearchMenuRequest(account.getId(),
                 Integer.MAX_VALUE, 10, "이름", "recent",
                 tastes.stream().map(Taste::getId).toList());
