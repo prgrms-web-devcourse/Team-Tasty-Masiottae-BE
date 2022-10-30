@@ -1,9 +1,6 @@
 package com.tasty.masiottae.franchise.service;
 
-import static com.tasty.masiottae.common.exception.ErrorMessage.NOT_FOUND_FRANCHISE;
-
 import com.tasty.masiottae.common.aws.AwsS3ImageUploader;
-import com.tasty.masiottae.common.exception.custom.NotFoundException;
 import com.tasty.masiottae.franchise.FranchiseConverter;
 import com.tasty.masiottae.franchise.domain.Franchise;
 import com.tasty.masiottae.franchise.dto.FranchiseFindResponse;
@@ -45,13 +42,5 @@ public class FranchiseService {
         return franchiseRepository.findAll(Sort.by(Direction.ASC, "name")).stream()
                 .map(franchiseConverter::toFranchiseFindResponse).collect(
                         Collectors.toList());
-    }
-
-    public Franchise findOneFranchiseEntity(Long franchiseId) {
-        if (Objects.isNull(franchiseId)) {
-            return null;
-        }
-        return franchiseRepository.findById(franchiseId).orElseThrow(() -> new NotFoundException(
-                NOT_FOUND_FRANCHISE.getMessage()));
     }
 }

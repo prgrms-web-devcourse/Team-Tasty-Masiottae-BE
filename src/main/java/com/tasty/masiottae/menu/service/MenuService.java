@@ -11,7 +11,7 @@ import com.tasty.masiottae.common.exception.custom.ForbiddenException;
 import com.tasty.masiottae.common.util.PageResponse;
 import com.tasty.masiottae.common.util.PageUtil;
 import com.tasty.masiottae.franchise.domain.Franchise;
-import com.tasty.masiottae.franchise.service.FranchiseService;
+import com.tasty.masiottae.franchise.service.FranchiseEntityService;
 import com.tasty.masiottae.likemenu.domain.LikeMenu;
 import com.tasty.masiottae.likemenu.service.LikeMenuService;
 import com.tasty.masiottae.menu.MenuConverter;
@@ -53,28 +53,17 @@ public class MenuService {
     private final MenuTasteRepository menuTasteRepository;
     private final TasteService tasteService;
     private final AccountEntityService accountEntityService;
-    private final FranchiseService franchiseService;
+    private final FranchiseEntityService franchiseEntityService;
 
     private final LikeMenuService likeMenuService;
 
     @Transactional
     public MenuSaveResponse createMenu(Account account, MenuSaveRequest request,
             MultipartFile image) {
-        String menuImageUrl = getImageUrl(null, image, false);
+        String menuImageUrl = s3ImageUploader.uploadMenuImage(image);
         Menu menu = menuConverter.toMenu(account, request, menuImageUrl);
         return menuConverter
                 .toMenuSaveResponse(menuRepository.save(menu));
-    }
-
-    private String getImageUrl(String imageUrl, MultipartFile image, boolean isChange) {
-        String menuImageUrl = imageUrl;
-
-        if (Objects.nonNull(image)) {
-            menuImageUrl = s3ImageUploader.uploadMenuImage(image);
-        } else if (isChange) {
-            menuImageUrl = null;
-        }
-        return menuImageUrl;
     }
 
     public MenuFindOneResponse findOneMenu(Long menuId, Account account) {
@@ -118,6 +107,17 @@ public class MenuService {
         originMenu.update(menu, menuTasteSet);
     }
 
+    private String getImageUrl(String imageUrl, MultipartFile image, boolean isChange) {
+        String menuImageUrl = imageUrl;
+
+        if (Objects.nonNull(image)) {
+            menuImageUrl = s3ImageUploader.uploadMenuImage(image);
+        } else if (isChange) {
+            menuImageUrl = null;
+        }
+        return menuImageUrl;
+    }
+
     public Menu findByFetchEntity(Long menuId) {
         return menuRepository.findByIdFetch(menuId).orElseThrow(EntityNotFoundException::new);
     }
@@ -141,7 +141,7 @@ public class MenuService {
     public SearchMenuResponse searchAllMenu(MainSearchMenuRequest request) {
         validateFranchiseIdIsNotNull(request.franchiseId());
         Franchise franchise =
-                request.franchiseId() == 0 ? null : franchiseService.findOneFranchiseEntity(
+                request.franchiseId() == 0 ? null : franchiseEntityService.findOneFranchiseEntity(
                         request.franchiseId());
         List<Taste> findTasteByIds = tasteService.findTasteByIds(request.tasteIdList());
         MenuSortCond sortCond = MenuSortCond.find(request.sort());
